@@ -21,8 +21,13 @@
 
       <!-- Products Grid -->
       <div class="weekly-offers__products" id="weekly-offers-grid">
-        {% assign collection = collections[section.settings.collection] | default: collections.all %}
-        {% if collection.products.size > 0 %}
+        {% if section.settings.collection != blank %}
+          {% assign collection = collections[section.settings.collection] %}
+        {% else %}
+          {% assign collection = collections.all %}
+        {% endif %}
+        
+        {% if collection and collection.products.size > 0 %}
           {% for product in collection.products limit: section.settings.products_to_show %}
             {% if product.compare_at_price > product.price %}
               <div class="weekly-offers__product-card">
@@ -98,6 +103,9 @@
         {% else %}
           <div class="weekly-offers__empty">
             <p>{{ 'sections.weekly_offers.empty' | t }}</p>
+            {% unless section.settings.collection != blank %}
+              <p style="color: #aaa; font-size: 0.9rem; margin-top: 0.5rem;">Please select a collection in the theme settings to display offers.</p>
+            {% endunless %}
           </div>
         {% endif %}
       </div>

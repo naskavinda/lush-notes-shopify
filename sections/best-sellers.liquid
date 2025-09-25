@@ -21,8 +21,13 @@
 
       <!-- Products Grid -->
       <div class="best-sellers__products" id="best-sellers-grid">
-        {% assign collection = collections[section.settings.collection] | default: collections.all %}
-        {% if collection.products.size > 0 %}
+        {% if section.settings.collection != blank %}
+          {% assign collection = collections[section.settings.collection] %}
+        {% else %}
+          {% assign collection = collections.all %}
+        {% endif %}
+        
+        {% if collection and collection.products.size > 0 %}
           {% for product in collection.products limit: section.settings.products_to_show %}
             <div class="best-sellers__product-card">
               <div class="product-card">
@@ -80,6 +85,9 @@
         {% else %}
           <div class="best-sellers__empty">
             <p>{{ 'sections.best_sellers.empty' | t }}</p>
+            {% unless section.settings.collection != blank %}
+              <p style="color: #999; font-size: 0.9rem; margin-top: 0.5rem;">Please select a collection in the theme settings to display products.</p>
+            {% endunless %}
           </div>
         {% endif %}
       </div>

@@ -17,7 +17,7 @@
       "settings": {
         "title": "Best Sellers",
         "subtitle": "Discover our most popular fragrances loved by customers worldwide",
-        "collection": "best-sellers",
+        "collection": "",
         "products_to_show": 6,
         "show_view_all": true
       }
@@ -68,7 +68,7 @@
       "settings": {
         "title": "Weekly Offers",
         "subtitle": "Limited time deals on premium fragrances",
-        "collection": "weekly-offers",
+        "collection": "",
         "products_to_show": 4,
         "show_view_all": true
       }
