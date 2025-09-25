@@ -130,20 +130,29 @@
 
 {% stylesheet %}
   .weekly-offers {
-    padding: 5rem 0;
+    padding: 4rem 0;
     background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
     color: #fff;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
   }
 
   .weekly-offers__container {
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100%;
     padding: 0 2rem;
+    max-width: none;
   }
 
   .weekly-offers__header {
     text-align: center;
     margin-bottom: 3rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .weekly-offers__title {
@@ -171,6 +180,8 @@
     display: flex;
     align-items: center;
     gap: 2rem;
+    max-width: 80%;
+    margin: 0 auto;
   }
 
   .weekly-offers__nav {
