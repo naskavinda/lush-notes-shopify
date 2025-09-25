@@ -1,65 +1,527 @@
-<header>
-  <h2 class="header__title">
-    {{ shop.name | link_to: routes.root_url }}
-  </h2>
+<header class="header">
+  <div class="header__container">
+    <!-- Logo/Brand -->
+    <div class="header__logo">
+      <a href="{{ routes.root_url }}" class="header__logo-link">
+        {% if section.settings.logo != blank %}
+          {{ section.settings.logo | image_url: width: section.settings.logo_width | image_tag: class: 'header__logo-image', alt: shop.name }}
+        {% else %}
+          <span class="header__logo-text">{{ shop.name }}</span>
+        {% endif %}
+      </a>
+    </div>
 
-  <div class="header__menu">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+    <!-- Mobile Menu Toggle -->
+    <button class="header__mobile-toggle" type="button" aria-label="Toggle menu">
+      <span class="header__mobile-toggle-line"></span>
+      <span class="header__mobile-toggle-line"></span>
+      <span class="header__mobile-toggle-line"></span>
+    </button>
 
-  <div class="header__icons">
-    {% if shop.customer_accounts_enabled %}
-      {{ 'icon-account.svg' | inline_asset_content | link_to: routes.account_url }}
-    {% endif %}
+    <!-- Main Navigation -->
+    <nav class="header__nav">
+      <ul class="header__menu">
+        {% for link in section.settings.menu.links %}
+          <li class="header__menu-item">
+            <a href="{{ link.url }}" class="header__menu-link {% if link.active %}header__menu-link--active{% endif %}">
+              {{ link.title }}
+              {% if link.links != blank %}
+                <svg class="header__dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                  <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              {% endif %}
+            </a>
+            {% if link.links != blank %}
+              <ul class="header__submenu">
+                {% for child_link in link.links %}
+                  <li class="header__submenu-item">
+                    <a href="{{ child_link.url }}" class="header__submenu-link">{{ child_link.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
 
-    <a href="{{ routes.cart_url }}">
-      {% if cart.item_count > 0 %}
-        <sup>{{ cart.item_count }}</sup>
+    <!-- Right Side Actions -->
+    <div class="header__actions">
+      <!-- Search Icon -->
+      <button class="header__action-btn header__search-btn" type="button" aria-label="{{ 'general.search.title' | t }}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+          <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+
+      <!-- Account/Sign In -->
+      {% if shop.customer_accounts_enabled %}
+        {% if customer %}
+          <a href="{{ routes.account_url }}" class="header__action-btn header__account-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span class="header__action-text">{{ 'customer.account.title' | t }}</span>
+          </a>
+        {% else %}
+          <a href="{{ routes.account_login_url }}" class="header__sign-in-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" stroke="currentColor" stroke-width="2"/>
+              <polyline points="10,17 15,12 10,7" stroke="currentColor" stroke-width="2"/>
+              <line x1="15" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            {{ 'customer.login_page.title' | t }}
+          </a>
+        {% endif %}
       {% endif %}
 
-      {{ 'icon-cart.svg' | inline_asset_content }}
-    </a>
+      <!-- Wishlist -->
+      <button class="header__action-btn header__wishlist-btn" type="button" aria-label="{{ 'general.wishlist.title' | t }}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+
+      <!-- Cart -->
+      <a href="{{ routes.cart_url }}" class="header__action-btn header__cart-btn">
+        <div class="header__cart-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          {% if cart.item_count > 0 %}
+            <span class="header__cart-count">{{ cart.item_count }}</span>
+          {% endif %}
+        </div>
+      </a>
+    </div>
   </div>
 </header>
 
 {% stylesheet %}
-  header {
-    height: 5rem;
+  /* Prevent scrolling when mobile menu is open */
+  body.menu-open {
+    overflow: hidden;
+  }
+
+  .header {
+    background-color: #1a1a1a;
+    border-bottom: 1px solid #333;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .header__container {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 var(--page-margin);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 70px;
   }
-  header a {
-    position: relative;
+
+  /* Logo */
+  .header__logo-link {
     text-decoration: none;
-    color: var(--color-foreground);
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 600;
   }
-  header a sup {
-    position: absolute;
-    left: 100%;
-    overflow: hidden;
-    max-width: var(--page-margin);
+
+  .header__logo-image {
+    max-height: 40px;
+    width: auto;
   }
-  header svg {
-    width: 2rem;
+
+  .header__logo-text {
+    color: #fff;
   }
-  header .header__menu,
-  header .header__icons {
+
+  /* Navigation */
+  .header__nav {
+    flex: 1;
     display: flex;
+    justify-content: center;
+  }
+
+  .header__menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .header__menu-item {
+    position: relative;
+  }
+
+  .header__menu-link {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.75rem 0;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+  }
+
+  .header__menu-link:hover,
+  .header__menu-link--active {
+    color: #ff6b35;
+  }
+
+  .header__dropdown-icon {
+    transition: transform 0.2s ease;
+  }
+
+  .header__menu-item:hover .header__dropdown-icon {
+    transform: rotate(180deg);
+  }
+
+  /* Submenu */
+  .header__submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    min-width: 200px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+    list-style: none;
+    margin: 0;
+  }
+
+  .header__menu-item:hover .header__submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .header__submenu-item {
+    margin: 0;
+  }
+
+  .header__submenu-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .header__submenu-link:hover {
+    background-color: #333;
+  }
+
+  /* Actions */
+  .header__actions {
+    display: flex;
+    align-items: center;
     gap: 1rem;
   }
+
+  .header__action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .header__action-btn:hover {
+    color: #ff6b35;
+  }
+
+  .header__action-text {
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  /* Sign In Button */
+  .header__sign-in-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #ff6b35;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+  }
+
+  .header__sign-in-btn:hover {
+    background-color: #e55a2e;
+    color: #fff;
+  }
+
+  /* Cart */
+  .header__cart-icon {
+    position: relative;
+  }
+
+  .header__cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff6b35;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.15rem 0.4rem;
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  /* Mobile Menu Toggle */
+  .header__mobile-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .header__mobile-toggle-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+  }
+
+  .header__mobile-toggle.active .header__mobile-toggle-line:first-child {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .header__mobile-toggle.active .header__mobile-toggle-line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .header__mobile-toggle.active .header__mobile-toggle-line:last-child {
+    transform: rotate(-45deg) translate(7px, -6px);
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .header__container {
+      padding: 0 1rem;
+      height: 60px;
+    }
+
+    .header__mobile-toggle {
+      display: flex;
+      order: 2;
+    }
+
+    .header__logo {
+      order: 1;
+    }
+
+    .header__nav {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background-color: #1a1a1a;
+      border-top: 1px solid #333;
+      padding: 1rem;
+      transform: translateY(-100%);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      order: 4;
+    }
+
+    .header__nav.active {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .header__menu {
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+    }
+
+    .header__menu-item {
+      width: 100%;
+      border-bottom: 1px solid #333;
+    }
+
+    .header__menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .header__menu-link {
+      padding: 1rem 0;
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .header__submenu {
+      position: static;
+      background-color: #2a2a2a;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      box-shadow: none;
+      border-radius: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .header__menu-item:hover .header__submenu,
+    .header__menu-item.active .header__submenu {
+      max-height: 300px;
+    }
+
+    .header__actions {
+      gap: 0.5rem;
+      order: 3;
+    }
+
+    .header__action-text {
+      display: none;
+    }
+
+    .header__sign-in-btn {
+      padding: 0.5rem;
+    }
+
+    .header__sign-in-btn span {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .header__actions {
+      gap: 0.25rem;
+    }
+
+    .header__action-btn {
+      padding: 0.25rem;
+    }
+  }
 {% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.header__mobile-toggle');
+    const nav = document.querySelector('.header__nav');
+    const menuItems = document.querySelectorAll('.header__menu-item');
+
+    if (mobileToggle && nav) {
+      mobileToggle.addEventListener('click', function() {
+        mobileToggle.classList.toggle('active');
+        nav.classList.toggle('active');
+        document.body.classList.toggle('menu-open');
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!mobileToggle.contains(e.target) && !nav.contains(e.target)) {
+          mobileToggle.classList.remove('active');
+          nav.classList.remove('active');
+          document.body.classList.remove('menu-open');
+        }
+      });
+
+      // Handle submenu toggles on mobile
+      menuItems.forEach(function(item) {
+        const link = item.querySelector('.header__menu-link');
+        const submenu = item.querySelector('.header__submenu');
+        
+        if (link && submenu) {
+          link.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+              e.preventDefault();
+              item.classList.toggle('active');
+            }
+          });
+        }
+      });
+
+      // Handle window resize
+      window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+          mobileToggle.classList.remove('active');
+          nav.classList.remove('active');
+          document.body.classList.remove('menu-open');
+          menuItems.forEach(function(item) {
+            item.classList.remove('active');
+          });
+        }
+      });
+    }
+  });
+{% endjavascript %}
 
 {% schema %}
 {
   "name": "t:general.header",
   "settings": [
     {
+      "type": "header",
+      "content": "t:general.logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:labels.logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "t:labels.logo_width",
+      "default": 150
+    },
+    {
+      "type": "header",
+      "content": "t:general.navigation"
+    },
+    {
       "type": "link_list",
       "id": "menu",
-      "label": "t:labels.menu"
+      "label": "t:labels.menu",
+      "default": "main-menu"
     }
   ]
 }

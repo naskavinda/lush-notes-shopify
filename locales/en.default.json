@@ -4,6 +4,21 @@
     "not_found": "Page not found.",
     "back_to_shopping": "Back to shopping"
   },
+  "general": {
+    "logo": "Logo",
+    "navigation": "Navigation",
+    "search": {
+      "title": "Search"
+    },
+    "wishlist": {
+      "title": "Wishlist"
+    }
+  },
+  "labels": {
+    "logo": "Logo image",
+    "logo_width": "Logo width",
+    "menu": "Menu"
+  },
   "blog": {
     "article_comments": "Comments",
     "article_metadata_html": "{{ date }} by {{ author }}",
@@ -18,6 +33,14 @@
     "title": "Cart",
     "update": "Update",
     "remove": "Remove"
+  },
+  "customer": {
+    "account": {
+      "title": "Account"
+    },
+    "login_page": {
+      "title": "Sign In"
+    }
   },
   "customers": {
     "login": {
