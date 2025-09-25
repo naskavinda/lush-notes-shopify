@@ -6,7 +6,16 @@
   },
   "general": {
     "logo": "Logo",
-    "navigation": "Navigation",
+    "navigation": {
+      "home": "Home",
+      "shop": "Shop",
+      "best_sellers": "Best Sellers",
+      "weekly_offers": "Weekly Offers",
+      "about_us": "About Us",
+      "contact": "Contact",
+      "pre_order": "Pre Order",
+      "view_all": "View All"
+    },
     "search": {
       "title": "Search"
     },

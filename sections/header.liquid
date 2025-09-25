@@ -21,27 +21,96 @@
     <!-- Main Navigation -->
     <nav class="header__nav">
       <ul class="header__menu">
-        {% for link in section.settings.menu.links %}
+        {% if section.settings.show_default_navigation %}
+          <!-- Home -->
           <li class="header__menu-item">
-            <a href="{{ link.url }}" class="header__menu-link {% if link.active %}header__menu-link--active{% endif %}">
-              {{ link.title }}
-              {% if link.links != blank %}
-                <svg class="header__dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
-                  <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              {% endif %}
+            <a href="{{ routes.root_url }}" class="header__menu-link {% if request.page_type == 'index' %}header__menu-link--active{% endif %}">
+              {{ 'general.navigation.home' | t }}
             </a>
-            {% if link.links != blank %}
-              <ul class="header__submenu">
-                {% for child_link in link.links %}
-                  <li class="header__submenu-item">
-                    <a href="{{ child_link.url }}" class="header__submenu-link">{{ child_link.title }}</a>
-                  </li>
-                {% endfor %}
-              </ul>
-            {% endif %}
           </li>
-        {% endfor %}
+
+        <!-- Shop with dropdown -->
+        <li class="header__menu-item">
+          <a href="{{ collections.all.url }}" class="header__menu-link {% if request.page_type == 'collection' or request.page_type == 'product' %}header__menu-link--active{% endif %}">
+            {{ 'general.navigation.shop' | t }}
+            <svg class="header__dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
+              <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <ul class="header__submenu">
+            {% for collection in collections limit: 6 %}
+              {% unless collection.handle == 'frontpage' %}
+                <li class="header__submenu-item">
+                  <a href="{{ collection.url }}" class="header__submenu-link">{{ collection.title }}</a>
+                </li>
+              {% endunless %}
+            {% endfor %}
+            <li class="header__submenu-item">
+              <a href="{{ collections.all.url }}" class="header__submenu-link">{{ 'general.navigation.view_all' | t }}</a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Best Sellers -->
+        <li class="header__menu-item">
+          <a href="{{ collections[section.settings.best_sellers_collection].url | default: collections.all.url }}" class="header__menu-link">
+            {{ 'general.navigation.best_sellers' | t }}
+          </a>
+        </li>
+
+        <!-- Weekly Offers -->
+        <li class="header__menu-item">
+          <a href="{{ collections[section.settings.weekly_offers_collection].url | default: collections.all.url }}" class="header__menu-link">
+            {{ 'general.navigation.weekly_offers' | t }}
+          </a>
+        </li>
+
+        <!-- About Us -->
+        <li class="header__menu-item">
+          <a href="{{ pages['about-us'].url | default: '/pages/about-us' }}" class="header__menu-link">
+            {{ 'general.navigation.about_us' | t }}
+          </a>
+        </li>
+
+        <!-- Contact -->
+        <li class="header__menu-item">
+          <a href="{{ pages.contact.url | default: '/pages/contact' }}" class="header__menu-link">
+            {{ 'general.navigation.contact' | t }}
+          </a>
+        </li>
+
+          <!-- Pre Order -->
+          <li class="header__menu-item">
+            <a href="{{ collections[section.settings.pre_order_collection].url | default: collections.all.url }}" class="header__menu-link">
+              {{ 'general.navigation.pre_order' | t }}
+            </a>
+          </li>
+        {% endif %}
+
+        <!-- Custom menu fallback -->
+        {% if section.settings.menu.links.size > 0 %}
+          {% for link in section.settings.menu.links %}
+            <li class="header__menu-item">
+              <a href="{{ link.url }}" class="header__menu-link {% if link.active %}header__menu-link--active{% endif %}">
+                {{ link.title }}
+                {% if link.links != blank %}
+                  <svg class="header__dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                    <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                {% endif %}
+              </a>
+              {% if link.links != blank %}
+                <ul class="header__submenu">
+                  {% for child_link in link.links %}
+                    <li class="header__submenu-item">
+                      <a href="{{ child_link.url }}" class="header__submenu-link">{{ child_link.title }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        {% endif %}
       </ul>
     </nav>
 
@@ -113,12 +182,12 @@
     position: sticky;
     top: 0;
     z-index: 1000;
+    width: 100%;
   }
 
   .header__container {
-    max-width: var(--page-width);
-    margin: 0 auto;
-    padding: 0 var(--page-margin);
+    width: 100%;
+    padding: 0 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -338,6 +407,7 @@
     .header__container {
       padding: 0 1rem;
       height: 60px;
+      width: 100%;
     }
 
     .header__mobile-toggle {
@@ -518,10 +588,38 @@
       "content": "t:general.navigation"
     },
     {
+      "type": "checkbox",
+      "id": "show_default_navigation",
+      "label": "Show default navigation items",
+      "info": "Shows Home, Shop, Best Sellers, Weekly Offers, About Us, Contact, Pre Order",
+      "default": true
+    },
+    {
       "type": "link_list",
       "id": "menu",
       "label": "t:labels.menu",
-      "default": "main-menu"
+      "info": "Additional custom menu items (will be added after default items)"
+    },
+    {
+      "type": "text",
+      "id": "best_sellers_collection",
+      "label": "Best Sellers collection handle",
+      "default": "best-sellers",
+      "info": "Handle of the collection for Best Sellers link"
+    },
+    {
+      "type": "text",
+      "id": "weekly_offers_collection",
+      "label": "Weekly Offers collection handle",
+      "default": "weekly-offers",
+      "info": "Handle of the collection for Weekly Offers link"
+    },
+    {
+      "type": "text",
+      "id": "pre_order_collection",
+      "label": "Pre Order collection handle",
+      "default": "pre-order",
+      "info": "Handle of the collection for Pre Order link"
     }
   ]
 }
