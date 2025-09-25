@@ -71,6 +71,17 @@
       "title": "Title",
       "subtitle": "Subtitle",
       "normal": "Normal text"
+    }
+  },
+  "sections": {
+    "best_sellers": {
+      "name": "Best Sellers"
     },
+    "weekly_offers": {
+      "name": "Weekly Offers"
+    },
+    "olfactive_vibe": {
+      "name": "Olfactive Vibe"
+    }
   }
 }
