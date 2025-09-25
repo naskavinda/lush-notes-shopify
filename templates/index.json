@@ -1,20 +1,83 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
-      "settings": {}
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "hero_title": "Conquer with",
+        "hero_title_accent": "Confidence",
+        "hero_subtitle": "Discover our premium collection of fragrances crafted to make every moment memorable",
+        "primary_button_text": "Shop Now",
+        "primary_button_link": "/collections/all",
+        "secondary_button_text": "Learn More",
+        "secondary_button_link": "/pages/about-us"
+      }
+    },
+    "best_sellers": {
+      "type": "best-sellers",
+      "settings": {
+        "title": "Best Sellers",
+        "subtitle": "Discover our most popular fragrances loved by customers worldwide",
+        "collection": "best-sellers",
+        "products_to_show": 6,
+        "show_view_all": true
+      }
+    },
+    "olfactive_vibe": {
+      "type": "olfactive-vibe",
+      "blocks": {
+        "unisex": {
+          "type": "category",
+          "settings": {
+            "title": "Unisex",
+            "description": "Fragrances that transcend boundaries",
+            "button_text": "Discover Unisex",
+            "button_link": "/collections/unisex"
+          }
+        },
+        "pour_homme": {
+          "type": "category",
+          "settings": {
+            "title": "Pour Homme",
+            "description": "Sophisticated scents for men",
+            "button_text": "Shop Men's",
+            "button_link": "/collections/pour-homme"
+          }
+        },
+        "pour_femme": {
+          "type": "category",
+          "settings": {
+            "title": "Pour Femme",
+            "description": "Elegant fragrances for women",
+            "button_text": "Shop Women's",
+            "button_link": "/collections/pour-femme"
+          }
+        }
+      },
+      "block_order": [
+        "unisex",
+        "pour_homme",
+        "pour_femme"
+      ],
+      "settings": {
+        "title": "Olfactive Vibe",
+        "subtitle": "Find your perfect scent across our curated collections"
+      }
+    },
+    "weekly_offers": {
+      "type": "weekly-offers",
+      "settings": {
+        "title": "Weekly Offers",
+        "subtitle": "Limited time deals on premium fragrances",
+        "collection": "weekly-offers",
+        "products_to_show": 4,
+        "show_view_all": true
+      }
     }
   },
   "order": [
-    "main"
+    "hero",
+    "best_sellers",
+    "olfactive_vibe",
+    "weekly_offers"
   ]
 }

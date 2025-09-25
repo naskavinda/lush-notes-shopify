@@ -1,0 +1,375 @@
+<!-- Olfactive Vibe Section -->
+<section class="olfactive-vibe">
+  <div class="olfactive-vibe__container">
+    <div class="olfactive-vibe__header">
+      {% if section.settings.title != blank %}
+        <h2 class="olfactive-vibe__title">{{ section.settings.title }}</h2>
+      {% endif %}
+      
+      {% if section.settings.subtitle != blank %}
+        <p class="olfactive-vibe__subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div class="olfactive-vibe__categories">
+      {% for block in section.blocks %}
+        <div class="olfactive-category" {{ block.shopify_attributes }}>
+          <div class="olfactive-category__image">
+            {% if block.settings.image %}
+              {{ block.settings.image | image_url: width: 600 | image_tag: alt: block.settings.title, loading: 'lazy' }}
+            {% else %}
+              <div class="olfactive-category__placeholder">
+                {{ 'collection-' | append: forloop.index | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+            <div class="olfactive-category__overlay"></div>
+          </div>
+
+          <div class="olfactive-category__content">
+            {% if block.settings.title %}
+              <h3 class="olfactive-category__title">{{ block.settings.title }}</h3>
+            {% endif %}
+            
+            {% if block.settings.description %}
+              <p class="olfactive-category__description">{{ block.settings.description }}</p>
+            {% endif %}
+
+            {% if block.settings.button_text and block.settings.button_link %}
+              <a href="{{ block.settings.button_link }}" class="olfactive-category__button">
+                {{ block.settings.button_text }}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M5 12h14m-7-7l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .olfactive-vibe {
+    padding: 5rem 0;
+    background-color: #fff;
+  }
+
+  .olfactive-vibe__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .olfactive-vibe__header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .olfactive-vibe__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+
+  .olfactive-vibe__subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .olfactive-vibe__categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+
+  .olfactive-category {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #f8f9fa;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    min-height: 400px;
+  }
+
+  .olfactive-category:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .olfactive-category__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .olfactive-category__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .olfactive-category:hover .olfactive-category__image img {
+    transform: scale(1.05);
+  }
+
+  .olfactive-category__placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .olfactive-category__placeholder svg {
+    width: 80px;
+    height: 80px;
+    opacity: 0.3;
+  }
+
+  .olfactive-category__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.6) 100%
+    );
+    z-index: 2;
+    transition: background 0.4s ease;
+  }
+
+  .olfactive-category:hover .olfactive-category__overlay {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0.3) 50%,
+      rgba(0, 0, 0, 0.7) 100%
+    );
+  }
+
+  .olfactive-category__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    color: #fff;
+    z-index: 3;
+    transform: translateY(20px);
+    transition: transform 0.4s ease;
+  }
+
+  .olfactive-category:hover .olfactive-category__content {
+    transform: translateY(0);
+  }
+
+  .olfactive-category__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .olfactive-category__description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    opacity: 0.95;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .olfactive-category__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+  }
+
+  .olfactive-category__button:hover {
+    background-color: #ff6b35;
+    border-color: #ff6b35;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+  }
+
+  /* Specific styling for different categories */
+  .olfactive-category:nth-child(1) {
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+  }
+
+  .olfactive-category:nth-child(2) {
+    background: linear-gradient(135deg, #4682B4 0%, #5F9EA0 100%);
+  }
+
+  .olfactive-category:nth-child(3) {
+    background: linear-gradient(135deg, #2F4F4F 0%, #708090 100%);
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .olfactive-vibe {
+      padding: 3rem 0;
+    }
+
+    .olfactive-vibe__container {
+      padding: 0 1rem;
+    }
+
+    .olfactive-vibe__title {
+      font-size: 2rem;
+    }
+
+    .olfactive-vibe__categories {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .olfactive-category {
+      min-height: 300px;
+    }
+
+    .olfactive-category__content {
+      padding: 1.5rem;
+      transform: translateY(0); /* Always visible on mobile */
+    }
+
+    .olfactive-category__title {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .olfactive-vibe__header {
+      margin-bottom: 2rem;
+    }
+
+    .olfactive-category {
+      min-height: 250px;
+    }
+
+    .olfactive-category__content {
+      padding: 1rem;
+    }
+
+    .olfactive-category__title {
+      font-size: 1.3rem;
+    }
+
+    .olfactive-category__description {
+      font-size: 0.9rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.olfactive_vibe.name",
+  "tag": "section",
+  "class": "section-olfactive-vibe",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.olfactive_vibe.settings.title.label",
+      "default": "Olfactive Vibe"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "t:sections.olfactive_vibe.settings.subtitle.label",
+      "default": "Whether you're searching for fresh or bold, our scents awaken your energy"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "t:sections.olfactive_vibe.blocks.category.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.olfactive_vibe.blocks.category.settings.image.label"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.olfactive_vibe.blocks.category.settings.title.label",
+          "default": "Category Name"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "t:sections.olfactive_vibe.blocks.category.settings.description.label",
+          "default": "Discover fragrances that represent your essence."
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "t:sections.olfactive_vibe.blocks.category.settings.button_text.label",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.olfactive_vibe.blocks.category.settings.button_link.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.olfactive_vibe.presets.olfactive_vibe.name",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Unisex",
+            "description": "Modern fragrances that transcend traditional boundaries.",
+            "button_text": "Explore Unisex"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Pour Homme",
+            "description": "Bold and sophisticated scents for the modern gentleman.",
+            "button_text": "Shop Men's"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Pour Femme",
+            "description": "Elegant and captivating fragrances for the contemporary woman.",
+            "button_text": "Shop Women's"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

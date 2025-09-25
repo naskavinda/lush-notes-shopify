@@ -1,56 +1,513 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
-  </div>
+<footer class="footer full-width">
+  <div class="footer__container">
+    <!-- Main Footer Content -->
+    <div class="footer__main">
+      <!-- Company Info -->
+      <div class="footer__column footer__column--company">
+        <div class="footer__logo">
+          {% if section.settings.logo %}
+            {{ section.settings.logo | image_url: width: 200 | image_tag: alt: shop.name, class: 'footer__logo-image' }}
+          {% else %}
+            <h3 class="footer__logo-text">{{ section.settings.company_name | default: shop.name }}</h3>
+          {% endif %}
+        </div>
+        
+        {% if section.settings.company_description %}
+          <p class="footer__description">{{ section.settings.company_description }}</p>
+        {% endif %}
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+        <!-- Social Media Links -->
+        {% if section.settings.show_social %}
+          <div class="footer__social">
+            {% if section.settings.social_facebook %}
+              <a href="{{ section.settings.social_facebook }}" class="footer__social-link" aria-label="Facebook">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </a>
+            {% endif %}
+            {% if section.settings.social_instagram %}
+              <a href="{{ section.settings.social_instagram }}" class="footer__social-link" aria-label="Instagram">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
 
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
-    {% endif %}
+      <!-- Shop Links -->
+      <div class="footer__column">
+        <h4 class="footer__column-title">{{ 'sections.footer.shop' | t }}</h4>
+        <ul class="footer__links">
+          <li><a href="{{ collections['pour-homme'].url | default: collections.all.url }}">{{ 'sections.footer.pour_homme' | t }}</a></li>
+          <li><a href="{{ collections['pour-femme'].url | default: collections.all.url }}">{{ 'sections.footer.pour_femme' | t }}</a></li>
+          <li><a href="{{ collections['unisex'].url | default: collections.all.url }}">{{ 'sections.footer.unisex' | t }}</a></li>
+          <li><a href="{{ collections['best-sellers'].url | default: collections.all.url }}">{{ 'sections.footer.best_sellers' | t }}</a></li>
+          <li><a href="{{ collections['weekly-offers'].url | default: collections.all.url }}">{{ 'sections.footer.weekly_offers' | t }}</a></li>
+          <li><a href="{{ collections['pre-order'].url | default: collections.all.url }}">{{ 'sections.footer.pre_order' | t }}</a></li>
+        </ul>
+      </div>
+
+      <!-- Company Links -->
+      <div class="footer__column">
+        <h4 class="footer__column-title">{{ 'sections.footer.company' | t }}</h4>
+        <ul class="footer__links">
+          <li><a href="{{ pages['about-us'].url | default: '/pages/about-us' }}">{{ 'sections.footer.about_us' | t }}</a></li>
+          <li><a href="{{ pages.contact.url | default: '/pages/contact' }}">{{ 'sections.footer.contact' | t }}</a></li>
+          <li><a href="{{ pages['shipping-policy'].url | default: '/pages/shipping-policy' }}">{{ 'sections.footer.shipping_policy' | t }}</a></li>
+          <li><a href="{{ pages['privacy-policy'].url | default: '/pages/privacy-policy' }}">{{ 'sections.footer.privacy_policy' | t }}</a></li>
+          <li><a href="{{ pages['terms-of-service'].url | default: '/pages/terms-of-service' }}">{{ 'sections.footer.terms_conditions' | t }}</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact & Newsletter -->
+      <div class="footer__column footer__column--contact">
+        <h4 class="footer__column-title">{{ 'sections.footer.get_in_touch' | t }}</h4>
+        
+        {% if section.settings.contact_email %}
+          <div class="footer__contact-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2"/>
+              <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <a href="mailto:{{ section.settings.contact_email }}">{{ section.settings.contact_email }}</a>
+          </div>
+        {% endif %}
+
+        {% if section.settings.contact_phone %}
+          <div class="footer__contact-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <a href="tel:{{ section.settings.contact_phone }}">{{ section.settings.contact_phone }}</a>
+          </div>
+        {% endif %}
+
+        <!-- Newsletter Signup -->
+        {% if section.settings.show_newsletter %}
+          <div class="footer__newsletter">
+            <h5 class="footer__newsletter-title">{{ 'sections.footer.newsletter_title' | t }}</h5>
+            <p class="footer__newsletter-description">{{ 'sections.footer.newsletter_description' | t }}</p>
+            
+            {% form 'customer', class: 'footer__newsletter-form' %}
+              <div class="footer__newsletter-input-group">
+                <input 
+                  type="email" 
+                  name="contact[email]" 
+                  placeholder="{{ 'sections.footer.newsletter_placeholder' | t }}"
+                  class="footer__newsletter-input"
+                  required
+                >
+                <button type="submit" class="footer__newsletter-button">
+                  {{ 'sections.footer.subscribe' | t }}
+                </button>
+              </div>
+              {% if form.errors %}
+                <div class="footer__newsletter-error">
+                  {{ form.errors | default_errors }}
+                </div>
+              {% endif %}
+              {% if form.posted_successfully? %}
+                <div class="footer__newsletter-success">
+                  {{ 'sections.footer.newsletter_success' | t }}
+                </div>
+              {% endif %}
+            {% endform %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer__bottom">
+      <div class="footer__copyright">
+        <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'sections.footer.all_rights_reserved' | t }}</p>
+        {% if section.settings.show_powered_by %}
+          <p>{{ 'sections.footer.designed_with_love' | t }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Payment Icons -->
+      {% if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 %}
+        <div class="footer__payment">
+          {% for type in shop.enabled_payment_types %}
+            {{ type | payment_type_svg_tag: class: 'footer__payment-icon' }}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
   </div>
 </footer>
 
 {% stylesheet %}
-  footer {
+  .footer {
+    background: #1a1a1a;
+    color: #ffffff;
+    padding: 80px 20px 40px;
+    margin-top: 100px;
+  }
+
+  .footer__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer__main {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+
+  .footer__column--company {
+    max-width: 300px;
+  }
+
+  .footer__logo-text {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 20px;
+    color: #ffffff;
+  }
+
+  .footer__logo-image {
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .footer__description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #cccccc;
+    margin-bottom: 30px;
+  }
+
+  .footer__social {
+    display: flex;
+    gap: 15px;
+  }
+
+  .footer__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: #ffffff;
+    transition: all 0.3s ease;
+  }
+
+  .footer__social-link:hover {
+    background: #007bff;
+    transform: translateY(-2px);
+  }
+
+  .footer__column-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 25px;
+    color: #ffffff;
+  }
+
+  .footer__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer__links li {
+    margin-bottom: 12px;
+  }
+
+  .footer__links a {
+    color: #cccccc;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+  }
+
+  .footer__links a:hover {
+    color: #007bff;
+  }
+
+  .footer__contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+    color: #cccccc;
+  }
+
+  .footer__contact-item svg {
+    flex-shrink: 0;
+    color: #007bff;
+  }
+
+  .footer__contact-item a {
+    color: #cccccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer__contact-item a:hover {
+    color: #007bff;
+  }
+
+  .footer__newsletter {
+    margin-top: 30px;
+  }
+
+  .footer__newsletter-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 10px;
+    color: #ffffff;
+  }
+
+  .footer__newsletter-description {
+    font-size: 14px;
+    color: #cccccc;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .footer__newsletter-input-group {
+    display: flex;
+    gap: 0;
+    margin-bottom: 15px;
+  }
+
+  .footer__newsletter-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-right: none;
+    border-radius: 6px 0 0 6px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    font-size: 14px;
+  }
+
+  .footer__newsletter-input::placeholder {
+    color: #999999;
+  }
+
+  .footer__newsletter-input:focus {
+    outline: none;
+    border-color: #007bff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .footer__newsletter-button {
+    padding: 12px 20px;
+    background: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .footer__newsletter-button:hover {
+    background: #0056b3;
+  }
+
+  .footer__newsletter-error {
+    color: #ff4757;
+    font-size: 14px;
+  }
+
+  .footer__newsletter-success {
+    color: #2ed573;
+    font-size: 14px;
+  }
+
+  .footer__bottom {
     display: flex;
     justify-content: space-between;
-    margin-top: 2rem;
+    align-items: center;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
-  footer a {
-    text-decoration: none;
-    color: var(--color-foreground);
+
+  .footer__copyright p {
+    margin: 0;
+    font-size: 14px;
+    color: #999999;
   }
-  footer .footer__links,
-  footer .footer__payment {
+
+  .footer__payment {
     display: flex;
-    gap: 1rem;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .footer__payment-icon {
+    width: 40px;
+    height: 24px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+  }
+
+  .footer__payment-icon:hover {
+    opacity: 1;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .footer {
+      padding: 60px 20px 30px;
+      margin-top: 60px;
+    }
+
+    .footer__main {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer__column--company {
+      max-width: none;
+    }
+
+    .footer__bottom {
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+    }
+
+    .footer__newsletter-input-group {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer__newsletter-input,
+    .footer__newsletter-button {
+      border-radius: 6px;
+    }
+
+    .footer__newsletter-input {
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .footer__payment {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer {
+      padding: 40px 15px 20px;
+    }
+
+    .footer__main {
+      gap: 30px;
+    }
+
+    .footer__social {
+      justify-content: center;
+    }
+
+    .footer__social-link {
+      width: 40px;
+      height: 40px;
+    }
   }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:general.footer",
+  "name": "t:sections.footer.name",
   "settings": [
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "type": "header",
+      "content": "t:sections.footer.company_info"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:sections.footer.logo"
+    },
+    {
+      "type": "text",
+      "id": "company_name",
+      "label": "t:sections.footer.company_name",
+      "default": "Lush Notes"
+    },
+    {
+      "type": "textarea",
+      "id": "company_description",
+      "label": "t:sections.footer.company_description",
+      "default": "Discover the art of fragrance with our premium collection of perfumes. Each scent tells a unique story, crafted with the finest ingredients to create lasting memories."
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.contact_info"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "t:sections.footer.contact_email",
+      "default": "hello@lushnotes.com"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "t:sections.footer.contact_phone",
+      "default": "+1 (555) 123-4567"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "t:sections.footer.show_newsletter",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.social_media"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "t:sections.footer.show_social",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "social_facebook",
+      "label": "t:sections.footer.facebook_url"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "t:sections.footer.instagram_url"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.display_options"
     },
     {
       "type": "checkbox",
       "id": "show_payment_icons",
-      "label": "t:labels.show_payment_icons",
+      "label": "t:sections.footer.show_payment_icons",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_powered_by",
+      "label": "t:sections.footer.show_powered_by",
+      "default": false
     }
   ]
 }

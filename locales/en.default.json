@@ -80,5 +80,186 @@
     "submit": "Search",
     "no_results_html": "No results found for {{ terms }}",
     "results_for_html": "{{ count }} results found for {{ terms }}"
+  },
+  "sections": {
+    "hero": {
+      "name": "Hero",
+      "settings": {
+        "header_content": {
+          "content": "Content"
+        },
+        "header_buttons": {
+          "content": "Buttons"
+        },
+        "hero_image": {
+          "label": "Background image"
+        },
+        "hero_title": {
+          "label": "Title"
+        },
+        "hero_title_accent": {
+          "label": "Title accent (orange text)"
+        },
+        "hero_subtitle": {
+          "label": "Subtitle"
+        },
+        "primary_button_text": {
+          "label": "Primary button text"
+        },
+        "primary_button_link": {
+          "label": "Primary button link"
+        },
+        "secondary_button_text": {
+          "label": "Secondary button text"
+        },
+        "secondary_button_link": {
+          "label": "Secondary button link"
+        }
+      },
+      "presets": {
+        "hero": {
+          "name": "Hero"
+        }
+      }
+    },
+    "best_sellers": {
+      "name": "Best Sellers",
+      "empty": "No products found in this collection.",
+      "view_all": "View All",
+      "settings": {
+        "title": {
+          "label": "Section title"
+        },
+        "subtitle": {
+          "label": "Section subtitle"
+        },
+        "collection": {
+          "label": "Collection"
+        },
+        "products_to_show": {
+          "label": "Number of products to show"
+        },
+        "show_view_all": {
+          "label": "Show view all button"
+        }
+      },
+      "presets": {
+        "best_sellers": {
+          "name": "Best Sellers"
+        }
+      }
+    },
+    "olfactive_vibe": {
+      "name": "Olfactive Vibe",
+      "settings": {
+        "title": {
+          "label": "Section title"
+        },
+        "subtitle": {
+          "label": "Section subtitle"
+        }
+      },
+      "blocks": {
+        "category": {
+          "name": "Category",
+          "settings": {
+            "image": {
+              "label": "Category image"
+            },
+            "title": {
+              "label": "Category title"
+            },
+            "description": {
+              "label": "Category description"
+            },
+            "button_text": {
+              "label": "Button text"
+            },
+            "button_link": {
+              "label": "Button link"
+            }
+          }
+        }
+      },
+      "presets": {
+        "olfactive_vibe": {
+          "name": "Olfactive Vibe"
+        }
+      }
+    },
+    "weekly_offers": {
+      "name": "Weekly Offers",
+      "empty": "No offers available at the moment.",
+      "view_all": "View All Offers",
+      "settings": {
+        "title": {
+          "label": "Section title"
+        },
+        "subtitle": {
+          "label": "Section subtitle"
+        },
+        "collection": {
+          "label": "Collection"
+        },
+        "products_to_show": {
+          "label": "Number of products to show"
+        },
+        "show_view_all": {
+          "label": "Show view all button"
+        }
+      },
+      "presets": {
+        "weekly_offers": {
+          "name": "Weekly Offers"
+        }
+      }
+    },
+    "footer": {
+      "name": "Footer",
+      "shop": "Shop",
+      "company": "Company",
+      "get_in_touch": "Get In Touch",
+      "pour_homme": "Pour Homme",
+      "pour_femme": "Pour Femme",
+      "unisex": "Unisex",
+      "best_sellers": "Best Sellers",
+      "weekly_offers": "Weekly Offers",
+      "pre_order": "Pre Order",
+      "about_us": "About Us",
+      "contact": "Contact",
+      "shipping_policy": "Shipping Policy",
+      "privacy_policy": "Privacy Policy",
+      "terms_conditions": "Terms & Conditions",
+      "newsletter_title": "Stay Updated",
+      "newsletter_description": "Get the latest updates on new arrivals and exclusive offers.",
+      "newsletter_placeholder": "Enter your email",
+      "subscribe": "Subscribe",
+      "newsletter_success": "Thank you for subscribing!",
+      "all_rights_reserved": "All rights reserved.",
+      "designed_with_love": "Designed with ❤️ for fragrance lovers",
+      "company_info": "Company Information",
+      "contact_info": "Contact Information",
+      "newsletter": "Newsletter",
+      "social_media": "Social Media",
+      "display_options": "Display Options",
+      "logo": "Footer logo",
+      "company_name": "Company name",
+      "company_description": "Company description",
+      "contact_email": "Contact email",
+      "contact_phone": "Contact phone",
+      "show_newsletter": "Show newsletter signup",
+      "show_social": "Show social media links",
+      "facebook_url": "Facebook URL",
+      "instagram_url": "Instagram URL",
+      "show_payment_icons": "Show payment icons",
+      "show_powered_by": "Show powered by text"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out",
+      "on_sale": "Sale"
+    }
   }
 }

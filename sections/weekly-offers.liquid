@@ -1,0 +1,556 @@
+<!-- Weekly Offers Section -->
+<section class="weekly-offers">
+  <div class="weekly-offers__container">
+    <div class="weekly-offers__header">
+      {% if section.settings.title != blank %}
+        <h2 class="weekly-offers__title">{{ section.settings.title }}</h2>
+      {% endif %}
+      
+      {% if section.settings.subtitle != blank %}
+        <p class="weekly-offers__subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div class="weekly-offers__content">
+      <!-- Navigation Arrows -->
+      <button class="weekly-offers__nav weekly-offers__nav--prev" type="button" aria-label="Previous offers">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <!-- Products Grid -->
+      <div class="weekly-offers__products" id="weekly-offers-grid">
+        {% assign collection = collections[section.settings.collection] | default: collections.all %}
+        {% if collection.products.size > 0 %}
+          {% for product in collection.products limit: section.settings.products_to_show %}
+            {% if product.compare_at_price > product.price %}
+              <div class="weekly-offers__product-card">
+                <div class="offer-card">
+                  <div class="offer-card__image">
+                    {% if product.featured_image %}
+                      <a href="{{ product.url }}">
+                        {{ product.featured_image | image_url: width: 400 | image_tag: alt: product.title, loading: 'lazy' }}
+                      </a>
+                    {% else %}
+                      <div class="offer-card__placeholder">
+                        {{ 'product-1' | placeholder_svg_tag }}
+                      </div>
+                    {% endif %}
+                    
+                    <!-- Sale Badge -->
+                    {% assign discount_percentage = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round %}
+                    <span class="offer-card__badge">
+                      -{{ discount_percentage }}%
+                    </span>
+
+                    <!-- Quick Action Buttons -->
+                    <div class="offer-card__actions">
+                      <button class="offer-card__wishlist" type="button" aria-label="Add to wishlist">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="offer-card__content">
+                    <h3 class="offer-card__title">
+                      <a href="{{ product.url }}">{{ product.title }}</a>
+                    </h3>
+                    
+                    <div class="offer-card__price">
+                      <span class="offer-card__price--sale">{{ product.price | money }}</span>
+                      <span class="offer-card__price--original">{{ product.compare_at_price | money }}</span>
+                    </div>
+
+                    <div class="offer-card__rating">
+                      <div class="offer-card__stars">
+                        <span class="offer-card__star">★</span>
+                        <span class="offer-card__star">★</span>
+                        <span class="offer-card__star">★</span>
+                        <span class="offer-card__star">★</span>
+                        <span class="offer-card__star">★</span>
+                      </div>
+                      <span class="offer-card__rating-text">({{ forloop.index | times: 13 | plus: 47 }})</span>
+                    </div>
+
+                    {% form 'product', product, class: 'offer-card__form' %}
+                      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                      <button type="submit" class="offer-card__add-to-cart" {% unless product.available %}disabled{% endunless %}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                          <path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" stroke="currentColor" stroke-width="2"/>
+                          <path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" stroke="currentColor" stroke-width="2"/>
+                          <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        {% if product.available %}
+                          {{ 'products.product.add_to_cart' | t }}
+                        {% else %}
+                          {{ 'products.product.sold_out' | t }}
+                        {% endif %}
+                      </button>
+                    {% endform %}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          <div class="weekly-offers__empty">
+            <p>{{ 'sections.weekly_offers.empty' | t }}</p>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Navigation Arrows -->
+      <button class="weekly-offers__nav weekly-offers__nav--next" type="button" aria-label="Next offers">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    {% if section.settings.show_view_all %}
+      <div class="weekly-offers__footer">
+        <a href="{{ collection.url }}" class="weekly-offers__view-all">
+          {{ 'sections.weekly_offers.view_all' | t }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .weekly-offers {
+    padding: 5rem 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: #fff;
+  }
+
+  .weekly-offers__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .weekly-offers__header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .weekly-offers__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  .weekly-offers__subtitle {
+    font-size: 1.1rem;
+    color: #ccc;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .weekly-offers__content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .weekly-offers__nav {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid #555;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+  }
+
+  .weekly-offers__nav:hover {
+    border-color: #ff6b35;
+    color: #ff6b35;
+    background-color: rgba(255, 107, 53, 0.1);
+    transform: scale(1.05);
+  }
+
+  .weekly-offers__nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .weekly-offers__products {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    overflow: hidden;
+  }
+
+  .offer-card {
+    background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    border: 1px solid #404040;
+  }
+
+  .offer-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border-color: #ff6b35;
+  }
+
+  .offer-card__image {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  .offer-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .offer-card:hover .offer-card__image img {
+    transform: scale(1.1);
+  }
+
+  .offer-card__placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #404040 0%, #505050 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .offer-card__placeholder svg {
+    width: 64px;
+    height: 64px;
+    opacity: 0.3;
+    color: #ccc;
+  }
+
+  .offer-card__badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background-color: #ff6b35;
+    color: #fff;
+    padding: 0.5rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 2;
+  }
+
+  .offer-card__actions {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 2;
+  }
+
+  .offer-card__wishlist {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+  }
+
+  .offer-card__wishlist:hover {
+    background-color: #ff6b35;
+    transform: scale(1.1);
+  }
+
+  .offer-card__content {
+    padding: 1.5rem;
+  }
+
+  .offer-card__title {
+    margin-bottom: 0.75rem;
+  }
+
+  .offer-card__title a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+  }
+
+  .offer-card__title a:hover {
+    color: #ff6b35;
+  }
+
+  .offer-card__price {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .offer-card__price--sale {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ff6b35;
+  }
+
+  .offer-card__price--original {
+    font-size: 1rem;
+    color: #888;
+    text-decoration: line-through;
+  }
+
+  .offer-card__rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .offer-card__stars {
+    display: flex;
+    gap: 0.125rem;
+  }
+
+  .offer-card__star {
+    color: #ffd700;
+    font-size: 0.9rem;
+  }
+
+  .offer-card__rating-text {
+    font-size: 0.85rem;
+    color: #aaa;
+  }
+
+  .offer-card__form {
+    margin: 0;
+  }
+
+  .offer-card__add-to-cart {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid #ff6b35;
+    background-color: #ff6b35;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .offer-card__add-to-cart:hover:not(:disabled) {
+    background-color: #e55a2e;
+    border-color: #e55a2e;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+  }
+
+  .offer-card__add-to-cart:disabled {
+    background-color: #666;
+    border-color: #666;
+    cursor: not-allowed;
+  }
+
+  .weekly-offers__footer {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  .weekly-offers__view-all {
+    display: inline-flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: transparent;
+    color: #fff;
+    text-decoration: none;
+    border: 2px solid #ff6b35;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .weekly-offers__view-all:hover {
+    background-color: #ff6b35;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+  }
+
+  .weekly-offers__empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #aaa;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .weekly-offers {
+      padding: 3rem 0;
+    }
+
+    .weekly-offers__container {
+      padding: 0 1rem;
+    }
+
+    .weekly-offers__title {
+      font-size: 2rem;
+    }
+
+    .weekly-offers__content {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .weekly-offers__nav {
+      display: none;
+    }
+
+    .weekly-offers__products {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .weekly-offers__products {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .offer-card__content {
+      padding: 1rem;
+    }
+
+    .weekly-offers__title {
+      font-size: 1.75rem;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function() {
+    const prevBtn = document.querySelector('.weekly-offers__nav--prev');
+    const nextBtn = document.querySelector('.weekly-offers__nav--next');
+    const productsGrid = document.querySelector('.weekly-offers__products');
+
+    if (prevBtn && nextBtn && productsGrid) {
+      let scrollAmount = 300;
+
+      prevBtn.addEventListener('click', function() {
+        productsGrid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      });
+
+      nextBtn.addEventListener('click', function() {
+        productsGrid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      });
+
+      function updateButtonStates() {
+        const isAtStart = productsGrid.scrollLeft <= 0;
+        const isAtEnd = productsGrid.scrollLeft >= productsGrid.scrollWidth - productsGrid.clientWidth;
+        
+        prevBtn.disabled = isAtStart;
+        nextBtn.disabled = isAtEnd;
+      }
+
+      productsGrid.addEventListener('scroll', updateButtonStates);
+      updateButtonStates();
+    }
+
+    // Add to cart form submission
+    const addToCartForms = document.querySelectorAll('.offer-card__form');
+    addToCartForms.forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const button = form.querySelector('.offer-card__add-to-cart');
+        const originalText = button.innerHTML;
+        
+        button.disabled = true;
+        button.innerHTML = '<svg class="animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle><path fill="currentColor" class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Adding...';
+        
+        // Simulate add to cart (replace with actual Shopify cart API call)
+        setTimeout(() => {
+          button.disabled = false;
+          button.innerHTML = originalText;
+          // You could show a success message here
+        }, 1000);
+      });
+    });
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.weekly_offers.name",
+  "tag": "section",
+  "class": "section-weekly-offers",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.weekly_offers.settings.title.label",
+      "default": "Weekly Offer"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "t:sections.weekly_offers.settings.subtitle.label",
+      "default": "Limited Time Fragrances. Unbeatable Excellence. Weekly"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:sections.weekly_offers.settings.collection.label"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "t:sections.weekly_offers.settings.products_to_show.label",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "t:sections.weekly_offers.settings.show_view_all.label",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.weekly_offers.presets.weekly_offers.name"
+    }
+  ]
+}
+{% endschema %}
