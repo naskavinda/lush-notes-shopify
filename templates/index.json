@@ -17,9 +17,10 @@
       "settings": {
         "title": "Best Sellers",
         "subtitle": "Discover our most popular fragrances loved by customers worldwide",
-        "collection": "",
+        "collection": "best-seller",
         "products_to_show": 6,
-        "show_view_all": true
+        "show_view_all": true,
+        "view_all_url": "/collections/best-seller"
       }
     },
     "olfactive_vibe": {
