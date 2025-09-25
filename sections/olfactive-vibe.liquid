@@ -25,24 +25,27 @@
             <div class="olfactive-category__overlay"></div>
           </div>
 
+          {% if block.settings.category_link %}
+            <a href="{{ block.settings.category_link }}" class="olfactive-category__link">
+          {% endif %}
+          
           <div class="olfactive-category__content">
             {% if block.settings.title %}
               <h3 class="olfactive-category__title">{{ block.settings.title }}</h3>
             {% endif %}
             
+            {% if block.settings.subtitle %}
+              <p class="olfactive-category__subtitle">{{ block.settings.subtitle }}</p>
+            {% endif %}
+            
             {% if block.settings.description %}
               <p class="olfactive-category__description">{{ block.settings.description }}</p>
             {% endif %}
-
-            {% if block.settings.button_text and block.settings.button_link %}
-              <a href="{{ block.settings.button_link }}" class="olfactive-category__button">
-                {{ block.settings.button_text }}
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M5 12h14m-7-7l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
-            {% endif %}
           </div>
+          
+          {% if block.settings.category_link %}
+            </a>
+          {% endif %}
         </div>
       {% endfor %}
     </div>
@@ -88,18 +91,21 @@
 
   .olfactive-vibe__categories {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   .olfactive-category {
     position: relative;
     border-radius: 16px;
     overflow: hidden;
-    background-color: #f8f9fa;
+    background-color: #000;
     transition: all 0.4s ease;
     cursor: pointer;
     min-height: 400px;
+    aspect-ratio: 1;
   }
 
   .olfactive-category:hover {
@@ -169,60 +175,61 @@
 
   .olfactive-category__content {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 2rem;
+    top: 2rem;
+    left: 2rem;
+    right: 2rem;
     color: #fff;
     z-index: 3;
-    transform: translateY(20px);
-    transition: transform 0.4s ease;
-  }
-
-  .olfactive-category:hover .olfactive-category__content {
-    transform: translateY(0);
+    transition: all 0.4s ease;
   }
 
   .olfactive-category__title {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 0.75rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     letter-spacing: -0.025em;
   }
 
-  .olfactive-category__description {
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-    opacity: 0.95;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  .olfactive-category__title::after {
+    content: "™";
+    font-size: 0.7em;
+    vertical-align: super;
+    opacity: 0.8;
+  }
+
+  .olfactive-category__subtitle {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-weight: 400;
     letter-spacing: 0.025em;
   }
 
-  .olfactive-category__button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background-color: rgba(255, 255, 255, 0.15);
-    color: #fff;
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: 600;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+  .olfactive-category__description {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    opacity: 0.85;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.025em;
   }
 
-  .olfactive-category__button:hover {
-    background-color: #ff6b35;
-    border-color: #ff6b35;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+  .olfactive-category__link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+    text-decoration: none;
+    color: inherit;
   }
 
   /* Specific styling for different categories */
@@ -258,16 +265,18 @@
     }
 
     .olfactive-category {
-      min-height: 300px;
+      min-height: 350px;
+      aspect-ratio: 1.2;
     }
 
     .olfactive-category__content {
-      padding: 1.5rem;
-      transform: translateY(0); /* Always visible on mobile */
+      top: 1.5rem;
+      left: 1.5rem;
+      right: 1.5rem;
     }
 
     .olfactive-category__title {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
     }
   }
 
@@ -331,21 +340,21 @@
           "default": "Category Name"
         },
         {
+          "type": "text",
+          "id": "subtitle",
+          "label": "t:sections.olfactive_vibe.blocks.category.settings.subtitle.label",
+          "default": "Collection Type"
+        },
+        {
           "type": "textarea",
           "id": "description",
           "label": "t:sections.olfactive_vibe.blocks.category.settings.description.label",
           "default": "Discover fragrances that represent your essence."
         },
         {
-          "type": "text",
-          "id": "button_text",
-          "label": "t:sections.olfactive_vibe.blocks.category.settings.button_text.label",
-          "default": "Shop Now"
-        },
-        {
           "type": "url",
-          "id": "button_link",
-          "label": "t:sections.olfactive_vibe.blocks.category.settings.button_link.label"
+          "id": "category_link",
+          "label": "t:sections.olfactive_vibe.blocks.category.settings.category_link.label"
         }
       ]
     }
@@ -358,24 +367,24 @@
           "type": "category",
           "settings": {
             "title": "Unisex",
-            "description": "Modern fragrances that transcend traditional boundaries.",
-            "button_text": "Explore Unisex"
+            "subtitle": "Universal Appeal",
+            "description": "Timeless fragrances that transcend traditional boundaries"
           }
         },
         {
           "type": "category",
           "settings": {
             "title": "Pour Homme",
-            "description": "Bold and sophisticated scents for the modern gentleman.",
-            "button_text": "Shop Men's"
+            "subtitle": "Masculine Collection",
+            "description": "Elegant and captivating scents for the contemporary woman"
           }
         },
         {
           "type": "category",
           "settings": {
             "title": "Pour Femme",
-            "description": "Elegant and captivating fragrances for the contemporary woman.",
-            "button_text": "Shop Women's"
+            "subtitle": "Feminine Collection",
+            "description": "Sophisticated fragrances designed for the modern man"
           }
         }
       ]
