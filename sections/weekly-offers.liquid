@@ -131,8 +131,7 @@
 {% stylesheet %}
   .weekly-offers {
     padding: 4rem 0;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    color: #fff;
+    background-color: #fbf9fa;
     width: 100vw;
     position: relative;
     left: 50%;
@@ -158,7 +157,7 @@
   .weekly-offers__title {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #fff;
+    color: #1a1a1a;
     margin-bottom: 1rem;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     letter-spacing: -0.025em;
@@ -166,7 +165,7 @@
 
   .weekly-offers__subtitle {
     font-size: 1.125rem;
-    color: #ccc;
+    color: #666;
     max-width: 650px;
     margin: 0 auto;
     line-height: 1.6;
@@ -189,26 +188,26 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    border: 2px solid #555;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    border: 2px solid #e0e0e0;
+    background-color: #fff;
+    color: #666;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(10px);
   }
 
   .weekly-offers__nav:hover {
     border-color: #ff6b35;
     color: #ff6b35;
-    background-color: rgba(255, 107, 53, 0.1);
     transform: scale(1.05);
   }
 
   .weekly-offers__nav:disabled {
-    opacity: 0.3;
+    border-color: #ccc;
+    background-color: #f0f0f0;
+    color: #999;
     cursor: not-allowed;
     transform: none;
   }
@@ -222,16 +221,18 @@
   }
 
   .offer-card {
-    background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+    background-color: #fff;
     border-radius: 16px;
     overflow: hidden;
     transition: all 0.4s ease;
-    border: 1px solid #404040;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    position: relative;
   }
 
   .offer-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
     border-color: #ff6b35;
   }
 
@@ -255,7 +256,7 @@
   .offer-card__placeholder {
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #404040 0%, #505050 100%);
+    background-color: #f0f0f0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -265,7 +266,7 @@
     width: 64px;
     height: 64px;
     opacity: 0.3;
-    color: #ccc;
+    color: #999;
   }
 
   .offer-card__badge {
@@ -294,19 +295,19 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.2);
-    border: none;
-    color: #fff;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #666;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(10px);
   }
 
   .offer-card__wishlist:hover {
-    background-color: #ff6b35;
+    background-color: #fff;
+    color: #ff6b35;
     transform: scale(1.1);
   }
 
@@ -319,7 +320,7 @@
   }
 
   .offer-card__title a {
-    color: #fff;
+    color: #333;
     text-decoration: none;
     font-size: 1rem;
     font-weight: 600;
@@ -348,7 +349,7 @@
 
   .offer-card__price--original {
     font-size: 1rem;
-    color: #888;
+    color: #999;
     text-decoration: line-through;
   }
 
@@ -371,7 +372,7 @@
 
   .offer-card__rating-text {
     font-size: 0.85rem;
-    color: #aaa;
+    color: #666;
   }
 
   .offer-card__form {
@@ -381,8 +382,8 @@
   .offer-card__add-to-cart {
     width: 100%;
     padding: 0.875rem 1rem;
-    border: 2px solid #ff6b35;
-    background-color: #ff6b35;
+    border: 2px solid #1a1a1a;
+    background-color: #1a1a1a;
     color: #fff;
     border-radius: 8px;
     font-weight: 600;
@@ -392,11 +393,12 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
 
   .offer-card__add-to-cart:hover:not(:disabled) {
-    background-color: #e55a2e;
-    border-color: #e55a2e;
+    background-color: #ff6b35;
+    border-color: #ff6b35;
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
   }
@@ -416,17 +418,19 @@
     display: inline-flex;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: transparent;
+    background-color: #1a1a1a;
     color: #fff;
     text-decoration: none;
-    border: 2px solid #ff6b35;
+    border: 2px solid #1a1a1a;
     border-radius: 50px;
     font-weight: 600;
     transition: all 0.3s ease;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
 
   .weekly-offers__view-all:hover {
     background-color: #ff6b35;
+    border-color: #ff6b35;
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
   }
@@ -435,7 +439,7 @@
     grid-column: 1 / -1;
     text-align: center;
     padding: 4rem 2rem;
-    color: #aaa;
+    color: #666;
   }
 
   /* Mobile Responsive */
