@@ -13,13 +13,61 @@
       <span class="breadcrumb-item current">{{ collection.title }}</span>
     </nav>
     
-    <h1 class="collection-title">{{ collection.title }}</h1>
-    {% if collection.description != blank %}
-      <p class="collection-description">{{ collection.description }}</p>
-    {% endif %}
+    <div class="collection-header-main">
+      <div class="collection-title-section">
+        <h1 class="collection-title">{{ collection.title }}</h1>
+        {% if collection.description != blank %}
+          <p class="collection-description">{{ collection.description }}</p>
+        {% endif %}
+      </div>
+      
+      {% if section.settings.enable_view_toggle %}
+        <div class="view-toggle-section">
+          <span class="view-toggle-label">{{ 'sections.collection.view_toggle.label' | t }}</span>
+          <div class="view-toggle-buttons" data-default-view="{{ section.settings.default_view }}">
+            <button 
+              class="view-toggle-btn view-toggle-grid active" 
+              data-view="grid"
+              aria-label="{{ 'sections.collection.view_toggle.grid' | t }}"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
+              </svg>
+              {{ 'sections.collection.view_toggle.grid' | t }}
+            </button>
+            <button 
+              class="view-toggle-btn view-toggle-list" 
+              data-view="list"
+              aria-label="{{ 'sections.collection.view_toggle.list' | t }}"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" y1="6" x2="21" y2="6"/>
+                <line x1="8" y1="12" x2="21" y2="12"/>
+                <line x1="8" y1="18" x2="21" y2="18"/>
+                <line x1="3" y1="6" x2="3.01" y2="6"/>
+                <line x1="3" y1="12" x2="3.01" y2="12"/>
+                <line x1="3" y1="18" x2="3.01" y2="18"/>
+              </svg>
+              {{ 'sections.collection.view_toggle.list' | t }}
+            </button>
+          </div>
+        </div>
+      {% endif %}
+    </div>
   </div>
 
-  <div class="collection-products">
+  <div 
+    class="collection-products" 
+    data-view="{{ section.settings.default_view }}"
+    style="
+      --products-per-row-desktop: {{ section.settings.products_per_row_desktop }};
+      --products-per-row-tablet: {{ section.settings.products_per_row_tablet }};
+      --products-per-row-mobile: {{ section.settings.products_per_row_mobile }};
+    "
+  >
     {% paginate collection.products by 12 %}
       {% for product in collection.products %}
         <div class="product-card">
@@ -51,6 +99,25 @@
             <h3 class="product-card__title">
               <a href="{{ product.url }}">{{ product.title | escape }}</a>
             </h3>
+
+            <!-- List view additional info -->
+            <div class="product-card__list-info">
+              {% if product.description != blank %}
+                <p class="product-card__description">{{ product.description | strip_html | truncate: 120 }}</p>
+              {% endif %}
+              
+              {% if product.vendor != blank %}
+                <p class="product-card__vendor">{{ product.vendor }}</p>
+              {% endif %}
+              
+              {% if product.tags.size > 0 %}
+                <div class="product-card__tags">
+                  {% for tag in product.tags limit: 3 %}
+                    <span class="product-card__tag">{{ tag }}</span>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
             
             <div class="product-card__price">
               {% if product.compare_at_price > product.price %}
@@ -61,23 +128,34 @@
               {% endif %}
             </div>
 
-            {% form 'product', product, class: 'product-card__form' %}
-              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-              {% if product.available %}
-                <button type="submit" class="product-card__add-to-cart">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="9" cy="21" r="1"/>
-                    <circle cx="20" cy="21" r="1"/>
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                  </svg>
-                  {{ 'products.product.add_to_cart' | t }}
-                </button>
-              {% else %}
-                <button class="product-card__add-to-cart sold-out" disabled>
-                  {{ 'products.product.sold_out' | t }}
-                </button>
-              {% endif %}
-            {% endform %}
+            <div class="product-card__actions">
+              {% form 'product', product, class: 'product-card__form' %}
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                {% if product.available %}
+                  <button type="submit" class="product-card__add-to-cart">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="9" cy="21" r="1"/>
+                      <circle cx="20" cy="21" r="1"/>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    </svg>
+                    {{ 'products.product.add_to_cart' | t }}
+                  </button>
+                {% else %}
+                  <button class="product-card__add-to-cart sold-out" disabled>
+                    {{ 'products.product.sold_out' | t }}
+                  </button>
+                {% endif %}
+              {% endform %}
+              
+              <!-- List view quick view button -->
+              <button class="product-card__quick-view">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                {{ 'products.product.quick_view' | t }}
+              </button>
+            </div>
           </div>
         </div>
       {% endfor %}
@@ -135,6 +213,66 @@
   </div>
 </div>
 
+{% javascript %}
+  class CollectionViewToggle {
+    constructor() {
+      this.viewToggleButtons = document.querySelector('.view-toggle-buttons');
+      this.collectionProducts = document.querySelector('.collection-products');
+      this.storageKey = 'collection-view-preference';
+      
+      if (this.viewToggleButtons && this.collectionProducts) {
+        this.init();
+      }
+    }
+    
+    init() {
+      // Get saved preference or use default
+      const savedView = localStorage.getItem(this.storageKey);
+      const defaultView = this.viewToggleButtons.dataset.defaultView || 'grid';
+      const currentView = savedView || defaultView;
+      
+      // Set initial view
+      this.setView(currentView);
+      
+      // Add click listeners
+      this.viewToggleButtons.addEventListener('click', (e) => {
+        const button = e.target.closest('.view-toggle-btn');
+        if (button) {
+          const view = button.dataset.view;
+          this.setView(view);
+          localStorage.setItem(this.storageKey, view);
+        }
+      });
+    }
+    
+    setView(view) {
+      // Update buttons
+      const buttons = this.viewToggleButtons.querySelectorAll('.view-toggle-btn');
+      buttons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === view);
+      });
+      
+      // Update products container
+      this.collectionProducts.setAttribute('data-view', view);
+      
+      // Trigger a custom event for potential third-party integrations
+      const event = new CustomEvent('collectionViewChanged', {
+        detail: { view: view }
+      });
+      document.dispatchEvent(event);
+    }
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new CollectionViewToggle();
+    });
+  } else {
+    new CollectionViewToggle();
+  }
+{% endjavascript %}
+
 {% stylesheet %}
   .collection-page {
     max-width: 1200px;
@@ -174,6 +312,17 @@
     color: #999;
   }
 
+  .collection-header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .collection-title-section {
+    flex: 1;
+  }
+
   .collection-title {
     font-size: 36px;
     font-weight: 700;
@@ -188,24 +337,111 @@
     margin: 0;
   }
 
-  .collection-products {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-    margin-bottom: 60px;
+  /* View Toggle Styles */
+  .view-toggle-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
   }
 
-  .product-card {
+  .view-toggle-label {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+  }
+
+  .view-toggle-buttons {
+    display: flex;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 4px;
+    gap: 2px;
+  }
+
+  .view-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .view-toggle-btn:hover {
+    background: rgba(255, 107, 53, 0.1);
+    color: #ff6b35;
+  }
+
+  .view-toggle-btn.active {
+    background: #ffffff;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .view-toggle-btn svg {
+    flex-shrink: 0;
+  }
+
+  /* Collection Products Grid/List Styles */
+  .collection-products {
+    margin-bottom: 60px;
+    transition: all 0.3s ease;
+  }
+
+  /* Grid View */
+  .collection-products[data-view="grid"] {
+    display: grid;
+    grid-template-columns: repeat(var(--products-per-row-desktop, 4), 1fr);
+    gap: 30px;
+  }
+
+  /* List View */
+  .collection-products[data-view="list"] {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Grid View Product Card */
+  .collection-products[data-view="grid"] .product-card {
     position: relative;
     background: #ffffff;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
   }
 
-  .product-card:hover {
+  .collection-products[data-view="grid"] .product-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  /* List View Product Card */
+  .collection-products[data-view="list"] .product-card {
+    position: relative;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 200px;
+  }
+
+  .collection-products[data-view="list"] .product-card:hover {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   }
 
@@ -226,10 +462,21 @@
     background: #e74c3c;
   }
 
-  .product-card__image-wrapper {
+  /* Grid View Image Wrapper */
+  .collection-products[data-view="grid"] .product-card__image-wrapper {
     position: relative;
     background: #f8f9fa;
     aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  /* List View Image Wrapper */
+  .collection-products[data-view="list"] .product-card__image-wrapper {
+    position: relative;
+    background: #f8f9fa;
+    width: 200px;
+    height: 200px;
+    flex-shrink: 0;
     overflow: hidden;
   }
 
@@ -274,8 +521,65 @@
     transform: scale(1.1);
   }
 
-  .product-card__content {
+  /* Grid View Content */
+  .collection-products[data-view="grid"] .product-card__content {
     padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* List View Content */
+  .collection-products[data-view="list"] .product-card__content {
+    padding: 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 200px;
+  }
+
+  /* List View Additional Info (Hidden in Grid) */
+  .collection-products[data-view="grid"] .product-card__list-info {
+    display: none;
+  }
+
+  .collection-products[data-view="list"] .product-card__list-info {
+    display: block;
+    margin: 12px 0;
+  }
+
+  .product-card__description {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+    margin: 0 0 8px;
+  }
+
+  .product-card__vendor {
+    font-size: 12px;
+    color: #999;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 8px;
+  }
+
+  .product-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 0;
+  }
+
+  .product-card__tag {
+    display: inline-block;
+    background: #f1f3f4;
+    color: #5f6368;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
   }
 
   .product-card__title {
@@ -318,6 +622,26 @@
     margin: 0;
   }
 
+  /* Grid View Actions */
+  .collection-products[data-view="grid"] .product-card__actions {
+    margin-top: auto;
+  }
+
+  .collection-products[data-view="grid"] .product-card__quick-view {
+    display: none;
+  }
+
+  /* List View Actions */
+  .collection-products[data-view="list"] .product-card__actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .collection-products[data-view="list"] .product-card__form {
+    flex: 1;
+  }
+
   .product-card__add-to-cart {
     width: 100%;
     background: #333;
@@ -348,6 +672,31 @@
   .product-card__add-to-cart.sold-out:hover {
     background: #ccc;
     transform: none;
+  }
+
+  /* Quick View Button (List View Only) */
+  .product-card__quick-view {
+    background: #ffffff;
+    color: #333;
+    border: 2px solid #e1e5e9;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+    min-width: 140px;
+  }
+
+  .product-card__quick-view:hover {
+    background: #f8f9fa;
+    border-color: #ff6b35;
+    color: #ff6b35;
   }
 
   .collection-pagination {
@@ -493,9 +842,30 @@
 
   /* Mobile Responsive */
   @media (max-width: 1024px) {
-    .collection-products {
-      grid-template-columns: repeat(3, 1fr);
+    .collection-products[data-view="grid"] {
+      grid-template-columns: repeat(var(--products-per-row-tablet, 3), 1fr);
       gap: 25px;
+    }
+
+    .collection-header-main {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+    }
+
+    .view-toggle-section {
+      align-items: flex-start;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .collection-products[data-view="list"] .product-card__image-wrapper {
+      width: 150px;
+      height: 150px;
+    }
+
+    .collection-products[data-view="list"] .product-card__content {
+      padding: 20px;
     }
   }
 
@@ -508,17 +878,47 @@
       font-size: 28px;
     }
 
-    .collection-products {
-      grid-template-columns: repeat(2, 1fr);
+    .collection-products[data-view="grid"] {
+      grid-template-columns: repeat(var(--products-per-row-mobile, 2), 1fr);
       gap: 20px;
     }
 
-    .product-card__content {
+    .collection-products[data-view="grid"] .product-card__content {
       padding: 16px;
+    }
+
+    .collection-products[data-view="list"] .product-card {
+      flex-direction: column;
+      min-height: auto;
+    }
+
+    .collection-products[data-view="list"] .product-card__image-wrapper {
+      width: 100%;
+      height: 200px;
+    }
+
+    .collection-products[data-view="list"] .product-card__content {
+      padding: 16px;
+      min-height: auto;
+    }
+
+    .collection-products[data-view="list"] .product-card__actions {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .product-card__quick-view {
+      min-width: auto;
     }
 
     .breadcrumb {
       font-size: 12px;
+    }
+
+    .view-toggle-section {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
     }
 
     .collection-pagination {
@@ -549,7 +949,7 @@
   }
 
   @media (max-width: 480px) {
-    .collection-products {
+    .collection-products[data-view="grid"] {
       grid-template-columns: 1fr;
       gap: 16px;
     }
@@ -557,12 +957,82 @@
     .collection-title {
       font-size: 24px;
     }
+
+    .view-toggle-btn {
+      padding: 6px 8px;
+      font-size: 12px;
+      gap: 4px;
+    }
+
+    .view-toggle-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .collection-products[data-view="list"] .product-card__content {
+      padding: 16px;
+    }
   }
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "t:general.collection",
-  "settings": []
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.collection.settings.view_options.header"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_view_toggle",
+      "label": "t:sections.collection.settings.enable_view_toggle.label",
+      "info": "t:sections.collection.settings.enable_view_toggle.info",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "default_view",
+      "label": "t:sections.collection.settings.default_view.label",
+      "options": [
+        {
+          "value": "grid",
+          "label": "t:sections.collection.settings.default_view.options.grid"
+        },
+        {
+          "value": "list",
+          "label": "t:sections.collection.settings.default_view.options.list"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_desktop",
+      "label": "t:sections.collection.settings.products_per_row_desktop.label",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_tablet",
+      "label": "t:sections.collection.settings.products_per_row_tablet.label",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_mobile",
+      "label": "t:sections.collection.settings.products_per_row_mobile.label",
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "default": 2
+    }
+  ]
 }
 {% endschema %}
