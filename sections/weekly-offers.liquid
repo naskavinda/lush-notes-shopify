@@ -174,9 +174,8 @@
     display: flex;
     align-items: center;
     gap: 2rem;
-    max-width: 90%;
+    max-width: 80%;
     margin: 0 auto;
-    min-height: 400px;
   }
 
   .weekly-offers__nav {
@@ -192,8 +191,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .weekly-offers__nav:hover {
@@ -471,9 +468,8 @@
     }
 
     .weekly-offers__content {
+      flex-direction: column;
       gap: 1rem;
-      max-width: none;
-      padding: 0;
     }
 
     .weekly-offers__nav {
@@ -484,8 +480,6 @@
 
     .weekly-offers__products {
       gap: 1rem;
-      padding-left: 1rem;
-      padding-right: 1rem;
     }
 
     .weekly-offers__product-card {
@@ -495,15 +489,6 @@
   }
 
   @media (max-width: 480px) {
-    .weekly-offers__content {
-      gap: 0.5rem;
-    }
-
-    .weekly-offers__nav {
-      width: 36px;
-      height: 36px;
-    }
-
     .weekly-offers__product-card {
       flex: 0 0 220px;
       min-width: 220px;
@@ -511,8 +496,6 @@
 
     .weekly-offers__products {
       gap: 0.75rem;
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
     }
 
     .product-card__content {
@@ -532,87 +515,27 @@
     const productsGrid = document.querySelector('.weekly-offers__products');
 
     if (prevBtn && nextBtn && productsGrid) {
-      console.log('Weekly offers carousel initialized');
+      let scrollAmount = 300;
 
-      // Calculate scroll amount based on visible cards
-      function getScrollAmount() {
-        const containerWidth = productsGrid.clientWidth;
-        const productCard = productsGrid.querySelector('.weekly-offers__product-card');
-        
-        if (productCard) {
-          const cardWidth = productCard.offsetWidth;
-          const gap = parseInt(getComputedStyle(productsGrid).gap) || 24;
-          const cardsPerView = Math.floor(containerWidth / (cardWidth + gap));
-          const scrollAmount = cardsPerView * (cardWidth + gap);
-          console.log('Scroll amount calculated:', scrollAmount, 'Cards per view:', cardsPerView);
-          return Math.max(scrollAmount, cardWidth + gap); // At least one card
-        }
-        
-        return 300; // fallback
-      }
-
-      prevBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const scrollAmount = getScrollAmount();
-        console.log('Scrolling left by:', scrollAmount);
+      prevBtn.addEventListener('click', function() {
         productsGrid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
       });
 
-      nextBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const scrollAmount = getScrollAmount();
-        console.log('Scrolling right by:', scrollAmount);
+      nextBtn.addEventListener('click', function() {
         productsGrid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
       });
 
       // Update button states based on scroll position
       function updateButtonStates() {
-        const scrollLeft = productsGrid.scrollLeft;
-        const scrollWidth = productsGrid.scrollWidth;
-        const clientWidth = productsGrid.clientWidth;
-        
-        const isAtStart = scrollLeft <= 5; // 5px tolerance
-        const isAtEnd = scrollLeft >= (scrollWidth - clientWidth - 5); // 5px tolerance
-        
-        console.log('Scroll position:', { scrollLeft, scrollWidth, clientWidth, isAtStart, isAtEnd });
+        const isAtStart = productsGrid.scrollLeft <= 0;
+        const isAtEnd = productsGrid.scrollLeft >= productsGrid.scrollWidth - productsGrid.clientWidth;
         
         prevBtn.disabled = isAtStart;
         nextBtn.disabled = isAtEnd;
-        
-        // Add visual feedback
-        prevBtn.style.opacity = isAtStart ? '0.5' : '1';
-        nextBtn.style.opacity = isAtEnd ? '0.5' : '1';
       }
 
-      // Listen for scroll events with throttling
-      let scrollTimeout;
-      productsGrid.addEventListener('scroll', function() {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(updateButtonStates, 50);
-      });
-      
-      // Listen for resize events
-      window.addEventListener('resize', function() {
-        setTimeout(updateButtonStates, 100);
-      });
-      
-      // Initial state with multiple attempts to ensure proper initialization
-      setTimeout(updateButtonStates, 100);
-      setTimeout(updateButtonStates, 500);
-      setTimeout(updateButtonStates, 1000);
-      
-      // Force initial update on first interaction
-      let hasInteracted = false;
-      [prevBtn, nextBtn].forEach(btn => {
-        btn.addEventListener('click', function() {
-          if (!hasInteracted) {
-            hasInteracted = true;
-            setTimeout(updateButtonStates, 100);
-          }
-        });
-      });
-    } else {
-      console.log('Weekly offers carousel elements not found');
+      productsGrid.addEventListener('scroll', updateButtonStates);
+      updateButtonStates(); // Initial state
     }
   });
 {% endjavascript %}
