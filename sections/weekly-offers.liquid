@@ -24,7 +24,7 @@
         {% if section.settings.collection != blank %}
           {% assign collection = collections[section.settings.collection] %}
         {% else %}
-          {% assign collection = collections.all %}
+          {% assign collection = collections['weekly-offer'] %}
         {% endif %}
         
         {% if collection and collection.products.size > 0 %}
@@ -120,7 +120,7 @@
 
     {% if section.settings.show_view_all %}
       <div class="weekly-offers__footer">
-        <a href="{{ collection.url }}" class="weekly-offers__view-all">
+        <a href="{{ collections['weekly-offer'].url | default: '/collections/weekly-offer' }}" class="weekly-offers__view-all">
           {{ 'sections.weekly_offers.view_all' | t }}
         </a>
       </div>
@@ -559,7 +559,8 @@
     {
       "type": "collection",
       "id": "collection",
-      "label": "t:sections.weekly_offers.settings.collection.label"
+      "label": "t:sections.weekly_offers.settings.collection.label",
+      "default": "weekly-offer"
     },
     {
       "type": "range",
