@@ -5,37 +5,347 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
 
-<h1>{{ collection.title }}</h1>
+<div class="collection-page">
+  <div class="collection-header">
+    <nav class="breadcrumb">
+      <a href="{{ routes.root_url }}" class="breadcrumb-item">{{ 'general.navigation.home' | t }}</a>
+      <span class="breadcrumb-separator">></span>
+      <span class="breadcrumb-item current">{{ collection.title }}</span>
+    </nav>
+    
+    <h1 class="collection-title">{{ collection.title }}</h1>
+    {% if collection.description != blank %}
+      <p class="collection-description">{{ collection.description }}</p>
+    {% endif %}
+  </div>
 
-<div class="collection-products">
-  {% paginate collection.products by 20 %}
-    {% for product in collection.products %}
-      <div class="collection-product">
-        {% if product.featured_image %}
-          {% render 'image',
-            class: 'collection-product__image',
-            image: product.featured_image,
-            url: product.url,
-            width: 400,
-            height: 400,
-            crop: 'center'
-          %}
-        {% endif %}
-        <div class="collection-product__content">
-          <p>{{ product.title | escape | link_to: product.url }}</p>
-          <p>{{ product.price | money }}</p>
+  <div class="collection-products">
+    {% paginate collection.products by 12 %}
+      {% for product in collection.products %}
+        <div class="product-card">
+          {% if product.compare_at_price > product.price %}
+            <div class="product-card__badge sale-badge">
+              {% assign discount = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price %}
+              {{ discount | round }}% OFF
+            </div>
+          {% endif %}
+          
+          <div class="product-card__image-wrapper">
+            {% if product.featured_image %}
+              <a href="{{ product.url }}" class="product-card__image-link">
+                {{ product.featured_image | image_url: width: 300, height: 300 | image_tag: 
+                   alt: product.featured_image.alt | default: product.title,
+                   class: 'product-card__image',
+                   loading: 'lazy' }}
+              </a>
+            {% endif %}
+            
+            <button class="product-card__wishlist" aria-label="Add to wishlist">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="product-card__content">
+            <h3 class="product-card__title">
+              <a href="{{ product.url }}">{{ product.title | escape }}</a>
+            </h3>
+            
+            <div class="product-card__price">
+              {% if product.compare_at_price > product.price %}
+                <span class="product-card__price-regular">{{ product.price | money }}</span>
+                <span class="product-card__price-compare">{{ product.compare_at_price | money }}</span>
+              {% else %}
+                <span class="product-card__price-regular">{{ product.price | money }}</span>
+              {% endif %}
+            </div>
+
+            {% form 'product', product, class: 'product-card__form' %}
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              {% if product.available %}
+                <button type="submit" class="product-card__add-to-cart">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="21" r="1"/>
+                    <circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                  </svg>
+                  {{ 'products.product.add_to_cart' | t }}
+                </button>
+              {% else %}
+                <button class="product-card__add-to-cart sold-out" disabled>
+                  {{ 'products.product.sold_out' | t }}
+                </button>
+              {% endif %}
+            {% endform %}
+          </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
 
-    {{ paginate | default_pagination }}
-  {% endpaginate %}
+      {% if paginate.pages > 1 %}
+        <div class="collection-pagination">
+          {{ paginate | default_pagination }}
+        </div>
+      {% endif %}
+    {% endpaginate %}
+  </div>
 </div>
 
 {% stylesheet %}
+  .collection-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  .collection-header {
+    margin-bottom: 40px;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .breadcrumb-item {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .breadcrumb-item:hover {
+    color: #ff6b35;
+  }
+
+  .breadcrumb-item.current {
+    color: #333;
+    font-weight: 500;
+  }
+
+  .breadcrumb-separator {
+    margin: 0 8px;
+    color: #999;
+  }
+
+  .collection-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #333;
+    margin: 0 0 16px;
+  }
+
+  .collection-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #666;
+    margin: 0;
+  }
+
   .collection-products {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+
+  .product-card {
+    position: relative;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .product-card__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #ff6b35;
+    color: #ffffff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 2;
+  }
+
+  .sale-badge {
+    background: #e74c3c;
+  }
+
+  .product-card__image-wrapper {
+    position: relative;
+    background: #f8f9fa;
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  .product-card__image-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .product-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .product-card:hover .product-card__image {
+    transform: scale(1.05);
+  }
+
+  .product-card__wishlist {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+  }
+
+  .product-card__wishlist:hover {
+    background: rgba(255, 255, 255, 1);
+    color: #ff6b35;
+    transform: scale(1.1);
+  }
+
+  .product-card__content {
+    padding: 20px;
+  }
+
+  .product-card__title {
+    margin: 0 0 12px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .product-card__title a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .product-card__title a:hover {
+    color: #ff6b35;
+  }
+
+  .product-card__price {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .product-card__price-regular {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+  }
+
+  .product-card__price-compare {
+    font-size: 14px;
+    color: #999;
+    text-decoration: line-through;
+  }
+
+  .product-card__form {
+    margin: 0;
+  }
+
+  .product-card__add-to-cart {
+    width: 100%;
+    background: #333;
+    color: #ffffff;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .product-card__add-to-cart:hover {
+    background: #ff6b35;
+    transform: translateY(-1px);
+  }
+
+  .product-card__add-to-cart.sold-out {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+
+  .product-card__add-to-cart.sold-out:hover {
+    background: #ccc;
+    transform: none;
+  }
+
+  .collection-pagination {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .collection-page {
+      padding: 20px 16px;
+    }
+
+    .collection-title {
+      font-size: 28px;
+    }
+
+    .collection-products {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card__content {
+      padding: 16px;
+    }
+
+    .breadcrumb {
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .collection-products {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .collection-title {
+      font-size: 24px;
+    }
   }
 {% endstylesheet %}
 
