@@ -14,6 +14,10 @@
     <div class="olfactive-vibe__categories">
       {% for block in section.blocks %}
         <div class="olfactive-category" {{ block.shopify_attributes }}>
+          {% if block.settings.category_link %}
+            <a href="{{ block.settings.category_link }}" class="olfactive-category__link" aria-label="Visit {{ block.settings.title }} collection">
+          {% endif %}
+          
           <div class="olfactive-category__image">
             {% if block.settings.image %}
               {{ block.settings.image | image_url: width: 600 | image_tag: alt: block.settings.title, loading: 'lazy' }}
@@ -24,10 +28,6 @@
             {% endif %}
             <div class="olfactive-category__overlay"></div>
           </div>
-
-          {% if block.settings.category_link %}
-            <a href="{{ block.settings.category_link }}" class="olfactive-category__link">
-          {% endif %}
           
           <div class="olfactive-category__content">
             {% if block.settings.title %}
@@ -106,6 +106,7 @@
     cursor: pointer;
     min-height: 400px;
     aspect-ratio: 1;
+    display: block;
   }
 
   .olfactive-category:hover {
@@ -136,16 +137,30 @@
   .olfactive-category__placeholder {
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
   }
 
   .olfactive-category__placeholder svg {
-    width: 80px;
-    height: 80px;
-    opacity: 0.3;
+    width: 120px;
+    height: 120px;
+    opacity: 0.4;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+  }
+
+  /* Enhanced placeholder backgrounds for each category */
+  .olfactive-category:nth-child(1) .olfactive-category__placeholder {
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+  }
+
+  .olfactive-category:nth-child(2) .olfactive-category__placeholder {
+    background: linear-gradient(135deg, #2C3E50 0%, #4682B4 50%, #5F9EA0 100%);
+  }
+
+  .olfactive-category:nth-child(3) .olfactive-category__placeholder {
+    background: linear-gradient(135deg, #8B008B 0%, #9370DB 50%, #DA70D6 100%);
   }
 
   .olfactive-category__overlay {
@@ -230,19 +245,45 @@
     z-index: 4;
     text-decoration: none;
     color: inherit;
+    display: block;
+    border-radius: 16px;
+    transition: all 0.3s ease;
   }
 
-  /* Specific styling for different categories */
+  .olfactive-category__link:hover,
+  .olfactive-category__link:focus {
+    outline: 3px solid #ff6b35;
+    outline-offset: 2px;
+  }
+
+  .olfactive-category__link:active {
+    transform: scale(0.98);
+  }
+
+  /* Specific styling for different categories when no image is present */
+  .olfactive-category:nth-child(1):not(:has(.olfactive-category__image img)) {
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+  }
+
+  .olfactive-category:nth-child(2):not(:has(.olfactive-category__image img)) {
+    background: linear-gradient(135deg, #2C3E50 0%, #4682B4 50%, #5F9EA0 100%);
+  }
+
+  .olfactive-category:nth-child(3):not(:has(.olfactive-category__image img)) {
+    background: linear-gradient(135deg, #8B008B 0%, #9370DB 50%, #DA70D6 100%);
+  }
+
+  /* Fallback for browsers that don't support :has() */
   .olfactive-category:nth-child(1) {
-    background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
   }
 
   .olfactive-category:nth-child(2) {
-    background: linear-gradient(135deg, #4682B4 0%, #5F9EA0 100%);
+    background: linear-gradient(135deg, #2C3E50 0%, #4682B4 50%, #5F9EA0 100%);
   }
 
   .olfactive-category:nth-child(3) {
-    background: linear-gradient(135deg, #2F4F4F 0%, #708090 100%);
+    background: linear-gradient(135deg, #8B008B 0%, #9370DB 50%, #DA70D6 100%);
   }
 
   /* Mobile Responsive */
@@ -303,6 +344,38 @@
   }
 {% endstylesheet %}
 
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', function() {
+    // Handle keyboard navigation for category cards
+    const categoryCards = document.querySelectorAll('.olfactive-category');
+    
+    categoryCards.forEach(function(card) {
+      const link = card.querySelector('.olfactive-category__link');
+      
+      if (link) {
+        // Make the entire card clickable
+        card.addEventListener('click', function(e) {
+          if (e.target === card || card.contains(e.target)) {
+            window.location.href = link.href;
+          }
+        });
+        
+        // Handle keyboard navigation
+        card.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            window.location.href = link.href;
+          }
+        });
+        
+        // Make card focusable
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('role', 'button');
+      }
+    });
+  });
+{% endjavascript %}
+
 {% schema %}
 {
   "name": "t:sections.olfactive_vibe.name",
@@ -354,7 +427,8 @@
         {
           "type": "url",
           "id": "category_link",
-          "label": "t:sections.olfactive_vibe.blocks.category.settings.category_link.label"
+          "label": "t:sections.olfactive_vibe.blocks.category.settings.category_link.label",
+          "info": "Link to the collection page for this category"
         }
       ]
     }

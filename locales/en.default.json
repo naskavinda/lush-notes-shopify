@@ -169,14 +169,14 @@
             "title": {
               "label": "Category title"
             },
+            "subtitle": {
+              "label": "Category subtitle"
+            },
             "description": {
               "label": "Category description"
             },
-            "button_text": {
-              "label": "Button text"
-            },
-            "button_link": {
-              "label": "Button link"
+            "category_link": {
+              "label": "Category collection link"
             }
           }
         }

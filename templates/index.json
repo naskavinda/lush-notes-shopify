@@ -29,28 +29,31 @@
         "unisex": {
           "type": "category",
           "settings": {
+            "image": "",
             "title": "Unisex",
+            "subtitle": "Universal Appeal",
             "description": "Fragrances that transcend boundaries",
-            "button_text": "Discover Unisex",
-            "button_link": "/collections/unisex"
+            "category_link": "/collections/unisex"
           }
         },
         "pour_homme": {
           "type": "category",
           "settings": {
+            "image": "",
             "title": "Pour Homme",
+            "subtitle": "Masculine Collection",
             "description": "Sophisticated scents for men",
-            "button_text": "Shop Men's",
-            "button_link": "/collections/pour-homme"
+            "category_link": "/collections/pour-homme"
           }
         },
         "pour_femme": {
           "type": "category",
           "settings": {
+            "image": "",
             "title": "Pour Femme",
+            "subtitle": "Feminine Collection",
             "description": "Elegant fragrances for women",
-            "button_text": "Shop Women's",
-            "button_link": "/collections/pour-femme"
+            "category_link": "/collections/pour-femme"
           }
         }
       },
