@@ -5,6 +5,7 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
 
+<!-- COLLECTION SECTION RENDERED -->
 <div class="collection-page">
   <div class="collection-header">
     <nav class="breadcrumb">
@@ -21,10 +22,18 @@
         {% endif %}
       </div>
       
-      {% if section.settings.enable_view_toggle %}
+      {% comment %} Temporarily always show for testing {% endcomment %}
+      {% assign show_toggle = section.settings.enable_view_toggle | default: true %}
+      
+      <!-- DEBUG: Testing if section renders -->
+      <div style="background: red; color: white; padding: 10px; margin: 10px 0;">
+        🔥 COLLECTION SECTION IS RENDERING! show_toggle: {{ show_toggle }}
+      </div>
+      
+      {% if show_toggle %}
         <div class="view-toggle-section">
           <span class="view-toggle-label">{{ 'sections.collection.view_toggle.label' | t }}</span>
-          <div class="view-toggle-buttons" data-default-view="{{ section.settings.default_view }}">
+          <div class="view-toggle-buttons" data-default-view="{{ section.settings.default_view | default: 'grid' }}">
             <button 
               class="view-toggle-btn view-toggle-grid{% if section.settings.default_view == 'grid' %} active{% endif %}" 
               data-view="grid"
@@ -213,7 +222,10 @@
   </div>
 </div>
 
-{% javascript %}
+<script>
+  // Test if JavaScript is running at all
+  console.log('🚀 JAVASCRIPT IS RUNNING! Collection view toggle script loaded');
+  
   // Simple view toggle implementation
   function initViewToggle() {
     console.log('🔄 Starting view toggle initialization...');
@@ -223,6 +235,8 @@
     
     if (!viewToggleButtons || !collectionProducts) {
       console.log('❌ View toggle elements not found');
+      console.log('viewToggleButtons:', viewToggleButtons);
+      console.log('collectionProducts:', collectionProducts);
       return;
     }
     
@@ -289,7 +303,7 @@
   
   // Also try to initialize after a short delay to ensure all styles are loaded
   setTimeout(initViewToggle, 500);
-{% endjavascript %}
+</script>
 
 {% stylesheet %}
   .collection-page {
