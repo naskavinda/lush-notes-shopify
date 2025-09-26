@@ -158,6 +158,16 @@
         "show_trust_badges": {
           "label": "Show trust badges",
           "info": "Display trust badges like secure payment and returns policy"
+        },
+        "related_products": {
+          "header": "Related Products"
+        },
+        "show_related_products": {
+          "label": "Show related products",
+          "info": "Display 'People Also Bought' section with products from the same collection"
+        },
+        "related_products_count": {
+          "label": "Number of related products to show"
         }
       }
     }

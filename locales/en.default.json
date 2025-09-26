@@ -337,7 +337,11 @@
       "return_weeks": "2",
       "secure_payment": "Secure payment",
       "pickup_available": "Pickup available at {{ location }}",
-      "pickup_time": "Usually ready in 2-4 hours"
+      "pickup_time": "Usually ready in 2-4 hours",
+      "people_also_bought": "People Also Bought",
+      "items": "items",
+      "off": "OFF",
+      "no_image": "No image"
     }
   }
 }
