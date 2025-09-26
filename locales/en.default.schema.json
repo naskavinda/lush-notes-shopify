@@ -82,6 +82,9 @@
     },
     "olfactive_vibe": {
       "name": "Olfactive Vibe"
+    },
+    "footer": {
+      "name": "Footer"
     }
   }
 }
