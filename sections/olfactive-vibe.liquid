@@ -19,8 +19,27 @@
           {% endif %}
           
           <div class="olfactive-category__image">
+            {% liquid
+              assign collection_handle = block.settings.category_link | remove: '/collections/' | split: '?' | first | split: '#' | first | strip
+              assign collection_obj = collections[collection_handle]
+              
+              comment
+                If no collection found via URL, try using the title as handle
+                Example: "Pour Homme" becomes "pour-homme"
+              endcomment
+              
+              if collection_obj == blank
+                assign collection_handle = block.settings.title | handleize
+                assign collection_obj = collections[collection_handle]
+              endif
+            %}
+            
             {% if block.settings.image %}
-              {{ block.settings.image | image_url: width: 600 | image_tag: alt: block.settings.title, loading: 'lazy' }}
+              {{ block.settings.image | image_url: width: 600, height: 600, crop: 'center' | image_tag: alt: block.settings.title, loading: 'lazy', class: 'olfactive-category__img' }}
+            {% elsif collection_obj and collection_obj.featured_image %}
+              {{ collection_obj.featured_image | image_url: width: 600, height: 600, crop: 'center' | image_tag: alt: collection_obj.title, loading: 'lazy', class: 'olfactive-category__img' }}
+            {% elsif collection_obj and collection_obj.products.size > 0 and collection_obj.products.first.featured_image %}
+              {{ collection_obj.products.first.featured_image | image_url: width: 600, height: 600, crop: 'center' | image_tag: alt: collection_obj.title, loading: 'lazy', class: 'olfactive-category__img' }}
             {% else %}
               <div class="olfactive-category__placeholder">
                 {{ 'collection-' | append: forloop.index | placeholder_svg_tag }}
@@ -123,14 +142,16 @@
     z-index: 1;
   }
 
-  .olfactive-category__image img {
+  .olfactive-category__image img,
+  .olfactive-category__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.4s ease;
   }
 
-  .olfactive-category:hover .olfactive-category__image img {
+  .olfactive-category:hover .olfactive-category__image img,
+  .olfactive-category:hover .olfactive-category__img {
     transform: scale(1.05);
   }
 
@@ -343,6 +364,34 @@
     }
   }
 {% endstylesheet %}
+
+<!-- Debug Information (Check browser console) -->
+<script>
+  console.log('=== Olfactive Vibe Debug Info ===');
+  {% for block in section.blocks %}
+    {% liquid
+      assign collection_handle = block.settings.category_link | remove: '/collections/' | split: '?' | first | split: '#' | first | strip
+      assign collection_obj = collections[collection_handle]
+    %}
+    console.log('Category: {{ block.settings.title }}');
+    console.log('Collection Link: {{ block.settings.category_link }}');
+    console.log('Collection Handle: {{ collection_handle }}');
+    console.log('Collection Found: {% if collection_obj %}true{% else %}false{% endif %}');
+    {% if collection_obj %}
+      console.log('Collection Title: {{ collection_obj.title }}');
+      console.log('Has Featured Image: {% if collection_obj.featured_image %}true{% else %}false{% endif %}');
+      console.log('Products Count: {{ collection_obj.products.size }}');
+      {% if collection_obj.featured_image %}
+        console.log('Featured Image URL: {{ collection_obj.featured_image | image_url: width: 100 }}');
+      {% elsif collection_obj.products.size > 0 and collection_obj.products.first.featured_image %}
+        console.log('Using first product image: {{ collection_obj.products.first.featured_image | image_url: width: 100 }}');
+      {% endif %}
+    {% else %}
+      console.log('⚠️ Collection not found! Available collections:', Object.keys(window.collections || {}));
+    {% endif %}
+    console.log('---');
+  {% endfor %}
+</script>
 
 {% javascript %}
   document.addEventListener('DOMContentLoaded', function() {
