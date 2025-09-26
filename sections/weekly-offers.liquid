@@ -28,7 +28,7 @@
         {% endif %}
         
         {% if collection and collection.products.size > 0 %}
-          {% for product in collection.products limit: section.settings.products_to_show %}
+          {% for product in collection.products %}
             <div class="weekly-offers__product-card">
               <div class="product-card">
                 <div class="product-card__image">
@@ -174,7 +174,7 @@
     display: flex;
     align-items: center;
     gap: 2rem;
-    max-width: 80%;
+    max-width: 90%;
     margin: 0 auto;
   }
 
@@ -200,9 +200,10 @@
   }
 
   .weekly-offers__nav:disabled {
-    opacity: 0.5;
+    opacity: 0.3;
     cursor: not-allowed;
     transform: none;
+    pointer-events: none;
   }
 
   .weekly-offers__products {
@@ -211,11 +212,12 @@
     gap: 1.5rem;
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-behavior: smooth;
-    padding-bottom: 1rem;
+    scroll-behavior: smooth;    
     scrollbar-width: none;
     -ms-overflow-style: none;
     white-space: nowrap;
+    padding: 0 0 1rem 0;
+    scroll-snap-type: x mandatory;
   }
 
   .weekly-offers__products::-webkit-scrollbar {
@@ -226,6 +228,7 @@
     flex: 0 0 280px;
     min-width: 280px;
     white-space: normal;
+    scroll-snap-align: start;
   }
 
   .product-card {
@@ -468,7 +471,7 @@
     }
 
     .weekly-offers__content {
-      flex-direction: column;
+      max-width: 95%;
       gap: 1rem;
     }
 
@@ -480,6 +483,8 @@
 
     .weekly-offers__products {
       gap: 1rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
     }
 
     .weekly-offers__product-card {
@@ -515,27 +520,88 @@
     const productsGrid = document.querySelector('.weekly-offers__products');
 
     if (prevBtn && nextBtn && productsGrid) {
-      let scrollAmount = 300;
+      // Calculate scroll amount based on product card width plus gap
+      function getScrollAmount() {
+        const productCard = productsGrid.querySelector('.weekly-offers__product-card');
+        if (productCard) {
+          const cardWidth = productCard.offsetWidth;
+          const gap = 24; // 1.5rem gap in pixels
+          return cardWidth + gap;
+        }
+        return 300; // fallback
+      }
 
       prevBtn.addEventListener('click', function() {
+        const scrollAmount = getScrollAmount();
+        console.log('Scrolling left by:', scrollAmount);
         productsGrid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
       });
 
       nextBtn.addEventListener('click', function() {
+        const scrollAmount = getScrollAmount();
+        console.log('Scrolling right by:', scrollAmount);
         productsGrid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
       });
 
       // Update button states based on scroll position
       function updateButtonStates() {
-        const isAtStart = productsGrid.scrollLeft <= 0;
-        const isAtEnd = productsGrid.scrollLeft >= productsGrid.scrollWidth - productsGrid.clientWidth;
+        const tolerance = 5; // Allow small tolerance for floating point precision
+        const isAtStart = productsGrid.scrollLeft <= tolerance;
+        const isAtEnd = productsGrid.scrollLeft >= (productsGrid.scrollWidth - productsGrid.clientWidth - tolerance);
         
         prevBtn.disabled = isAtStart;
         nextBtn.disabled = isAtEnd;
+        
+        // Update visual states
+        prevBtn.style.opacity = isAtStart ? '0.5' : '1';
+        nextBtn.style.opacity = isAtEnd ? '0.5' : '1';
       }
 
+      // Listen for scroll events
       productsGrid.addEventListener('scroll', updateButtonStates);
-      updateButtonStates(); // Initial state
+      
+      // Initial state and resize handler
+      updateButtonStates();
+      window.addEventListener('resize', updateButtonStates);
+      
+      // Handle touch/swipe on mobile
+      let startX = 0;
+      let scrollLeft = 0;
+      let isDown = false;
+
+      productsGrid.addEventListener('mousedown', (e) => {
+        isDown = true;
+        startX = e.pageX - productsGrid.offsetLeft;
+        scrollLeft = productsGrid.scrollLeft;
+      });
+
+      productsGrid.addEventListener('mouseleave', () => {
+        isDown = false;
+      });
+
+      productsGrid.addEventListener('mouseup', () => {
+        isDown = false;
+      });
+
+      productsGrid.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - productsGrid.offsetLeft;
+        const walk = (x - startX) * 2;
+        productsGrid.scrollLeft = scrollLeft - walk;
+      });
+      
+      // Touch events for mobile
+      productsGrid.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].pageX - productsGrid.offsetLeft;
+        scrollLeft = productsGrid.scrollLeft;
+      });
+
+      productsGrid.addEventListener('touchmove', (e) => {
+        const x = e.touches[0].pageX - productsGrid.offsetLeft;
+        const walk = (x - startX) * 2;
+        productsGrid.scrollLeft = scrollLeft - walk;
+      });
     }
   });
 {% endjavascript %}
@@ -565,12 +631,13 @@
     },
     {
       "type": "range",
-      "id": "products_to_show",
-      "label": "t:sections.weekly_offers.settings.products_to_show.label",
-      "min": 4,
-      "max": 12,
+      "id": "products_visible",
+      "label": "Products visible at once",
+      "info": "Number of products visible in the carousel at once",
+      "min": 3,
+      "max": 6,
       "step": 1,
-      "default": 8
+      "default": 4
     },
     {
       "type": "checkbox",

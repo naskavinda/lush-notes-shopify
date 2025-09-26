@@ -69,8 +69,8 @@
       "settings": {
         "title": "Weekly Offers",
         "subtitle": "Limited time deals on premium fragrances",
-        "collection": "",
-        "products_to_show": 4,
+        "collection": "weekly-offer",
+        "products_visible": 4,
         "show_view_all": true
       }
     }
