@@ -329,7 +329,15 @@
       "on_sale": "Sale",
       "quick_view": "Quick View",
       "add_to_wishlist": "Add to Wishlist",
-      "remove_from_wishlist": "Remove from Wishlist"
+      "remove_from_wishlist": "Remove from Wishlist",
+      "size": "Size",
+      "quantity": "Quantity",
+      "share": "Share",
+      "return_policy": "{{ weeks }}-week returns",
+      "return_weeks": "2",
+      "secure_payment": "Secure payment",
+      "pickup_available": "Pickup available at {{ location }}",
+      "pickup_time": "Usually ready in 2-4 hours"
     }
   }
 }

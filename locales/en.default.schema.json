@@ -134,6 +134,32 @@
     },
     "footer": {
       "name": "Footer"
+    },
+    "product": {
+      "name": "Product",
+      "settings": {
+        "pickup_info": {
+          "header": "Pickup Information"
+        },
+        "show_pickup_availability": {
+          "label": "Show pickup availability",
+          "info": "Display pickup availability information on product pages"
+        },
+        "pickup_location": {
+          "label": "Pickup location name"
+        },
+        "product_info": {
+          "header": "Product Information"
+        },
+        "show_rating": {
+          "label": "Show product rating",
+          "info": "Display star rating on product pages"
+        },
+        "show_trust_badges": {
+          "label": "Show trust badges",
+          "info": "Display trust badges like secure payment and returns policy"
+        }
+      }
     }
   }
 }
