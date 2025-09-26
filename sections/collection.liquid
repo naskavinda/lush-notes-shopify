@@ -21,41 +21,67 @@
         {% endif %}
       </div>
       
-      {% if section.settings.enable_view_toggle %}
-        <div class="view-toggle-section">
-          <span class="view-toggle-label">{{ 'sections.collection.view_toggle.label' | t }}</span>
-          <div class="view-toggle-buttons" data-default-view="{{ section.settings.default_view | default: 'grid' }}">
-            <button 
-              class="view-toggle-btn view-toggle-grid{% if section.settings.default_view == 'grid' %} active{% endif %}" 
-              data-view="grid"
-              aria-label="{{ 'sections.collection.view_toggle.grid' | t }}"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="7" height="7"/>
-                <rect x="14" y="3" width="7" height="7"/>
-                <rect x="14" y="14" width="7" height="7"/>
-                <rect x="3" y="14" width="7" height="7"/>
-              </svg>
-              {{ 'sections.collection.view_toggle.grid' | t }}
-            </button>
-            <button 
-              class="view-toggle-btn view-toggle-list{% if section.settings.default_view == 'list' %} active{% endif %}" 
-              data-view="list"
-              aria-label="{{ 'sections.collection.view_toggle.list' | t }}"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="8" y1="6" x2="21" y2="6"/>
-                <line x1="8" y1="12" x2="21" y2="12"/>
-                <line x1="8" y1="18" x2="21" y2="18"/>
-                <line x1="3" y1="6" x2="3.01" y2="6"/>
-                <line x1="3" y1="12" x2="3.01" y2="12"/>
-                <line x1="3" y1="18" x2="3.01" y2="18"/>
-              </svg>
-              {{ 'sections.collection.view_toggle.list' | t }}
-            </button>
+      <div class="collection-controls">
+        {% comment %} Sort Dropdown {% endcomment %}
+        {% assign show_sort = section.settings.enable_sort_dropdown | default: true %}
+        {% if show_sort %}
+          <div class="sort-section">
+            <label for="collection-sort" class="sort-label">{{ 'sections.collection.sort.label' | t }}</label>
+            <div class="sort-dropdown-wrapper">
+              <select id="collection-sort" class="sort-dropdown" data-default-sort="{{ section.settings.default_sort | default: 'manual' }}">
+              <option value="manual">{{ 'sections.collection.sort.options.featured' | t }}</option>
+              <option value="best-selling">{{ 'sections.collection.sort.options.best_selling' | t }}</option>
+              <option value="title-ascending">{{ 'sections.collection.sort.options.name_a_z' | t }}</option>
+              <option value="title-descending">{{ 'sections.collection.sort.options.name_z_a' | t }}</option>
+              <option value="price-ascending">{{ 'sections.collection.sort.options.price_low_high' | t }}</option>
+              <option value="price-descending">{{ 'sections.collection.sort.options.price_high_low' | t }}</option>
+              <option value="created-descending">{{ 'sections.collection.sort.options.date_new_old' | t }}</option>
+              <option value="created-ascending">{{ 'sections.collection.sort.options.date_old_new' | t }}</option>
+            </select>
+            <svg class="sort-dropdown-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6,9 12,15 18,9"></polyline>
+            </svg>
           </div>
         </div>
-      {% endif %}
+        {% endif %}
+
+        {% comment %} View Toggle {% endcomment %}
+        {% if section.settings.enable_view_toggle %}
+          <div class="view-toggle-section">
+            <span class="view-toggle-label">{{ 'sections.collection.view_toggle.label' | t }}</span>
+            <div class="view-toggle-buttons" data-default-view="{{ section.settings.default_view | default: 'grid' }}">
+              <button 
+                class="view-toggle-btn view-toggle-grid{% if section.settings.default_view == 'grid' %} active{% endif %}" 
+                data-view="grid"
+                aria-label="{{ 'sections.collection.view_toggle.grid' | t }}"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="7" height="7"/>
+                  <rect x="14" y="3" width="7" height="7"/>
+                  <rect x="14" y="14" width="7" height="7"/>
+                  <rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                {{ 'sections.collection.view_toggle.grid' | t }}
+              </button>
+              <button 
+                class="view-toggle-btn view-toggle-list{% if section.settings.default_view == 'list' %} active{% endif %}" 
+                data-view="list"
+                aria-label="{{ 'sections.collection.view_toggle.list' | t }}"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="8" y1="6" x2="21" y2="6"/>
+                  <line x1="8" y1="12" x2="21" y2="12"/>
+                  <line x1="8" y1="18" x2="21" y2="18"/>
+                  <line x1="3" y1="6" x2="3.01" y2="6"/>
+                  <line x1="3" y1="12" x2="3.01" y2="12"/>
+                  <line x1="3" y1="18" x2="3.01" y2="18"/>
+                </svg>
+                {{ 'sections.collection.view_toggle.list' | t }}
+              </button>
+            </div>
+          </div>
+        {% endif %}
+      </div>
     </div>
   </div>
 
@@ -370,21 +396,149 @@
     console.log('💝 Wishlist functionality initialized!');
   }
   
+  // Sort functionality
+  function initSort() {
+    console.log('🔄 Initializing sort functionality...');
+    
+    const sortDropdown = document.querySelector('#collection-sort');
+    const collectionProducts = document.querySelector('.collection-products');
+    const sortStorageKey = 'collection-sort-preference';
+    
+    if (!sortDropdown || !collectionProducts) {
+      console.log('❌ Sort elements not found');
+      return;
+    }
+    
+    // Get saved sort preference or use default
+    const savedSort = localStorage.getItem(sortStorageKey);
+    const defaultSort = sortDropdown.dataset.defaultSort || 'manual';
+    const currentSort = savedSort || defaultSort;
+    
+    console.log('📊 Sort settings:', { defaultSort, savedSort, currentSort });
+    
+    // Set initial sort value
+    sortDropdown.value = currentSort;
+    
+    // Add change listener
+    sortDropdown.addEventListener('change', function() {
+      const sortValue = this.value;
+      console.log('🔄 User selected sort:', sortValue);
+      
+      sortProducts(sortValue);
+      localStorage.setItem(sortStorageKey, sortValue);
+    });
+    
+    // Sort products function
+    function sortProducts(sortBy) {
+      console.log('🎯 Sorting products by:', sortBy);
+      
+      const productCards = Array.from(collectionProducts.querySelectorAll('.product-card'));
+      
+      if (productCards.length === 0) {
+        console.log('❌ No products found to sort');
+        return;
+      }
+      
+      // Sort the product cards
+      productCards.sort(function(a, b) {
+        return compareProducts(a, b, sortBy);
+      });
+      
+      // Remove existing products
+      productCards.forEach(card => card.remove());
+      
+      // Add sorted products back
+      const paginationElement = collectionProducts.querySelector('.collection-pagination');
+      if (paginationElement) {
+        // Insert before pagination
+        productCards.forEach(card => {
+          collectionProducts.insertBefore(card, paginationElement);
+        });
+      } else {
+        // Append to end
+        productCards.forEach(card => {
+          collectionProducts.appendChild(card);
+        });
+      }
+      
+      console.log('✨ Products sorted successfully!');
+    }
+    
+    // Compare function for different sort types
+    function compareProducts(a, b, sortBy) {
+      switch (sortBy) {
+        case 'title-ascending':
+          return getProductTitle(a).localeCompare(getProductTitle(b));
+        
+        case 'title-descending':
+          return getProductTitle(b).localeCompare(getProductTitle(a));
+        
+        case 'price-ascending':
+          return getProductPrice(a) - getProductPrice(b);
+        
+        case 'price-descending':
+          return getProductPrice(b) - getProductPrice(a);
+        
+        case 'created-descending':
+          return getProductDate(b) - getProductDate(a);
+        
+        case 'created-ascending':
+          return getProductDate(a) - getProductDate(b);
+        
+        case 'best-selling':
+          // For best-selling, we'll use a combination of factors
+          // Since we don't have sales data, we'll use price as a proxy
+          return getProductPrice(b) - getProductPrice(a);
+        
+        case 'manual':
+        default:
+          // Return original order (no sorting)
+          return 0;
+      }
+    }
+    
+    // Helper functions to extract product data
+    function getProductTitle(productCard) {
+      const titleElement = productCard.querySelector('.product-card__title a');
+      return titleElement ? titleElement.textContent.trim().toLowerCase() : '';
+    }
+    
+    function getProductPrice(productCard) {
+      const priceElement = productCard.querySelector('.product-card__price-regular');
+      if (!priceElement) return 0;
+      
+      const priceText = priceElement.textContent.replace(/[^0-9.,]/g, '');
+      return parseFloat(priceText.replace(',', '')) || 0;
+    }
+    
+    function getProductDate(productCard) {
+      // Since we don't have direct access to product creation date in the DOM,
+      // we'll use the product ID as a proxy (higher ID = newer product)
+      const productId = productCard.dataset.productId;
+      return parseInt(productId) || 0;
+    }
+    
+    console.log('🔄 Sort functionality initialized!');
+  }
+  
   // Initialize when ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
       initViewToggle();
       initWishlist();
+      initSort();
     });
   } else {
     initViewToggle();
     initWishlist();
+    initSort();
   }
   
   // Also try to initialize after a short delay to ensure all styles are loaded
   setTimeout(function() {
     initViewToggle();
     initWishlist();
+    initSort();
   }, 500);
 </script>
 
@@ -432,6 +586,14 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: 20px;
+  }
+
+  /* Collection Controls */
+  .collection-controls {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
   }
 
   .collection-title-section {
@@ -503,6 +665,63 @@
 
   .view-toggle-btn svg {
     flex-shrink: 0;
+  }
+
+  /* Sort Dropdown Styles */
+  .sort-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .sort-label {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+  }
+
+  .sort-dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .sort-dropdown {
+    appearance: none;
+    background: #ffffff;
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 8px 40px 8px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 200px;
+  }
+
+  .sort-dropdown:hover {
+    border-color: #ff6b35;
+  }
+
+  .sort-dropdown:focus {
+    outline: none;
+    border-color: #ff6b35;
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+  }
+
+  .sort-dropdown-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    pointer-events: none;
+    transition: transform 0.2s ease;
+  }
+
+  .sort-dropdown:focus + .sort-dropdown-icon {
+    transform: translateY(-50%) rotate(180deg);
   }
 
   /* Collection Products Grid/List Styles */
@@ -997,10 +1216,24 @@
       gap: 16px;
     }
 
+    .collection-controls {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+    }
+
     .view-toggle-section {
       align-items: flex-start;
       flex-direction: row;
       justify-content: space-between;
+    }
+
+    .sort-section {
+      align-items: stretch;
+    }
+
+    .sort-dropdown {
+      min-width: 100%;
     }
 
     .collection-products[data-view="list"] .product-card__image-wrapper {
@@ -1059,10 +1292,19 @@
       font-size: 12px;
     }
 
+    .collection-controls {
+      gap: 12px;
+    }
+
     .view-toggle-section {
       flex-direction: column;
       align-items: flex-start;
       gap: 8px;
+    }
+
+    .sort-dropdown {
+      font-size: 13px;
+      min-width: 180px;
     }
 
     .collection-pagination {
@@ -1176,6 +1418,58 @@
       "max": 3,
       "step": 1,
       "default": 2
+    },
+    {
+      "type": "header",
+      "content": "t:sections.collection.settings.sort_options.header"
+    },
+    {
+      "type": "select",
+      "id": "default_sort",
+      "label": "t:sections.collection.settings.default_sort.label",
+      "info": "t:sections.collection.settings.default_sort.info",
+      "options": [
+        {
+          "value": "manual",
+          "label": "t:sections.collection.settings.default_sort.options.featured"
+        },
+        {
+          "value": "best-selling",
+          "label": "t:sections.collection.settings.default_sort.options.best_selling"
+        },
+        {
+          "value": "title-ascending",
+          "label": "t:sections.collection.settings.default_sort.options.name_a_z"
+        },
+        {
+          "value": "title-descending",
+          "label": "t:sections.collection.settings.default_sort.options.name_z_a"
+        },
+        {
+          "value": "price-ascending",
+          "label": "t:sections.collection.settings.default_sort.options.price_low_high"
+        },
+        {
+          "value": "price-descending",
+          "label": "t:sections.collection.settings.default_sort.options.price_high_low"
+        },
+        {
+          "value": "created-descending",
+          "label": "t:sections.collection.settings.default_sort.options.date_new_old"
+        },
+        {
+          "value": "created-ascending",
+          "label": "t:sections.collection.settings.default_sort.options.date_old_new"
+        }
+      ],
+      "default": "manual"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sort_dropdown",
+      "label": "t:sections.collection.settings.enable_sort_dropdown.label",
+      "info": "t:sections.collection.settings.enable_sort_dropdown.info",
+      "default": true
     }
   ]
 }

@@ -99,6 +99,27 @@
         },
         "products_per_row_mobile": {
           "label": "Products per row (Mobile)"
+        },
+        "sort_options": {
+          "header": "Sort Options"
+        },
+        "default_sort": {
+          "label": "Default sort order",
+          "info": "Choose the default sort order for collection pages",
+          "options": {
+            "featured": "Featured",
+            "best_selling": "Best selling",
+            "name_a_z": "Alphabetically, A-Z",
+            "name_z_a": "Alphabetically, Z-A",
+            "price_low_high": "Price, low to high",
+            "price_high_low": "Price, high to low",
+            "date_new_old": "Date, new to old",
+            "date_old_new": "Date, old to new"
+          }
+        },
+        "enable_sort_dropdown": {
+          "label": "Enable sort dropdown",
+          "info": "Allow customers to sort products by different criteria"
         }
       }
     },
