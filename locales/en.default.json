@@ -293,7 +293,9 @@
       "add_to_cart": "Add to Cart",
       "sold_out": "Sold Out",
       "on_sale": "Sale",
-      "quick_view": "Quick View"
+      "quick_view": "Quick View",
+      "add_to_wishlist": "Add to Wishlist",
+      "remove_from_wishlist": "Remove from Wishlist"
     }
   }
 }

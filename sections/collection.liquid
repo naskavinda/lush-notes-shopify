@@ -70,7 +70,7 @@
   >
     {% paginate collection.products by 12 %}
       {% for product in collection.products %}
-        <div class="product-card">
+        <div class="product-card" data-product-id="{{ product.id }}">
           {% if product.compare_at_price > product.price %}
             <div class="product-card__badge sale-badge">
               {% assign discount = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price %}
@@ -88,7 +88,7 @@
               </a>
             {% endif %}
             
-            <button class="product-card__wishlist" aria-label="Add to wishlist">
+            <button class="product-card__wishlist" data-product-id="{{ product.id }}" aria-label="{{ 'products.product.add_to_wishlist' | t }}">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
               </svg>
@@ -147,13 +147,12 @@
                 {% endif %}
               {% endform %}
               
-              <!-- List view quick view button -->
-              <button class="product-card__quick-view">
+              <!-- List view wishlist button -->
+              <button class="product-card__wishlist-btn" data-product-id="{{ product.id }}" aria-label="{{ 'products.product.add_to_wishlist' | t }}">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                 </svg>
-                {{ 'products.product.quick_view' | t }}
+                {{ 'products.product.add_to_wishlist' | t }}
               </button>
             </div>
           </div>
@@ -285,15 +284,108 @@
     console.log('🚀 View toggle initialized successfully!');
   }
   
+  // Wishlist functionality
+  function initWishlist() {
+    console.log('💝 Initializing wishlist functionality...');
+    
+    const wishlistKey = 'product-wishlist';
+    
+    // Get wishlist from localStorage
+    function getWishlist() {
+      try {
+        return JSON.parse(localStorage.getItem(wishlistKey)) || [];
+      } catch (e) {
+        return [];
+      }
+    }
+    
+    // Save wishlist to localStorage
+    function saveWishlist(wishlist) {
+      localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+    }
+    
+    // Check if product is in wishlist
+    function isInWishlist(productId) {
+      return getWishlist().includes(String(productId));
+    }
+    
+    // Toggle product in/out of wishlist
+    function toggleWishlist(productId) {
+      let wishlist = getWishlist();
+      const productIdStr = String(productId);
+      
+      if (wishlist.includes(productIdStr)) {
+        wishlist = wishlist.filter(id => id !== productIdStr);
+        console.log('💔 Removed from wishlist:', productIdStr);
+      } else {
+        wishlist.push(productIdStr);
+        console.log('💖 Added to wishlist:', productIdStr);
+      }
+      
+      saveWishlist(wishlist);
+      updateWishlistButtons();
+      return !isInWishlist(productId);
+    }
+    
+    // Update all wishlist button states
+    function updateWishlistButtons() {
+      const wishlistButtons = document.querySelectorAll('.product-card__wishlist, .product-card__wishlist-btn');
+      
+      wishlistButtons.forEach(button => {
+        const productId = button.dataset.productId || button.closest('.product-card').dataset.productId;
+        if (productId) {
+          const inWishlist = isInWishlist(productId);
+          button.classList.toggle('in-wishlist', inWishlist);
+          
+          // Update aria-label
+          const addText = button.getAttribute('aria-label')?.includes('Add') ? 'Add to wishlist' : 'Add to wishlist';
+          const removeText = 'Remove from wishlist';
+          button.setAttribute('aria-label', inWishlist ? removeText : addText);
+        }
+      });
+    }
+    
+    // Add click listeners to wishlist buttons
+    document.addEventListener('click', function(e) {
+      const wishlistButton = e.target.closest('.product-card__wishlist, .product-card__wishlist-btn');
+      if (wishlistButton) {
+        e.preventDefault();
+        const productId = wishlistButton.dataset.productId || wishlistButton.closest('.product-card').dataset.productId;
+        if (productId) {
+          const isAdded = toggleWishlist(productId);
+          
+          // Optional: Show a toast notification
+          const message = isAdded ? 'Added to wishlist' : 'Removed from wishlist';
+          console.log('💝', message);
+          
+          // You can add a toast notification here if desired
+          // showToast(message);
+        }
+      }
+    });
+    
+    // Initialize wishlist button states
+    updateWishlistButtons();
+    
+    console.log('💝 Wishlist functionality initialized!');
+  }
+  
   // Initialize when ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initViewToggle);
+    document.addEventListener('DOMContentLoaded', function() {
+      initViewToggle();
+      initWishlist();
+    });
   } else {
     initViewToggle();
+    initWishlist();
   }
   
   // Also try to initialize after a short delay to ensure all styles are loaded
-  setTimeout(initViewToggle, 500);
+  setTimeout(function() {
+    initViewToggle();
+    initWishlist();
+  }, 500);
 </script>
 
 {% stylesheet %}
@@ -549,6 +641,20 @@
     transform: scale(1.1);
   }
 
+  .product-card__wishlist.in-wishlist {
+    background: #ff6b35;
+    color: #ffffff;
+  }
+
+  .product-card__wishlist.in-wishlist svg {
+    fill: currentColor;
+  }
+
+  .product-card__wishlist.in-wishlist:hover {
+    background: #e55a2b;
+    transform: scale(1.1);
+  }
+
   /* Grid View Content */
   .collection-products[data-view="grid"] .product-card__content {
     padding: 20px;
@@ -655,7 +761,7 @@
     margin-top: auto;
   }
 
-  .collection-products[data-view="grid"] .product-card__quick-view {
+  .collection-products[data-view="grid"] .product-card__wishlist-btn {
     display: none;
   }
 
@@ -702,8 +808,8 @@
     transform: none;
   }
 
-  /* Quick View Button (List View Only) */
-  .product-card__quick-view {
+  /* Wishlist Button (List View Only) */
+  .product-card__wishlist-btn {
     background: #ffffff;
     color: #333;
     border: 2px solid #e1e5e9;
@@ -721,10 +827,20 @@
     min-width: 140px;
   }
 
-  .product-card__quick-view:hover {
+  .product-card__wishlist-btn:hover {
     background: #f8f9fa;
     border-color: #ff6b35;
     color: #ff6b35;
+  }
+
+  .product-card__wishlist-btn.in-wishlist {
+    background: #ff6b35;
+    color: #ffffff;
+    border-color: #ff6b35;
+  }
+
+  .product-card__wishlist-btn.in-wishlist svg {
+    fill: currentColor;
   }
 
   .collection-pagination {
