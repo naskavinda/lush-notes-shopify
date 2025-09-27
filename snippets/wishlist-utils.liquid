@@ -234,31 +234,29 @@
 {% endjavascript %}
 
 {% comment %}
-  Add global CSS for wishlist button states if not already defined
+  Global CSS for wishlist button states
 {% endcomment %}
-{% unless request.page_type == 'cart' or request.page_type == 'product' or template contains 'collection' %}
-  {% stylesheet %}
-    /* Global wishlist button styles */
-    .product-card__wishlist,
-    .product-card__wishlist-btn,
-    .cart-item__wishlist,
-    .wishlist-btn {
-      transition: all 0.2s ease;
-    }
+{% stylesheet %}
+  /* Global wishlist button styles */
+  .product-card__wishlist,
+  .product-card__wishlist-btn,
+  .cart-item__wishlist,
+  .wishlist-btn {
+    transition: all 0.2s ease;
+  }
 
-    .product-card__wishlist.in-wishlist,
-    .product-card__wishlist-btn.in-wishlist,
-    .cart-item__wishlist.in-wishlist,
-    .wishlist-btn.in-wishlist {
-      color: #ff6b35 !important;
-    }
+  .product-card__wishlist.in-wishlist,
+  .product-card__wishlist-btn.in-wishlist,
+  .cart-item__wishlist.in-wishlist,
+  .wishlist-btn.in-wishlist {
+    color: #ff6b35 !important;
+  }
 
-    .product-card__wishlist.in-wishlist svg,
-    .product-card__wishlist-btn.in-wishlist svg,
-    .cart-item__wishlist.in-wishlist svg,
-    .wishlist-btn.in-wishlist svg {
-      fill: #ff6b35;
-      stroke: #ff6b35;
-    }
-  {% endstylesheet %}
-{% endunless %}
+  .product-card__wishlist.in-wishlist svg,
+  .product-card__wishlist-btn.in-wishlist svg,
+  .cart-item__wishlist.in-wishlist svg,
+  .wishlist-btn.in-wishlist svg {
+    fill: #ff6b35;
+    stroke: #ff6b35;
+  }
+{% endstylesheet %}
