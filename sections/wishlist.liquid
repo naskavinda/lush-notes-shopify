@@ -516,48 +516,61 @@
             continue;
           }
 
-          // Try multiple methods to fetch the product
-          let response = null;
-          let fetchUrl = null;
+          let product = null;
 
           // Method 1: Try as product handle (most common)
-          fetchUrl = `/products/${productId}.js`;
-          console.log(`🔍 Method 1 - Trying URL: ${fetchUrl}`);
-          response = await fetch(fetchUrl);
-          console.log(`🔍 Method 1 - Response status: ${response.status}`);
-
-          // Method 2: If failed and looks like a numeric ID, try different approaches
-          if (!response.ok && /^\d+$/.test(productId)) {
-            console.log(`🔍 Method 2 - Numeric ID detected, trying alternative approaches`);
-            
-            // Try the products API with numeric ID
-            fetchUrl = `/products/${productId}.js`;
-            response = await fetch(fetchUrl);
-            console.log(`🔍 Method 2a - Response status: ${response.status}`);
+          console.log(`🔍 Method 1 - Trying product handle: ${productId}`);
+          try {
+            const response = await fetch(`/products/${productId}.js`);
+            if (response.ok) {
+              product = await response.json();
+              console.log('✅ Method 1 Success - Found by handle:', product.title);
+            } else {
+              console.log(`🔍 Method 1 - Failed with status: ${response.status}`);
+            }
+          } catch (e) {
+            console.log(`🔍 Method 1 - Error:`, e.message);
           }
 
-          // Method 3: If still failed, try to find by searching (fallback)
-          if (!response.ok) {
-            console.log(`🔍 Method 3 - Trying search approach for: ${productId}`);
+          // Method 2: For numeric IDs, search through collections
+          if (!product && /^\d+$/.test(productId)) {
+            console.log(`🔍 Method 2 - Searching collections for numeric ID: ${productId}`);
             
-            // Try with collection/products endpoint (some stores structure differently)
             try {
-              fetchUrl = `/collections/all/products/${productId}.js`;
-              response = await fetch(fetchUrl);
-              console.log(`🔍 Method 3 - Collection-based fetch status: ${response.status}`);
+              const searchResponse = await fetch(`/collections/all/products.json?limit=250`);
+              if (searchResponse.ok) {
+                const searchData = await searchResponse.json();
+                const foundProduct = searchData.products.find(p => p.id.toString() === productId.toString());
+                
+                if (foundProduct) {
+                  product = foundProduct;
+                  console.log(`✅ Method 2 Success - Found by ID search: ${product.title} (handle: ${product.handle})`);
+                } else {
+                  console.log(`🔍 Method 2 - Product ID ${productId} not found in first 250 products`);
+                  
+                  // Try with more products if the first batch didn't work
+                  const searchResponse2 = await fetch(`/collections/all/products.json?limit=250&page=2`);
+                  if (searchResponse2.ok) {
+                    const searchData2 = await searchResponse2.json();
+                    const foundProduct2 = searchData2.products.find(p => p.id.toString() === productId.toString());
+                    if (foundProduct2) {
+                      product = foundProduct2;
+                      console.log(`✅ Method 2b Success - Found by ID search (page 2): ${product.title}`);
+                    }
+                  }
+                }
+              }
             } catch (e) {
-              console.log(`🔍 Method 3 - Collection-based fetch failed:`, e.message);
+              console.log(`🔍 Method 2 - Search failed:`, e.message);
             }
           }
-          
-          if (response.ok) {
-            const product = await response.json();
-            console.log('✅ Successfully fetched product:', product.title || product.handle, 'with ID:', product.id);
+
+          if (product) {
+            console.log('✅ Successfully found product:', product.title || product.handle, 'with ID:', product.id);
             this.productsCache.set(productId, product);
             products.push(product);
           } else {
-            console.warn('❌ Product not found for ID/handle:', productId, 'Status:', response.status);
-            console.warn('❌ Full response:', response);
+            console.warn('❌ Product not found for ID/handle:', productId);
           }
         } catch (error) {
           console.error(`🚨 Error fetching product ${productId}:`, error);
@@ -1018,7 +1031,7 @@
 
     // Get the first few products from collections to see what valid handles look like
     getValidProducts() {
-      fetch('/collections/all/products.json?limit=5')
+      fetch('/collections/all/products.json?limit=10')
         .then(response => response.json())
         .then(data => {
           console.log('🔍 Sample valid products from your store:');
@@ -1026,6 +1039,34 @@
             console.log(`  - ID: ${product.id}, Handle: "${product.handle}", Title: "${product.title}"`);
           });
           console.log('🔍 Try using these handles in your wishlist for testing');
+          
+          // Check if the problematic ID exists
+          const problematicId = '10236130623669';
+          const found = data.products.find(p => p.id.toString() === problematicId);
+          if (found) {
+            console.log(`✅ Found the problematic product: ${found.title} (${found.handle})`);
+          } else {
+            console.log(`❌ Product ID ${problematicId} not found in first 10 products`);
+            console.log('🔍 Let me search more products...');
+            return fetch('/collections/all/products.json?limit=50');
+          }
+        })
+        .then(response => {
+          if (response) {
+            return response.json();
+          }
+        })
+        .then(data => {
+          if (data) {
+            const problematicId = '10236130623669';
+            const found = data.products.find(p => p.id.toString() === problematicId);
+            if (found) {
+              console.log(`✅ Found the problematic product in extended search: ${found.title} (${found.handle})`);
+            } else {
+              console.log(`❌ Product ID ${problematicId} not found in first 50 products either`);
+              console.log('🔍 This product may be deleted, unpublished, or in a draft state');
+            }
+          }
         })
         .catch(error => {
           console.error('🔍 Error fetching products:', error);
