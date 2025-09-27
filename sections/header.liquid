@@ -186,22 +186,14 @@
               </div>
             </div>
           {% else %}
-            <div class="header__signin-group">
-              <a href="{{ routes.account_login_url }}" class="header__signin-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" stroke="currentColor" stroke-width="2"/>
-                  <polyline points="10,17 15,12 10,7" stroke="currentColor" stroke-width="2"/>
-                  <line x1="15" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"/>
-                </svg>
-                <span>{{ 'customer.login_page.title' | t }}</span>
-              </a>
-              
-              <span class="header__signin-divider">|</span>
-              
-              <a href="{{ routes.account_register_url }}" class="header__signup-btn">
-                {{ 'customer.register.title' | t }}
-              </a>
-            </div>
+            <a href="{{ routes.account_login_url }}" class="header__action-btn header__signin-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" stroke="currentColor" stroke-width="2"/>
+                <polyline points="10,17 15,12 10,7" stroke="currentColor" stroke-width="2"/>
+                <line x1="15" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <span class="header__action-text">{{ 'customer.login_page.title' | t }}</span>
+            </a>
           {% endif %}
         </div>
       {% endif %}
@@ -670,17 +662,11 @@
     margin: 8px 0;
   }
 
-  /* Sign In/Sign Up Group */
-  .header__signin-group {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
+  /* Sign In Button */
   .header__signin-btn {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.5rem;
     color: var(--color-foreground);
     text-decoration: none;
     font-weight: 500;
@@ -689,27 +675,6 @@
 
   .header__signin-btn:hover {
     color: var(--color-primary);
-  }
-
-  .header__signin-divider {
-    color: var(--color-foreground-secondary);
-    font-size: 0.875rem;
-  }
-
-  .header__signup-btn {
-    color: var(--color-primary);
-    text-decoration: none;
-    font-weight: 600;
-    padding: 8px 16px;
-    border: 1px solid var(--color-primary);
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    font-size: 0.875rem;
-  }
-
-  .header__signup-btn:hover {
-    background-color: var(--color-primary);
-    color: white;
   }
 
   @media (max-width: 480px) {
@@ -721,17 +686,8 @@
       padding: 0.25rem;
     }
 
-    .header__signin-group {
-      gap: 8px;
-    }
-
-    .header__signin-btn span {
+    .header__signin-btn .header__action-text {
       display: none;
-    }
-
-    .header__signup-btn {
-      padding: 6px 12px;
-      font-size: 0.75rem;
     }
 
     .header__account-dropdown {
