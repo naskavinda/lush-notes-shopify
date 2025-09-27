@@ -108,7 +108,7 @@
                     
                     <div class="customer-order__details">
                       <div class="customer-order__total">
-                        {{ 'customer.account.order_total' | t: total: order.total_price | money }}
+                        Total: {{ order.total_price | money }}
                       </div>
                       <a href="{{ order.customer_url }}" class="btn btn--outline btn--small">
                         {{ 'customer.account.view_order' | t }}
