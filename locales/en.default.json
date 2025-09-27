@@ -326,6 +326,7 @@
     "product": {
       "add_to_cart": "Add to Cart",
       "sold_out": "Sold Out",
+      "out_of_stock": "Out of Stock",
       "on_sale": "Sale",
       "quick_view": "Quick View",
       "add_to_wishlist": "Add to Wishlist",

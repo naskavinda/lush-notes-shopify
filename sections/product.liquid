@@ -98,9 +98,9 @@
                   <option
                     value="{{ variant.id }}"
                     {% if variant == current_variant %}selected="selected"{% endif %}
-                    {% unless variant.available %}disabled{% endunless %}
+                    data-available="{{ variant.available }}"
                   >
-                    {{ variant.title }} - {{ variant.price | money }}
+                    {{ variant.title }} - {{ variant.price | money }}{% unless variant.available %} ({{ 'products.product.out_of_stock' | t }}){% endunless %}
                   </option>
                 {% endfor %}
               </select>
@@ -249,15 +249,15 @@
     if (variantSelect) {
       variantSelect.addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
-        const isAvailable = !selectedOption.disabled;
+        const isAvailable = selectedOption.dataset.available === 'true';
         
         // Update add to cart button
         if (addToCartBtn) {
           addToCartBtn.disabled = !isAvailable;
-          addToCartBtn.textContent = isAvailable ? 'Add to Cart' : 'Sold Out';
+          addToCartBtn.textContent = isAvailable ? 'Add to Cart' : 'Out of Stock';
         }
         
-        console.log('Variant changed:', selectedOption.text);
+        console.log('Variant changed:', selectedOption.text, 'Available:', isAvailable);
       });
     }
     
