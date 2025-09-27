@@ -1,0 +1,497 @@
+<div class="customer-register">
+  <div class="customer-register__container">
+    <div class="customer-register__content">
+      <div class="customer-register__header">
+        <h1 class="customer-register__title">{{ 'customer.register.title' | t }}</h1>
+        <p class="customer-register__subtitle">{{ 'customer.register.subtitle' | t }}</p>
+      </div>
+
+      {% form 'create_customer', class: 'customer-register__form' %}
+        {% if form.errors %}
+          <div class="customer-register__errors">
+            <div class="form-errors">
+              <h2 class="form-errors__title">{{ 'customer.register.errors.title' | t }}</h2>
+              <ul class="form-errors__list">
+                {% for error in form.errors %}
+                  <li class="form-errors__item">
+                    {% case error %}
+                      {% when 'email' %}
+                        {{ 'customer.register.errors.email' | t }}
+                      {% when 'password' %}
+                        {{ 'customer.register.errors.password' | t }}
+                      {% when 'password_confirmation' %}
+                        {{ 'customer.register.errors.password_confirmation' | t }}
+                      {% when 'first_name' %}
+                        {{ 'customer.register.errors.first_name' | t }}
+                      {% when 'last_name' %}
+                        {{ 'customer.register.errors.last_name' | t }}
+                      {% else %}
+                        {{ error | capitalize }} {{ form.errors.messages[error] }}
+                    {% endcase %}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="customer-register__fields">
+          <div class="form-field-row">
+            <div class="form-field">
+              <label for="register-first-name" class="form-field__label">
+                {{ 'customer.register.first_name' | t }}
+                <span class="form-field__required">*</span>
+              </label>
+              <input
+                type="text"
+                id="register-first-name"
+                name="customer[first_name]"
+                class="form-field__input"
+                value="{{ form.first_name }}"
+                required
+                autocomplete="given-name"
+                placeholder="{{ 'customer.register.first_name_placeholder' | t }}"
+              >
+            </div>
+
+            <div class="form-field">
+              <label for="register-last-name" class="form-field__label">
+                {{ 'customer.register.last_name' | t }}
+                <span class="form-field__required">*</span>
+              </label>
+              <input
+                type="text"
+                id="register-last-name"
+                name="customer[last_name]"
+                class="form-field__input"
+                value="{{ form.last_name }}"
+                required
+                autocomplete="family-name"
+                placeholder="{{ 'customer.register.last_name_placeholder' | t }}"
+              >
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="register-email" class="form-field__label">
+              {{ 'customer.register.email' | t }}
+              <span class="form-field__required">*</span>
+            </label>
+            <input
+              type="email"
+              id="register-email"
+              name="customer[email]"
+              class="form-field__input"
+              value="{{ form.email }}"
+              required
+              autocomplete="email"
+              placeholder="{{ 'customer.register.email_placeholder' | t }}"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="register-password" class="form-field__label">
+              {{ 'customer.register.password' | t }}
+              <span class="form-field__required">*</span>
+            </label>
+            <div class="form-field__password-wrapper">
+              <input
+                type="password"
+                id="register-password"
+                name="customer[password]"
+                class="form-field__input form-field__password"
+                required
+                autocomplete="new-password"
+                placeholder="{{ 'customer.register.password_placeholder' | t }}"
+                minlength="5"
+              >
+              <button
+                type="button"
+                class="form-field__password-toggle"
+                aria-label="Show password"
+                data-password-toggle="register-password"
+              >
+                <svg class="password-toggle__show" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <svg class="password-toggle__hide" width="20" height="20" viewBox="0 0 24 24" fill="none" style="display: none">
+                  <path d="m1 1 22 22" stroke="currentColor" stroke-width="2"/>
+                  <path d="M6.71 6.71C5.68 7.74 4.83 8.9 4.27 10.18A11.94 11.94 0 0 0 2 12s4-8 11-8a10.09 10.09 0 0 1 2.88.41" stroke="currentColor" stroke-width="2"/>
+                  <path d="M14 14.24V14a2 2 0 0 0-2-2h-.24" stroke="currentColor" stroke-width="2"/>
+                  <path d="M17.29 17.29A10.09 10.09 0 0 1 12 20C5 20 1 12 1 12a11.94 11.94 0 0 1 5.73-7.76" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </button>
+            </div>
+            <div class="form-field__help">
+              {{ 'customer.register.password_help' | t }}
+            </div>
+          </div>
+
+          {% if shop.customer_accounts_optional %}
+            <div class="form-field form-field--checkbox">
+              <label class="form-field__checkbox-label">
+                <input
+                  type="checkbox"
+                  name="customer[accepts_marketing]"
+                  class="form-field__checkbox"
+                  {% if form.accepts_marketing %}checked{% endif %}
+                >
+                <span class="form-field__checkbox-custom"></span>
+                <span class="form-field__checkbox-text">
+                  {{ 'customer.register.accepts_marketing' | t }}
+                </span>
+              </label>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="customer-register__actions">
+          <button type="submit" class="btn btn--primary btn--full-width customer-register__submit">
+            {{ 'customer.register.submit' | t }}
+          </button>
+        </div>
+      {% endform %}
+
+      <div class="customer-register__login">
+        <p class="customer-register__login-text">
+          {{ 'customer.register.existing_customer' | t }}
+          <a href="{{ routes.account_login_url }}" class="customer-register__login-link">
+            {{ 'customer.register.sign_in' | t }}
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .customer-register {
+    padding: 60px 20px;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-background);
+  }
+
+  .customer-register__container {
+    max-width: 500px;
+    width: 100%;
+  }
+
+  .customer-register__content {
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .customer-register__header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .customer-register__title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--color-foreground);
+  }
+
+  .customer-register__subtitle {
+    color: var(--color-foreground-secondary);
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .customer-register__errors {
+    margin-bottom: 24px;
+  }
+
+  .form-errors {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .form-errors__title {
+    color: #dc2626;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+  }
+
+  .form-errors__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .form-errors__item {
+    color: #dc2626;
+    font-size: 0.875rem;
+  }
+
+  .customer-register__fields {
+    margin-bottom: 24px;
+  }
+
+  .form-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .form-field {
+    margin-bottom: 20px;
+  }
+
+  .form-field-row .form-field {
+    margin-bottom: 0;
+  }
+
+  .form-field__label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--color-foreground);
+    font-size: 0.875rem;
+  }
+
+  .form-field__required {
+    color: #dc2626;
+  }
+
+  .form-field__input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: white;
+  }
+
+  .form-field__input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .form-field__password-wrapper {
+    position: relative;
+  }
+
+  .form-field__password {
+    padding-right: 50px;
+  }
+
+  .form-field__password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-field__password-toggle:hover {
+    color: var(--color-foreground);
+  }
+
+  .form-field__help {
+    font-size: 0.75rem;
+    color: var(--color-foreground-secondary);
+    margin-top: 4px;
+  }
+
+  .form-field--checkbox {
+    margin-bottom: 24px;
+  }
+
+  .form-field__checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    font-size: 0.875rem;
+    gap: 12px;
+  }
+
+  .form-field__checkbox {
+    display: none;
+  }
+
+  .form-field__checkbox-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    background-color: white;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .form-field__checkbox:checked + .form-field__checkbox-custom {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .form-field__checkbox:checked + .form-field__checkbox-custom::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .form-field__checkbox-text {
+    color: var(--color-foreground-secondary);
+    line-height: 1.4;
+  }
+
+  .customer-register__actions {
+    margin-bottom: 32px;
+  }
+
+  .customer-register__login {
+    text-align: center;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .customer-register__login-text {
+    margin: 0;
+    color: var(--color-foreground-secondary);
+    font-size: 0.875rem;
+  }
+
+  .customer-register__login-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 4px;
+  }
+
+  .customer-register__login-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .customer-register {
+      padding: 40px 16px;
+    }
+
+    .customer-register__content {
+      padding: 24px;
+    }
+
+    .customer-register__title {
+      font-size: 1.75rem;
+    }
+
+    .form-field-row {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .form-field-row .form-field {
+      margin-bottom: 20px;
+    }
+
+    .form-field-row .form-field:last-child {
+      margin-bottom: 0;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  // Password toggle functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const passwordToggles = document.querySelectorAll('[data-password-toggle]');
+
+    passwordToggles.forEach(toggle => {
+      const targetId = toggle.getAttribute('data-password-toggle');
+      const passwordInput = document.getElementById(targetId);
+      const showIcon = toggle.querySelector('.password-toggle__show');
+      const hideIcon = toggle.querySelector('.password-toggle__hide');
+
+      if (passwordInput) {
+        toggle.addEventListener('click', function() {
+          const isPassword = passwordInput.type === 'password';
+          
+          passwordInput.type = isPassword ? 'text' : 'password';
+          showIcon.style.display = isPassword ? 'none' : 'block';
+          hideIcon.style.display = isPassword ? 'block' : 'none';
+          
+          toggle.setAttribute('aria-label', 
+            isPassword ? 'Hide password' : 'Show password'
+          );
+        });
+      }
+    });
+
+    // Password strength indicator (optional enhancement)
+    const passwordInput = document.getElementById('register-password');
+    if (passwordInput) {
+      passwordInput.addEventListener('input', function() {
+        const password = this.value;
+        const helpText = this.parentElement.nextElementSibling;
+        
+        if (password.length === 0) {
+          helpText.textContent = 'Minimum 5 characters required';
+          helpText.style.color = 'var(--color-foreground-secondary)';
+        } else if (password.length < 5) {
+          helpText.textContent = 'Password too short';
+          helpText.style.color = '#dc2626';
+        } else {
+          helpText.textContent = 'Password meets requirements';
+          helpText.style.color = '#16a34a';
+        }
+      });
+    }
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.customer_register.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.customer_register.settings.header_content"
+    },
+    {
+      "type": "text",
+      "id": "custom_title",
+      "label": "t:sections.customer_register.settings.custom_title.label",
+      "info": "t:sections.customer_register.settings.custom_title.info"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_subtitle",
+      "label": "t:sections.customer_register.settings.custom_subtitle.label",
+      "info": "t:sections.customer_register.settings.custom_subtitle.info"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.customer_register.presets.customer_register.name"
+    }
+  ]
+}
+{% endschema %}

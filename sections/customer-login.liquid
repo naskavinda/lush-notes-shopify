@@ -1,0 +1,490 @@
+<div class="customer-login">
+  <div class="customer-login__container">
+    <div class="customer-login__content">
+      <div class="customer-login__header">
+        <h1 class="customer-login__title">{{ 'customer.login.title' | t }}</h1>
+        <p class="customer-login__subtitle">{{ 'customer.login.subtitle' | t }}</p>
+      </div>
+
+      {% form 'customer_login', class: 'customer-login__form' %}
+        {% if form.errors %}
+          <div class="customer-login__errors">
+            <div class="form-errors">
+              <h2 class="form-errors__title">{{ 'customer.login.errors.title' | t }}</h2>
+              <ul class="form-errors__list">
+                {% for error in form.errors %}
+                  <li class="form-errors__item">
+                    {% if error == 'form' %}
+                      {{ 'customer.login.errors.invalid_credentials' | t }}
+                    {% else %}
+                      {{ error | capitalize }} {{ form.errors.messages[error] }}
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="customer-login__fields">
+          <div class="form-field">
+            <label for="customer-email" class="form-field__label">
+              {{ 'customer.login.email' | t }}
+              <span class="form-field__required">*</span>
+            </label>
+            <input
+              type="email"
+              id="customer-email"
+              name="customer[email]"
+              class="form-field__input"
+              value="{{ form.email }}"
+              required
+              autocomplete="email"
+              placeholder="{{ 'customer.login.email_placeholder' | t }}"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="customer-password" class="form-field__label">
+              {{ 'customer.login.password' | t }}
+              <span class="form-field__required">*</span>
+            </label>
+            <div class="form-field__password-wrapper">
+              <input
+                type="password"
+                id="customer-password"
+                name="customer[password]"
+                class="form-field__input form-field__password"
+                required
+                autocomplete="current-password"
+                placeholder="{{ 'customer.login.password_placeholder' | t }}"
+              >
+              <button
+                type="button"
+                class="form-field__password-toggle"
+                aria-label="{{ 'customer.login.show_password' | t }}"
+                data-password-toggle
+              >
+                <svg class="password-toggle__show" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <svg class="password-toggle__hide" width="20" height="20" viewBox="0 0 24 24" fill="none" style="display: none">
+                  <path d="m1 1 22 22" stroke="currentColor" stroke-width="2"/>
+                  <path d="M6.71 6.71C5.68 7.74 4.83 8.9 4.27 10.18A11.94 11.94 0 0 0 2 12s4-8 11-8a10.09 10.09 0 0 1 2.88.41" stroke="currentColor" stroke-width="2"/>
+                  <path d="M14 14.24V14a2 2 0 0 0-2-2h-.24" stroke="currentColor" stroke-width="2"/>
+                  <path d="M17.29 17.29A10.09 10.09 0 0 1 12 20C5 20 1 12 1 12a11.94 11.94 0 0 1 5.73-7.76" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="customer-login__actions">
+          <button type="submit" class="btn btn--primary btn--full-width customer-login__submit">
+            {{ 'customer.login.submit' | t }}
+          </button>
+
+          <div class="customer-login__forgot-password">
+            <a href="#recover" class="customer-login__forgot-link">
+              {{ 'customer.login.forgot_password' | t }}
+            </a>
+          </div>
+        </div>
+      {% endform %}
+
+      <div class="customer-login__register">
+        <p class="customer-login__register-text">
+          {{ 'customer.login.new_customer' | t }}
+          <a href="{{ routes.account_register_url }}" class="customer-login__register-link">
+            {{ 'customer.login.create_account' | t }}
+          </a>
+        </p>
+      </div>
+
+      <!-- Recover Password Form -->
+      <div id="recover-password" class="customer-recover" style="display: none;">
+        <div class="customer-recover__header">
+          <h2 class="customer-recover__title">{{ 'customer.recover.title' | t }}</h2>
+          <p class="customer-recover__subtitle">{{ 'customer.recover.subtitle' | t }}</p>
+        </div>
+
+        {% form 'recover_customer_password', class: 'customer-recover__form' %}
+          {% if form.posted_successfully? %}
+            <div class="customer-recover__success">
+              <p>{{ 'customer.recover.success' | t }}</p>
+            </div>
+          {% endif %}
+
+          {% if form.errors %}
+            <div class="customer-recover__errors">
+              <div class="form-errors">
+                <h3 class="form-errors__title">{{ 'customer.recover.errors.title' | t }}</h3>
+                <ul class="form-errors__list">
+                  {% for error in form.errors %}
+                    <li class="form-errors__item">{{ error | capitalize }} {{ form.errors.messages[error] }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          {% endif %}
+
+          <div class="form-field">
+            <label for="recover-email" class="form-field__label">
+              {{ 'customer.recover.email' | t }}
+              <span class="form-field__required">*</span>
+            </label>
+            <input
+              type="email"
+              id="recover-email"
+              name="email"
+              class="form-field__input"
+              required
+              autocomplete="email"
+              placeholder="{{ 'customer.recover.email_placeholder' | t }}"
+            >
+          </div>
+
+          <div class="customer-recover__actions">
+            <button type="submit" class="btn btn--primary btn--full-width">
+              {{ 'customer.recover.submit' | t }}
+            </button>
+
+            <button type="button" class="customer-recover__cancel" data-recover-cancel>
+              {{ 'customer.recover.cancel' | t }}
+            </button>
+          </div>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .customer-login {
+    padding: 60px 20px;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-background);
+  }
+
+  .customer-login__container {
+    max-width: 500px;
+    width: 100%;
+  }
+
+  .customer-login__content {
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .customer-login__header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .customer-login__title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--color-foreground);
+  }
+
+  .customer-login__subtitle {
+    color: var(--color-foreground-secondary);
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .customer-login__errors {
+    margin-bottom: 24px;
+  }
+
+  .form-errors {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .form-errors__title {
+    color: #dc2626;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+  }
+
+  .form-errors__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .form-errors__item {
+    color: #dc2626;
+    font-size: 0.875rem;
+  }
+
+  .customer-login__fields {
+    margin-bottom: 24px;
+  }
+
+  .form-field {
+    margin-bottom: 20px;
+  }
+
+  .form-field__label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--color-foreground);
+    font-size: 0.875rem;
+  }
+
+  .form-field__required {
+    color: #dc2626;
+  }
+
+  .form-field__input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background-color: white;
+  }
+
+  .form-field__input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .form-field__password-wrapper {
+    position: relative;
+  }
+
+  .form-field__password {
+    padding-right: 50px;
+  }
+
+  .form-field__password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-field__password-toggle:hover {
+    color: var(--color-foreground);
+  }
+
+  .customer-login__actions {
+    margin-bottom: 32px;
+  }
+
+  .customer-login__submit {
+    margin-bottom: 16px;
+  }
+
+  .customer-login__forgot-password {
+    text-align: center;
+  }
+
+  .customer-login__forgot-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .customer-login__forgot-link:hover {
+    text-decoration: underline;
+  }
+
+  .customer-login__register {
+    text-align: center;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .customer-login__register-text {
+    margin: 0;
+    color: var(--color-foreground-secondary);
+    font-size: 0.875rem;
+  }
+
+  .customer-login__register-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 4px;
+  }
+
+  .customer-login__register-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Recover Password Styles */
+  .customer-recover {
+    margin-top: 24px;
+  }
+
+  .customer-recover__header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .customer-recover__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--color-foreground);
+  }
+
+  .customer-recover__subtitle {
+    color: var(--color-foreground-secondary);
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  .customer-recover__success {
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    color: #166534;
+    text-align: center;
+  }
+
+  .customer-recover__errors {
+    margin-bottom: 24px;
+  }
+
+  .customer-recover__actions {
+    text-align: center;
+  }
+
+  .customer-recover__cancel {
+    background: none;
+    border: none;
+    color: var(--color-foreground-secondary);
+    cursor: pointer;
+    font-size: 0.875rem;
+    margin-top: 16px;
+    text-decoration: underline;
+  }
+
+  .customer-recover__cancel:hover {
+    color: var(--color-foreground);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .customer-login {
+      padding: 40px 16px;
+    }
+
+    .customer-login__content {
+      padding: 24px;
+    }
+
+    .customer-login__title {
+      font-size: 1.75rem;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  // Password toggle functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const passwordToggle = document.querySelector('[data-password-toggle]');
+    const passwordInput = document.getElementById('customer-password');
+    const showIcon = passwordToggle?.querySelector('.password-toggle__show');
+    const hideIcon = passwordToggle?.querySelector('.password-toggle__hide');
+
+    if (passwordToggle && passwordInput) {
+      passwordToggle.addEventListener('click', function() {
+        const isPassword = passwordInput.type === 'password';
+        
+        passwordInput.type = isPassword ? 'text' : 'password';
+        showIcon.style.display = isPassword ? 'none' : 'block';
+        hideIcon.style.display = isPassword ? 'block' : 'none';
+        
+        passwordToggle.setAttribute('aria-label', 
+          isPassword ? 'Hide password' : 'Show password'
+        );
+      });
+    }
+
+    // Recover password functionality
+    const recoverLinks = document.querySelectorAll('a[href="#recover"]');
+    const recoverForm = document.getElementById('recover-password');
+    const loginForm = document.querySelector('.customer-login__form').parentElement;
+    const cancelButton = document.querySelector('[data-recover-cancel]');
+
+    recoverLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        loginForm.style.display = 'none';
+        recoverForm.style.display = 'block';
+      });
+    });
+
+    if (cancelButton) {
+      cancelButton.addEventListener('click', function() {
+        recoverForm.style.display = 'none';
+        loginForm.style.display = 'block';
+      });
+    }
+
+    // Show recover form if there's a hash in URL
+    if (window.location.hash === '#recover') {
+      loginForm.style.display = 'none';
+      recoverForm.style.display = 'block';
+    }
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "t:sections.customer_login.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.customer_login.settings.header_content"
+    },
+    {
+      "type": "text",
+      "id": "custom_title",
+      "label": "t:sections.customer_login.settings.custom_title.label",
+      "info": "t:sections.customer_login.settings.custom_title.info"
+    },
+    {
+      "type": "textarea",
+      "id": "custom_subtitle",
+      "label": "t:sections.customer_login.settings.custom_subtitle.label",
+      "info": "t:sections.customer_login.settings.custom_subtitle.info"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.customer_login.presets.customer_login.name"
+    }
+  ]
+}
+{% endschema %}

@@ -61,10 +61,86 @@
   },
   "customer": {
     "account": {
-      "title": "Account"
+      "title": "Account",
+      "welcome": "Welcome back, {{ first_name }}!",
+      "profile": "Profile",
+      "orders": "Orders",
+      "addresses": "Addresses",
+      "logout": "Sign Out",
+      "profile_info": "Profile Information",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "order_history": "Order History",
+      "order_number": "Order {{ number }}",
+      "order_total": "Total: {{ total }}",
+      "view_order": "View Order",
+      "no_orders": "You haven't placed any orders yet.",
+      "start_shopping": "Start Shopping",
+      "address_book": "Address Book",
+      "default_address": "Default Address",
+      "edit_address": "Edit Address",
+      "no_addresses": "You haven't added any addresses yet.",
+      "add_address": "Add New Address"
     },
     "login_page": {
       "title": "Sign In"
+    },
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your account to continue",
+      "email": "Email Address",
+      "email_placeholder": "Enter your email",
+      "password": "Password",
+      "password_placeholder": "Enter your password",
+      "show_password": "Show password",
+      "hide_password": "Hide password",
+      "submit": "Sign In",
+      "forgot_password": "Forgot your password?",
+      "new_customer": "New customer?",
+      "create_account": "Create an account",
+      "errors": {
+        "title": "Please correct the following errors:",
+        "invalid_credentials": "Invalid email or password. Please try again."
+      }
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Join us to start your fragrance journey",
+      "first_name": "First Name",
+      "first_name_placeholder": "Enter your first name",
+      "last_name": "Last Name",
+      "last_name_placeholder": "Enter your last name",
+      "email": "Email Address",
+      "email_placeholder": "Enter your email",
+      "password": "Password",
+      "password_placeholder": "Create a password",
+      "password_help": "Minimum 5 characters required",
+      "accepts_marketing": "I would like to receive marketing emails about new products and offers",
+      "submit": "Create Account",
+      "existing_customer": "Already have an account?",
+      "sign_in": "Sign in here",
+      "errors": {
+        "title": "Please fix the following errors:",
+        "email": "Please enter a valid email address",
+        "password": "Password must be at least 5 characters long",
+        "password_confirmation": "Passwords do not match",
+        "first_name": "Please enter your first name",
+        "last_name": "Please enter your last name"
+      }
+    },
+    "recover": {
+      "title": "Reset Password",
+      "subtitle": "We'll send you an email to reset your password",
+      "email": "Email Address",
+      "email_placeholder": "Enter your email",
+      "submit": "Send Reset Email",
+      "cancel": "Back to Sign In",
+      "success": "We've sent you an email with instructions to reset your password",
+      "errors": {
+        "title": "Please correct the following:"
+      }
     }
   },
   "customers": {
@@ -293,6 +369,61 @@
       "presets": {
         "weekly_offers": {
           "name": "Weekly Offers"
+        }
+      }
+    },
+    "customer_login": {
+      "name": "Customer Login",
+      "settings": {
+        "header_content": "Content",
+        "custom_title": {
+          "label": "Custom title",
+          "info": "Leave blank to use default title"
+        },
+        "custom_subtitle": {
+          "label": "Custom subtitle",
+          "info": "Leave blank to use default subtitle"
+        }
+      },
+      "presets": {
+        "customer_login": {
+          "name": "Customer Login"
+        }
+      }
+    },
+    "customer_register": {
+      "name": "Customer Register",
+      "settings": {
+        "header_content": "Content",
+        "custom_title": {
+          "label": "Custom title",
+          "info": "Leave blank to use default title"
+        },
+        "custom_subtitle": {
+          "label": "Custom subtitle",
+          "info": "Leave blank to use default subtitle"
+        }
+      },
+      "presets": {
+        "customer_register": {
+          "name": "Customer Register"
+        }
+      }
+    },
+    "customer_account": {
+      "name": "Customer Account",
+      "settings": {
+        "header_display": "Display Options",
+        "show_order_history": {
+          "label": "Show order history"
+        },
+        "show_address_book": {
+          "label": "Show address book"
+        }
+      },
+      "presets": {
+        "customer_account": {
+          "name": "Customer Account"
         }
       }
     },
