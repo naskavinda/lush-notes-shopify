@@ -384,9 +384,13 @@
         const cachedProducts = [];
         const productsToFetch = [];
 
-        wishlist.forEach(item => {
-          if (typeof item === 'object' && item.handle && item.title) {
-            // Already has product data
+        console.log('🔄 Processing wishlist items:', wishlist);
+
+        wishlist.forEach((item, index) => {
+          console.log(`📋 Processing item ${index + 1}:`, item);
+          
+          if (typeof item === 'object' && item.title) {
+            // Already has product data - use it directly
             cachedProducts.push(item);
             console.log('✅ Using cached product data:', item.title);
           } else {
@@ -394,9 +398,14 @@
             const identifier = typeof item === 'string' ? item : (item.handle || item.id);
             if (identifier) {
               productsToFetch.push(identifier);
+              console.log('🔍 Will fetch product:', identifier);
+            } else {
+              console.warn('⚠️ Invalid wishlist item:', item);
             }
           }
         });
+
+        console.log('📊 Summary - Cached:', cachedProducts.length, 'To fetch:', productsToFetch.length);
 
         // Fetch missing products
         let fetchedProducts = [];
@@ -409,7 +418,12 @@
         const allProducts = [...cachedProducts, ...fetchedProducts];
         console.log('📊 Total products to render:', allProducts.length);
 
-        this.renderProducts(allProducts);
+        if (allProducts.length > 0) {
+          this.renderProducts(allProducts);
+        } else {
+          console.warn('⚠️ No products to render');
+          this.renderProducts([]);
+        }
       } catch (error) {
         console.error('🚨 Error loading wishlist products:', error);
         productsContainer.innerHTML = `
@@ -467,12 +481,23 @@
 
     renderProducts(products) {
       const productsContainer = document.getElementById('wishlist-products');
+      const emptyState = document.getElementById('wishlist-empty');
       
       console.log('🎨 Rendering products:', products);
+      console.log('📍 Container found:', !!productsContainer);
+      console.log('📍 Empty state found:', !!emptyState);
+      
+      if (!productsContainer) {
+        console.error('❌ Products container not found!');
+        return;
+      }
       
       if (products.length === 0) {
         const wishlist = this.getWishlist();
+        console.log('📊 No products to show. Wishlist has', wishlist.length, 'items');
+        
         if (wishlist.length > 0) {
+          // Show error message for failed product loading
           productsContainer.innerHTML = `
             <div style="text-align: center; color: #666; padding: 4rem 2rem; grid-column: 1 / -1;">
               <h3>Products Not Found</h3>
@@ -483,33 +508,60 @@
                 <li>There's a connection issue</li>
               </ul>
               <div style="margin-top: 2rem;">
-                <button onclick="window.refreshWishlist()" style="margin-right: 1rem; padding: 0.75rem 1.5rem; background: #ff6b35; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                <button onclick="window.wishlistManager.loadWishlistProducts()" style="margin-right: 1rem; padding: 0.75rem 1.5rem; background: #ff6b35; color: white; border: none; border-radius: 4px; cursor: pointer;">
                   Try Again
                 </button>
-                <button onclick="localStorage.removeItem('product-wishlist'); location.reload()" style="padding: 0.75rem 1.5rem; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                <button onclick="WishlistDebug.addTestProduct()" style="margin-right: 1rem; padding: 0.75rem 1.5rem; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                  Add Test Product
+                </button>
+                <button onclick="WishlistDebug.clearWishlist()" style="padding: 0.75rem 1.5rem; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">
                   Clear Wishlist
                 </button>
               </div>
             </div>
           `;
+          productsContainer.style.display = 'grid';
+          if (emptyState) emptyState.style.display = 'none';
         } else {
-          // Update empty state to be visible
-          const emptyState = document.getElementById('wishlist-empty');
+          // Show empty state
+          productsContainer.style.display = 'none';
           if (emptyState) {
             emptyState.style.display = 'block';
+          } else {
+            console.warn('⚠️ Empty state element not found');
           }
-          productsContainer.style.display = 'none';
         }
         return;
       }
 
-      const productsHTML = products.map(product => this.getProductHTML(product)).join('');
-      productsContainer.innerHTML = productsHTML;
+      // Render products
+      try {
+        const productsHTML = products.map((product, index) => {
+          console.log(`🎨 Rendering product ${index + 1}:`, product.title || product.handle || product.id);
+          return this.getProductHTML(product);
+        }).join('');
+        
+        productsContainer.innerHTML = productsHTML;
+        productsContainer.style.display = 'grid';
+        if (emptyState) emptyState.style.display = 'none';
 
-      // Bind event listeners
-      this.bindProductEvents();
-      
-      console.log('✅ Products rendered successfully!', products.length, 'products');
+        // Bind event listeners
+        this.bindProductEvents();
+        
+        console.log('✅ Products rendered successfully!', products.length, 'products');
+      } catch (error) {
+        console.error('🚨 Error rendering products:', error);
+        productsContainer.innerHTML = `
+          <div style="text-align: center; color: #d32f2f; padding: 4rem 2rem; grid-column: 1 / -1;">
+            <h3>Rendering Error</h3>
+            <p>There was an error displaying your wishlist products.</p>
+            <pre style="background: #f5f5f5; padding: 1rem; margin: 1rem 0; text-align: left; font-size: 0.9rem;">${error.message}</pre>
+            <button onclick="console.log('Products data:', ${JSON.stringify(products)})" style="margin-right: 1rem; padding: 0.75rem 1.5rem; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer;">
+              Debug Info
+            </button>
+          </div>
+        `;
+      }
     }
 
     getProductHTML(product) {
@@ -724,7 +776,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     console.log('🔧 DOM loaded, initializing wishlist manager...');
     
-    // Debug: Check if we're on the wishlist page
+    // Always initialize, but add extra debugging for wishlist page
     if (window.location.pathname.includes('wishlist')) {
       console.log('📍 On wishlist page, starting initialization...');
       
@@ -744,13 +796,31 @@
           });
         } else {
           console.log('❌ No wishlist data found in localStorage');
+          console.log('🧪 Creating test data for debugging...');
+          
+          // Add some test data for debugging
+          const testWishlist = [{
+            id: 'test-1',
+            handle: 'test-product',
+            title: 'Test Product',
+            image: '/assets/hero.png',
+            price: 2500,
+            compare_at_price: 3000,
+            available: true,
+            variants: [{ id: 'test-variant-1', available: true, price: 2500 }]
+          }];
+          
+          localStorage.setItem('product-wishlist', JSON.stringify(testWishlist));
+          console.log('🧪 Test data added to localStorage');
         }
       } catch (e) {
         console.error('🚨 Error reading wishlist from localStorage:', e);
       }
     }
     
-    new WishlistManager();
+    // Always create the manager
+    const manager = new WishlistManager();
+    window.wishlistManager = manager; // Make globally available for debugging
   });
 
   // Add a manual refresh function for debugging
