@@ -370,8 +370,21 @@
 
     init() {
       console.log('🚀 Initializing wishlist page...');
+      
+      // Debug localStorage content
+      const rawData = localStorage.getItem(this.wishlistKey);
+      console.log('🔍 Raw localStorage data:', rawData);
+      
       const wishlist = this.getWishlist();
       console.log('💝 Current wishlist items:', wishlist);
+      console.log('💝 Number of items:', wishlist.length);
+      
+      if (wishlist.length > 0) {
+        wishlist.forEach((item, index) => {
+          console.log(`💝 Item ${index + 1}:`, typeof item, item);
+        });
+      }
+      
       this.loadWishlistProducts();
     }
 
@@ -494,6 +507,8 @@
       // Try to fetch each product individually using product handles/IDs
       for (const productId of productIds) {
         try {
+          console.log(`🔍 Attempting to fetch product: "${productId}" (type: ${typeof productId})`);
+          
           // Check cache first
           if (this.productsCache.has(productId)) {
             products.push(this.productsCache.get(productId));
@@ -501,21 +516,48 @@
             continue;
           }
 
-          // Method 1: Try fetching as product handle first (most common storage method)
-          let response = await fetch(`/products/${productId}.js`);
-          
-          if (!response.ok && !productId.includes('-')) {
-            // Method 2: If it's a numeric ID, try direct ID access
-            response = await fetch(`/products/${productId}.js`);
+          // Try multiple methods to fetch the product
+          let response = null;
+          let fetchUrl = null;
+
+          // Method 1: Try as product handle (most common)
+          fetchUrl = `/products/${productId}.js`;
+          console.log(`🔍 Method 1 - Trying URL: ${fetchUrl}`);
+          response = await fetch(fetchUrl);
+          console.log(`🔍 Method 1 - Response status: ${response.status}`);
+
+          // Method 2: If failed and looks like a numeric ID, try different approaches
+          if (!response.ok && /^\d+$/.test(productId)) {
+            console.log(`🔍 Method 2 - Numeric ID detected, trying alternative approaches`);
+            
+            // Try the products API with numeric ID
+            fetchUrl = `/products/${productId}.js`;
+            response = await fetch(fetchUrl);
+            console.log(`🔍 Method 2a - Response status: ${response.status}`);
+          }
+
+          // Method 3: If still failed, try to find by searching (fallback)
+          if (!response.ok) {
+            console.log(`🔍 Method 3 - Trying search approach for: ${productId}`);
+            
+            // Try with collection/products endpoint (some stores structure differently)
+            try {
+              fetchUrl = `/collections/all/products/${productId}.js`;
+              response = await fetch(fetchUrl);
+              console.log(`🔍 Method 3 - Collection-based fetch status: ${response.status}`);
+            } catch (e) {
+              console.log(`🔍 Method 3 - Collection-based fetch failed:`, e.message);
+            }
           }
           
           if (response.ok) {
             const product = await response.json();
-            console.log('✅ Successfully fetched product:', product.title || product.handle);
+            console.log('✅ Successfully fetched product:', product.title || product.handle, 'with ID:', product.id);
             this.productsCache.set(productId, product);
             products.push(product);
           } else {
             console.warn('❌ Product not found for ID/handle:', productId, 'Status:', response.status);
+            console.warn('❌ Full response:', response);
           }
         } catch (error) {
           console.error(`🚨 Error fetching product ${productId}:`, error);
@@ -919,6 +961,106 @@
     } catch (error) {
       console.error('❌ Failed to create wishlist manager:', error);
       return null;
+    }
+  };
+
+  // Debug utilities
+  window.WishlistDebug = {
+    showLocalStorage() {
+      const rawData = localStorage.getItem('lush_wishlist');
+      console.log('🔍 localStorage data:', rawData);
+      if (rawData) {
+        try {
+          const parsed = JSON.parse(rawData);
+          console.log('🔍 Parsed data:', parsed);
+          return parsed;
+        } catch (e) {
+          console.error('🚨 Parse error:', e);
+          return null;
+        }
+      }
+      return null;
+    },
+
+    clearWishlist() {
+      localStorage.removeItem('lush_wishlist');
+      console.log('🧹 Wishlist cleared');
+      if (window.wishlistManager) {
+        window.wishlistManager.loadWishlistProducts();
+      }
+    },
+
+    addTestProduct() {
+      // Try to add a real product from your store
+      const testProductHandle = 'test-product'; // This should be a real product handle from your store
+      window.addToWishlist(testProductHandle);
+      console.log('✅ Added test product:', testProductHandle);
+    },
+
+    testFetch(productId) {
+      console.log(`🔍 Testing fetch for: ${productId}`);
+      fetch(`/products/${productId}.js`)
+        .then(response => {
+          console.log('🔍 Fetch response status:', response.status);
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error(`HTTP ${response.status}`);
+          }
+        })
+        .then(data => {
+          console.log('🔍 Fetch response data:', data);
+        })
+        .catch(error => {
+          console.error('🔍 Fetch error:', error);
+        });
+    },
+
+    // Get the first few products from collections to see what valid handles look like
+    getValidProducts() {
+      fetch('/collections/all/products.json?limit=5')
+        .then(response => response.json())
+        .then(data => {
+          console.log('🔍 Sample valid products from your store:');
+          data.products.forEach(product => {
+            console.log(`  - ID: ${product.id}, Handle: "${product.handle}", Title: "${product.title}"`);
+          });
+          console.log('🔍 Try using these handles in your wishlist for testing');
+        })
+        .catch(error => {
+          console.error('🔍 Error fetching products:', error);
+        });
+    },
+
+    // Force reload with different data format
+    fixDataFormat() {
+      console.log('🔧 Attempting to fix data format...');
+      const rawData = localStorage.getItem('lush_wishlist');
+      if (rawData) {
+        try {
+          const parsed = JSON.parse(rawData);
+          console.log('🔧 Current data:', parsed);
+          
+          // Convert old format to new format if needed
+          const fixed = parsed.map(item => {
+            if (typeof item === 'string') {
+              return item; // Keep strings as-is
+            } else if (typeof item === 'object' && item.id) {
+              return String(item.id); // Convert object with ID to string ID
+            }
+            return item;
+          });
+          
+          localStorage.setItem('lush_wishlist', JSON.stringify(fixed));
+          console.log('🔧 Fixed data format:', fixed);
+          
+          if (window.wishlistManager) {
+            window.wishlistManager.loadWishlistProducts();
+          }
+        } catch (e) {
+          console.error('🔧 Error fixing format:', e);
+        }
+      }
     }
   };
 {% endjavascript %}
