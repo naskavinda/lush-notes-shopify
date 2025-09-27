@@ -3,30 +3,9 @@
   This is a workaround when you can't create a page in Shopify admin
 {% endcomment %}
 
-<div class="collection-header">
-  <h1 class="collection-title">{{ 'general.wishlist.title' | t }}</h1>
-  <p class="collection-description">{{ 'general.wishlist.empty_description' | t }}</p>
+<div class="collection-header" style="text-align: center; padding: 2rem 1rem; max-width: 1200px; margin: 0 auto;">
+  <h1 class="collection-title" style="font-size: 2.5rem; margin-bottom: 1rem; color: #333;">{{ 'general.wishlist.title' | t }}</h1>
+  <p class="collection-description" style="font-size: 1.1rem; color: #666; margin-bottom: 2rem;">{{ 'general.wishlist.empty_description' | t }}</p>
 </div>
 
 {% section 'wishlist' %}
-
-{% stylesheet %}
-  .collection-header {
-    text-align: center;
-    padding: 2rem 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .collection-title {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: #333;
-  }
-  
-  .collection-description {
-    font-size: 1.1rem;
-    color: #666;
-    margin-bottom: 2rem;
-  }
-{% endstylesheet %}
