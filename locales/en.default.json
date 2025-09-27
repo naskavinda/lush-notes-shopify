@@ -89,6 +89,29 @@
       "no_addresses": "You haven't added any addresses yet.",
       "add_address": "Add New Address"
     },
+    "order": {
+      "return_to_account": "Return to Account page",
+      "title": "Order {{ name }}",
+      "date": "Placed on {{ date }}",
+      "payment_status": "Payment Status",
+      "fulfillment_status": "Fulfillment Status",
+      "unfulfilled": "Unfulfilled",
+      "items": "Order Items",
+      "product": "Product",
+      "sku": "SKU",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "summary": "Order Summary",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "shipping": "Shipping",
+      "billing_address": "Billing Address",
+      "shipping_address": "Shipping Address",
+      "contact_shop": "Need Help?",
+      "contact_text": "If you have any questions about your order, please contact us.",
+      "contact_button": "Contact Shop Owner"
+    },
     "login_page": {
       "title": "Sign In"
     },
