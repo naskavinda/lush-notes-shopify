@@ -83,7 +83,12 @@
                 {% endif %}
               </div>
 
-              <div class="cart-item__remove">
+              <div class="cart-item__actions">
+                <button type="button" class="cart-item__wishlist" data-product-id="{{ item.product.id }}" aria-label="{{ 'products.product.add_to_wishlist' | t }}">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+                </button>
                 <button type="button" class="remove-item" data-href="{{ item.url_to_remove }}">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14"/>
@@ -325,10 +330,41 @@
     margin-top: 0.25rem;
   }
 
-  .cart-item__remove {
+  .cart-item__actions {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .cart-item__wishlist {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: #999;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+  }
+
+  .cart-item__wishlist:hover {
+    color: #ff6b35;
+    background: rgba(255, 107, 53, 0.1);
+  }
+
+  .cart-item__wishlist.in-wishlist {
+    color: #ff6b35;
+    background: rgba(255, 107, 53, 0.1);
+  }
+
+  .cart-item__wishlist.in-wishlist svg {
+    fill: #ff6b35;
+    stroke: #ff6b35;
+  }
+
+  .cart-item__wishlist.in-wishlist:hover {
+    color: #e55a2b;
+    background: rgba(255, 107, 53, 0.2);
   }
 
   .remove-item {
@@ -338,10 +374,12 @@
     padding: 0.5rem;
     color: #999;
     transition: color 0.2s ease;
+    border-radius: 6px;
   }
 
   .remove-item:hover {
     color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
   }
 
   .cart-summary {
@@ -478,6 +516,29 @@
     margin: 1rem 0 0 0;
   }
 
+  /* Toast notification styles */
+  .cart-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+
+  .cart-toast.show {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
   /* Mobile Responsive */
   @media (max-width: 768px) {
     .cart-page {
@@ -511,7 +572,7 @@
 
     .cart-item__quantity,
     .cart-item__price,
-    .cart-item__remove {
+    .cart-item__actions {
       grid-column: 1 / -1;
       justify-self: start;
     }
@@ -549,6 +610,10 @@
           this.handleCheckout(action);
         });
       }
+
+      // Wishlist functionality
+      this.initWishlist();
+
       // Quantity controls
       document.querySelectorAll('.quantity-decrease').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -652,6 +717,109 @@
           window.location.href = '/checkout';
         }, 300);
       }
+    }
+
+    initWishlist() {
+      const wishlistKey = 'product-wishlist';
+      
+      // Get wishlist from localStorage
+      const getWishlist = () => {
+        try {
+          return JSON.parse(localStorage.getItem(wishlistKey)) || [];
+        } catch (e) {
+          return [];
+        }
+      };
+
+      // Save wishlist to localStorage
+      const saveWishlist = (wishlist) => {
+        localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+      };
+
+      // Check if product is in wishlist
+      const isInWishlist = (productId) => {
+        return getWishlist().includes(String(productId));
+      };
+
+      // Toggle product in/out of wishlist
+      const toggleWishlist = (productId) => {
+        let wishlist = getWishlist();
+        const productIdStr = String(productId);
+        
+        if (wishlist.includes(productIdStr)) {
+          wishlist = wishlist.filter(id => id !== productIdStr);
+        } else {
+          wishlist.push(productIdStr);
+        }
+        
+        saveWishlist(wishlist);
+        this.updateWishlistButtons();
+        
+        // Dispatch custom event for header count update
+        window.dispatchEvent(new Event('wishlistUpdated'));
+        
+        return !isInWishlist(productId);
+      };
+
+      // Update all wishlist button states
+      this.updateWishlistButtons = () => {
+        const wishlistButtons = document.querySelectorAll('.cart-item__wishlist');
+        
+        wishlistButtons.forEach(button => {
+          const productId = button.dataset.productId;
+          if (productId) {
+            const inWishlist = isInWishlist(productId);
+            button.classList.toggle('in-wishlist', inWishlist);
+            
+            // Update aria-label
+            const addText = 'Add to wishlist';
+            const removeText = 'Remove from wishlist';
+            button.setAttribute('aria-label', inWishlist ? removeText : addText);
+          }
+        });
+      };
+
+      // Add click listeners to wishlist buttons
+      document.addEventListener('click', (e) => {
+        const wishlistButton = e.target.closest('.cart-item__wishlist');
+        if (wishlistButton) {
+          e.preventDefault();
+          const productId = wishlistButton.dataset.productId;
+          if (productId) {
+            const wasAdded = toggleWishlist(productId);
+            
+            // Show feedback
+            const message = wasAdded ? 'Added to wishlist' : 'Removed from wishlist';
+            this.showToast(message);
+          }
+        }
+      });
+
+      // Initialize wishlist button states
+      this.updateWishlistButtons();
+    }
+
+    showToast(message) {
+      // Create toast notification
+      const toast = document.createElement('div');
+      toast.className = 'cart-toast';
+      toast.textContent = message;
+      
+      // Add toast to page
+      document.body.appendChild(toast);
+      
+      // Show toast
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 100);
+      
+      // Remove toast after 3 seconds
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          document.body.removeChild(toast);
+        }, 300);
+      }, 3000);
     }
   }
 

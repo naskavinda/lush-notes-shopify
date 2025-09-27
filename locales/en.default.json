@@ -23,7 +23,17 @@
       "title": "Search"
     },
     "wishlist": {
-      "title": "Wishlist"
+      "title": "Wishlist",
+      "added": "Added to wishlist",
+      "removed": "Removed from wishlist",
+      "empty_title": "Your wishlist is empty",
+      "empty_description": "Save items you love for later",
+      "view_wishlist": "View wishlist",
+      "items": {
+        "one": "{{ count }} item",
+        "other": "{{ count }} items"
+      },
+      "start_shopping": "Start Shopping"
     }
   },
   "labels": {

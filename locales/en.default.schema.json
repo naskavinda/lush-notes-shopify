@@ -31,7 +31,10 @@
     "sidebar": "Sidebar",
     "text": "Text",
     "theme": "Theme",
-    "typography": "Typography"
+    "typography": "Typography",
+    "wishlist": {
+      "title": "Wishlist"
+    }
   },
   "labels": {
     "alignment": "Alignment",
@@ -237,6 +240,15 @@
       "presets": {
         "customer_account": {
           "name": "Customer Account"
+        }
+      }
+    },
+    "wishlist": {
+      "name": "Wishlist",
+      "settings": {
+        "header": "Wishlist Settings",
+        "show_vendor": {
+          "label": "Show vendor"
         }
       }
     }

@@ -205,11 +205,14 @@
       {% endif %}
 
       <!-- Wishlist -->
-      <button class="header__action-btn header__wishlist-btn" type="button" aria-label="{{ 'general.wishlist.title' | t }}">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2"/>
-        </svg>
-      </button>
+      <a href="/pages/wishlist" class="header__action-btn header__wishlist-btn" aria-label="{{ 'general.wishlist.title' | t }}">
+        <div class="header__wishlist-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span class="header__wishlist-count" style="display: none;">0</span>
+        </div>
+      </a>
 
       <!-- Cart -->
       <button class="header__action-btn header__cart-btn" data-cart-drawer-open aria-label="{{ 'cart.title' | t }}">
@@ -423,6 +426,29 @@
   }
 
   .header__cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff6b35;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.15rem 0.4rem;
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  /* Wishlist */
+  .header__wishlist-icon {
+    position: relative;
+  }
+
+  .header__wishlist-count {
     position: absolute;
     top: -8px;
     right: -8px;
@@ -808,6 +834,35 @@
         }
       });
     }
+
+    // Wishlist count functionality
+    function updateWishlistCount() {
+      try {
+        const wishlist = JSON.parse(localStorage.getItem('product-wishlist')) || [];
+        const countElement = document.querySelector('.header__wishlist-count');
+        
+        if (countElement) {
+          const count = wishlist.length;
+          countElement.textContent = count;
+          countElement.style.display = count > 0 ? 'flex' : 'none';
+        }
+      } catch (e) {
+        console.error('Error updating wishlist count:', e);
+      }
+    }
+
+    // Initialize wishlist count
+    updateWishlistCount();
+
+    // Listen for localStorage changes (for cross-tab updates)
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'product-wishlist') {
+        updateWishlistCount();
+      }
+    });
+
+    // Custom event listener for wishlist updates within the same tab
+    window.addEventListener('wishlistUpdated', updateWishlistCount);
   });
 {% endjavascript %}
 

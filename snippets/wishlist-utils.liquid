@@ -1,0 +1,264 @@
+{% doc %}
+  Provides centralized wishlist functionality for the theme.
+  This snippet handles localStorage operations, button state management,
+  and cross-component wishlist updates.
+
+  Usage: Include this snippet in any template or section that needs wishlist functionality.
+  {% render 'wishlist-utils' %}
+
+  The snippet provides a global WishlistUtils object with these methods:
+  - WishlistUtils.getWishlist() - Get current wishlist from localStorage
+  - WishlistUtils.saveWishlist(wishlist) - Save wishlist to localStorage
+  - WishlistUtils.isInWishlist(productId) - Check if product is in wishlist
+  - WishlistUtils.toggleWishlist(productId) - Toggle product in/out of wishlist
+  - WishlistUtils.updateAllButtons() - Update all wishlist button states on the page
+  - WishlistUtils.dispatchUpdate() - Dispatch wishlist update event for cross-component sync
+
+  @example
+  {% render 'wishlist-utils' %}
+
+  <script>
+  // Add product to wishlist
+  WishlistUtils.toggleWishlist('123456789');
+  
+  // Check if product is in wishlist
+  if (WishlistUtils.isInWishlist('123456789')) {
+    console.log('Product is in wishlist');
+  }
+  </script>
+{% enddoc %}
+
+{% javascript %}
+  // Global wishlist utility - only initialize once
+  if (typeof window.WishlistUtils === 'undefined') {
+    window.WishlistUtils = {
+      wishlistKey: 'product-wishlist',
+      
+      // Get wishlist from localStorage
+      getWishlist: function() {
+        try {
+          return JSON.parse(localStorage.getItem(this.wishlistKey)) || [];
+        } catch (e) {
+          console.error('Error reading wishlist from localStorage:', e);
+          return [];
+        }
+      },
+
+      // Save wishlist to localStorage
+      saveWishlist: function(wishlist) {
+        try {
+          localStorage.setItem(this.wishlistKey, JSON.stringify(wishlist));
+          this.dispatchUpdate();
+        } catch (e) {
+          console.error('Error saving wishlist to localStorage:', e);
+        }
+      },
+
+      // Check if product is in wishlist
+      isInWishlist: function(productId) {
+        return this.getWishlist().includes(String(productId));
+      },
+
+      // Toggle product in/out of wishlist
+      toggleWishlist: function(productId) {
+        let wishlist = this.getWishlist();
+        const productIdStr = String(productId);
+        
+        if (wishlist.includes(productIdStr)) {
+          wishlist = wishlist.filter(id => id !== productIdStr);
+          console.log('💔 Removed from wishlist:', productIdStr);
+        } else {
+          wishlist.push(productIdStr);
+          console.log('💖 Added to wishlist:', productIdStr);
+        }
+        
+        this.saveWishlist(wishlist);
+        this.updateAllButtons();
+        return !this.isInWishlist(productId);
+      },
+
+      // Add product to wishlist
+      addToWishlist: function(productId) {
+        if (!this.isInWishlist(productId)) {
+          let wishlist = this.getWishlist();
+          wishlist.push(String(productId));
+          this.saveWishlist(wishlist);
+          this.updateAllButtons();
+          return true;
+        }
+        return false;
+      },
+
+      // Remove product from wishlist
+      removeFromWishlist: function(productId) {
+        if (this.isInWishlist(productId)) {
+          let wishlist = this.getWishlist();
+          wishlist = wishlist.filter(id => id !== String(productId));
+          this.saveWishlist(wishlist);
+          this.updateAllButtons();
+          return true;
+        }
+        return false;
+      },
+
+      // Update all wishlist button states on the page
+      updateAllButtons: function() {
+        const selectors = [
+          '.product-card__wishlist',
+          '.product-card__wishlist-btn', 
+          '.cart-item__wishlist',
+          '.wishlist-btn',
+          '.wishlist-product__remove'
+        ];
+        
+        selectors.forEach(selector => {
+          const buttons = document.querySelectorAll(selector);
+          buttons.forEach(button => this.updateButton(button));
+        });
+      },
+
+      // Update a single wishlist button state
+      updateButton: function(button) {
+        if (!button) return;
+        
+        const productId = button.dataset.productId || 
+                         button.closest('[data-product-id]')?.dataset.productId;
+        
+        if (productId) {
+          const inWishlist = this.isInWishlist(productId);
+          button.classList.toggle('in-wishlist', inWishlist);
+          
+          // Update aria-label
+          const addText = 'Add to wishlist';
+          const removeText = 'Remove from wishlist';
+          button.setAttribute('aria-label', inWishlist ? removeText : addText);
+          
+          // Update SVG fill for active state
+          const svg = button.querySelector('svg');
+          if (svg && inWishlist) {
+            svg.style.fill = 'currentColor';
+          } else if (svg) {
+            svg.style.fill = 'none';
+          }
+        }
+      },
+
+      // Dispatch update event for cross-component synchronization
+      dispatchUpdate: function() {
+        window.dispatchEvent(new Event('wishlistUpdated'));
+      },
+
+      // Get wishlist count
+      getCount: function() {
+        return this.getWishlist().length;
+      },
+
+      // Clear entire wishlist
+      clearWishlist: function() {
+        this.saveWishlist([]);
+        this.updateAllButtons();
+      },
+
+      // Initialize wishlist functionality
+      init: function() {
+        this.bindEvents();
+        this.updateAllButtons();
+        console.log('🎉 WishlistUtils initialized successfully!');
+      },
+
+      // Bind global click events for wishlist buttons
+      bindEvents: function() {
+        // Use event delegation for dynamic buttons
+        document.addEventListener('click', (e) => {
+          const wishlistButton = e.target.closest('.product-card__wishlist, .product-card__wishlist-btn, .cart-item__wishlist, .wishlist-btn');
+          
+          if (wishlistButton) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const productId = wishlistButton.dataset.productId || 
+                             wishlistButton.closest('[data-product-id]')?.dataset.productId;
+            
+            if (productId) {
+              const wasAdded = this.toggleWishlist(productId);
+              
+              // Show feedback if toast function is available
+              if (typeof this.showToast === 'function') {
+                const message = wasAdded ? 'Added to wishlist' : 'Removed from wishlist';
+                this.showToast(message);
+              }
+              
+              // Trigger custom event for other components to listen to
+              const customEvent = new CustomEvent('wishlistToggled', {
+                detail: { productId, wasAdded }
+              });
+              document.dispatchEvent(customEvent);
+            }
+          }
+        });
+
+        // Listen for storage events (cross-tab updates)
+        window.addEventListener('storage', (e) => {
+          if (e.key === this.wishlistKey) {
+            this.updateAllButtons();
+          }
+        });
+
+        // Listen for wishlist update events
+        window.addEventListener('wishlistUpdated', () => {
+          this.updateAllButtons();
+        });
+      },
+
+      // Optional toast notification (can be overridden)
+      showToast: function(message, type = 'success') {
+        // Basic console log - can be enhanced by individual pages
+        console.log('🔔 Wishlist:', message);
+        
+        // Try to use page-specific toast if available
+        if (window.showWishlistToast) {
+          window.showWishlistToast(message, type);
+        }
+      }
+    };
+
+    // Auto-initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        window.WishlistUtils.init();
+      });
+    } else {
+      window.WishlistUtils.init();
+    }
+  }
+{% endjavascript %}
+
+{% comment %}
+  Add global CSS for wishlist button states if not already defined
+{% endcomment %}
+{% unless request.page_type == 'cart' or request.page_type == 'product' or template contains 'collection' %}
+  {% stylesheet %}
+    /* Global wishlist button styles */
+    .product-card__wishlist,
+    .product-card__wishlist-btn,
+    .cart-item__wishlist,
+    .wishlist-btn {
+      transition: all 0.2s ease;
+    }
+
+    .product-card__wishlist.in-wishlist,
+    .product-card__wishlist-btn.in-wishlist,
+    .cart-item__wishlist.in-wishlist,
+    .wishlist-btn.in-wishlist {
+      color: #ff6b35 !important;
+    }
+
+    .product-card__wishlist.in-wishlist svg,
+    .product-card__wishlist-btn.in-wishlist svg,
+    .cart-item__wishlist.in-wishlist svg,
+    .wishlist-btn.in-wishlist svg {
+      fill: #ff6b35;
+      stroke: #ff6b35;
+    }
+  {% endstylesheet %}
+{% endunless %}
