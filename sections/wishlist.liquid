@@ -689,7 +689,20 @@
         }
       } else {
         // API response format
-        imageUrl = product.images && product.images.length > 0 ? product.images[0] : product.featured_image || '';
+        if (product.images && product.images.length > 0) {
+          // Handle both string URLs and image objects
+          const firstImage = product.images[0];
+          if (typeof firstImage === 'string') {
+            imageUrl = firstImage;
+          } else if (firstImage && firstImage.src) {
+            imageUrl = firstImage.src;
+          } else {
+            imageUrl = product.featured_image || '';
+          }
+        } else {
+          imageUrl = product.featured_image || '';
+        }
+        
         const firstVariant = product.variants && product.variants.length > 0 ? product.variants[0] : null;
         price = firstVariant ? firstVariant.price : product.price || 0;
         comparePrice = firstVariant ? firstVariant.compare_at_price : product.compare_at_price;
@@ -705,7 +718,7 @@
       
       // Handle image URL properly
       let finalImageUrl = '';
-      if (imageUrl && imageUrl !== '/assets/hero.png') {
+      if (imageUrl && typeof imageUrl === 'string' && imageUrl !== '/assets/hero.png') {
         // Real product image
         if (!imageUrl.includes('?')) {
           finalImageUrl = `${imageUrl}?width=400&height=400`;
