@@ -24,5 +24,10 @@
     
     {% comment %} Global wishlist functionality {% endcomment %}
     {% render 'wishlist-utils' %}
+    
+    {% comment %} Debug script for wishlist testing {% endcomment %}
+    {% if request.host contains 'myshopify.com' %}
+      <script src="{{ 'wishlist-debug.js' | asset_url }}" defer></script>
+    {% endif %}
   </body>
 </html>

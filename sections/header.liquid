@@ -205,7 +205,7 @@
       {% endif %}
 
       <!-- Wishlist -->
-      <a href="/pages/wishlist" class="header__action-btn header__wishlist-btn" aria-label="{{ 'general.wishlist.title' | t }}"
+      <a href="/pages/wishlist" class="header__action-btn header__wishlist-btn" aria-label="{{ 'general.wishlist.title' | t }}">
         <div class="header__wishlist-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2"/>
@@ -841,15 +841,24 @@
         const wishlist = JSON.parse(localStorage.getItem('product-wishlist')) || [];
         const countElement = document.querySelector('.header__wishlist-count');
         
+        console.log('🔢 Updating wishlist count:', wishlist.length, 'items');
+        console.log('📍 Count element found:', !!countElement);
+        
         if (countElement) {
           const count = wishlist.length;
           countElement.textContent = count;
           countElement.style.display = count > 0 ? 'flex' : 'none';
+          console.log('✅ Wishlist count updated to:', count);
+        } else {
+          console.warn('❌ Wishlist count element not found');
         }
       } catch (e) {
-        console.error('Error updating wishlist count:', e);
+        console.error('🚨 Error updating wishlist count:', e);
       }
     }
+    
+    // Make function globally available for debugging
+    window.updateWishlistCount = updateWishlistCount;
 
     // Initialize wishlist count
     updateWishlistCount();

@@ -165,7 +165,15 @@
 
       // Dispatch update event for cross-component synchronization
       dispatchUpdate: function() {
-        window.dispatchEvent(new Event('wishlistUpdated'));
+        const event = new Event('wishlistUpdated');
+        window.dispatchEvent(event);
+        
+        // Also manually update header count to ensure it updates immediately
+        if (typeof updateWishlistCount === 'function') {
+          updateWishlistCount();
+        }
+        
+        console.log('🔔 Wishlist update event dispatched');
       },
 
       // Get wishlist count
