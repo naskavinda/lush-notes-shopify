@@ -863,8 +863,13 @@
         });
 
         if (response.ok) {
+          const cartData = await response.json();
+          console.log('✅ Successfully added to cart:', cartData);
+          
           this.showToast('Added to cart');
-          // Optionally update cart drawer/count here
+          
+          // Update cart count and trigger cart refresh
+          this.updateCartAfterAdd();
         } else {
           throw new Error('Failed to add to cart');
         }
@@ -875,6 +880,63 @@
         button.disabled = false;
         button.innerHTML = originalText;
       }
+    }
+
+    async updateCartAfterAdd() {
+      try {
+        console.log('🔄 Updating cart UI after adding item...');
+        
+        // Fetch current cart data
+        const cartResponse = await fetch('/cart.js');
+        if (cartResponse.ok) {
+          const cartData = await cartResponse.json();
+          console.log('🛒 Current cart data:', cartData);
+          
+          // Method 1: Update cart count using the existing function from cart-drawer
+          this.updateHeaderCartCount(cartData.item_count);
+          
+          // Method 2: Dispatch custom events for any other listeners
+          document.dispatchEvent(new CustomEvent('cart:updated', { 
+            detail: { cart: cartData } 
+          }));
+          document.dispatchEvent(new CustomEvent('cart:item-added', { 
+            detail: { cart: cartData } 
+          }));
+          
+          console.log('✅ Cart UI updated successfully');
+        } else {
+          throw new Error('Failed to fetch cart data');
+        }
+        
+      } catch (error) {
+        console.error('🚨 Error updating cart UI:', error);
+        // Fallback: try to refresh the page or trigger a manual update
+        setTimeout(() => {
+          const cartCountElement = document.querySelector('.header__cart-count');
+          if (cartCountElement) {
+            // Simple fallback: just make it visible and add +1 to current count
+            const currentCount = parseInt(cartCountElement.textContent) || 0;
+            cartCountElement.textContent = currentCount + 1;
+            cartCountElement.style.display = '';
+          }
+        }, 100);
+      }
+    }
+
+    // Helper method to update cart count - mirrors the one from cart-drawer
+    updateHeaderCartCount(count) {
+      console.log('🔢 Updating header cart count to:', count);
+      const cartCountElements = document.querySelectorAll('.header__cart-count');
+      cartCountElements.forEach(element => {
+        if (count > 0) {
+          element.textContent = count;
+          element.style.display = '';
+          console.log('✅ Cart count updated to:', count);
+        } else {
+          element.style.display = 'none';
+          console.log('✅ Cart count hidden (0 items)');
+        }
+      });
     }
 
     getLoadingHTML() {
