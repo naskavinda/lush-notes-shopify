@@ -673,14 +673,26 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: var(--color-foreground);
+    background-color: #e97547;
+    color: white;
     text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    border: none;
   }
 
   .header__signin-btn:hover {
-    color: var(--color-primary);
+    background-color: #d4633f;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(233, 117, 71, 0.3);
+  }
+
+  .header__signin-btn svg {
+    width: 16px;
+    height: 16px;
   }
 
   @media (max-width: 480px) {
@@ -692,8 +704,18 @@
       padding: 0.25rem;
     }
 
+    .header__signin-btn {
+      padding: 8px 12px;
+      font-size: 0.75rem;
+    }
+
     .header__signin-btn .header__action-text {
       display: none;
+    }
+
+    .header__signin-btn svg {
+      width: 18px;
+      height: 18px;
     }
 
     .header__account-dropdown {
