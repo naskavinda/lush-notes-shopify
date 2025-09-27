@@ -362,6 +362,8 @@
       const productsContainer = document.getElementById('wishlist-products');
       const emptyState = document.getElementById('wishlist-empty');
 
+      console.log('🔄 Loading wishlist products...', wishlist);
+
       // Update count
       this.updateWishlistCount();
 
@@ -378,12 +380,46 @@
       emptyState.style.display = 'none';
 
       try {
-        // Load product data for all wishlist items
-        const products = await this.fetchProducts(wishlist);
-        this.renderProducts(products);
+        // Separate products that already have data vs those that need fetching
+        const cachedProducts = [];
+        const productsToFetch = [];
+
+        wishlist.forEach(item => {
+          if (typeof item === 'object' && item.handle && item.title) {
+            // Already has product data
+            cachedProducts.push(item);
+            console.log('✅ Using cached product data:', item.title);
+          } else {
+            // Need to fetch product data
+            const identifier = typeof item === 'string' ? item : (item.handle || item.id);
+            if (identifier) {
+              productsToFetch.push(identifier);
+            }
+          }
+        });
+
+        // Fetch missing products
+        let fetchedProducts = [];
+        if (productsToFetch.length > 0) {
+          console.log('🔍 Fetching missing products:', productsToFetch);
+          fetchedProducts = await this.fetchProducts(productsToFetch);
+        }
+
+        // Combine cached and fetched products
+        const allProducts = [...cachedProducts, ...fetchedProducts];
+        console.log('📊 Total products to render:', allProducts.length);
+
+        this.renderProducts(allProducts);
       } catch (error) {
-        console.error('Error loading wishlist products:', error);
-        productsContainer.innerHTML = '<p>Error loading wishlist products. Please try again.</p>';
+        console.error('🚨 Error loading wishlist products:', error);
+        productsContainer.innerHTML = `
+          <div style="text-align: center; padding: 4rem 2rem; color: #666;">
+            <p>Error loading wishlist products. Please try refreshing the page.</p>
+            <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: #ff6b35; color: white; border: none; border-radius: 4px; cursor: pointer;">
+              Refresh Page
+            </button>
+          </div>
+        `;
       }
 
       this.loadingProducts = false;
@@ -392,50 +428,40 @@
     async fetchProducts(productIds) {
       const products = [];
       
-      // Create a batch request for all products
-      try {
-        const response = await fetch(`/products.json?limit=250`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        console.log('📦 Fetched products data:', data);
-        
-        // Find products that match our wishlist IDs
-        for (const productId of productIds) {
+      console.log('🔍 Fetching products for IDs:', productIds);
+      
+      // Try to fetch each product individually using product handles/IDs
+      for (const productId of productIds) {
+        try {
+          // Check cache first
           if (this.productsCache.has(productId)) {
             products.push(this.productsCache.get(productId));
+            console.log('📋 Found product in cache:', productId);
             continue;
           }
 
-          const product = data.products.find(p => p.id === parseInt(productId));
-          if (product) {
+          // Method 1: Try fetching as product handle first (most common storage method)
+          let response = await fetch(`/products/${productId}.js`);
+          
+          if (!response.ok && !productId.includes('-')) {
+            // Method 2: If it's a numeric ID, try direct ID access
+            response = await fetch(`/products/${productId}.js`);
+          }
+          
+          if (response.ok) {
+            const product = await response.json();
+            console.log('✅ Successfully fetched product:', product.title || product.handle);
             this.productsCache.set(productId, product);
             products.push(product);
-            console.log('✅ Found product:', product.title);
           } else {
-            console.warn('❌ Product not found for ID:', productId);
+            console.warn('❌ Product not found for ID/handle:', productId, 'Status:', response.status);
           }
-        }
-      } catch (error) {
-        console.error('🚨 Error fetching products:', error);
-        
-        // Fallback: try individual product fetches
-        for (const productId of productIds) {
-          try {
-            const response = await fetch(`/products/${productId}.js`);
-            if (response.ok) {
-              const product = await response.json();
-              products.push(product);
-              this.productsCache.set(productId, product);
-            }
-          } catch (individualError) {
-            console.error(`Error fetching individual product ${productId}:`, individualError);
-          }
+        } catch (error) {
+          console.error(`🚨 Error fetching product ${productId}:`, error);
         }
       }
 
+      console.log(`📊 Successfully loaded ${products.length} out of ${productIds.length} products`);
       return products;
     }
 
@@ -447,9 +473,32 @@
       if (products.length === 0) {
         const wishlist = this.getWishlist();
         if (wishlist.length > 0) {
-          productsContainer.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">Some products in your wishlist could not be found. They may have been removed or are no longer available.</p>';
+          productsContainer.innerHTML = `
+            <div style="text-align: center; color: #666; padding: 4rem 2rem; grid-column: 1 / -1;">
+              <h3>Products Not Found</h3>
+              <p>Some products in your wishlist could not be loaded. This might happen if:</p>
+              <ul style="text-align: left; display: inline-block; margin: 1rem 0;">
+                <li>The products have been discontinued</li>
+                <li>The products are temporarily unavailable</li>
+                <li>There's a connection issue</li>
+              </ul>
+              <div style="margin-top: 2rem;">
+                <button onclick="window.refreshWishlist()" style="margin-right: 1rem; padding: 0.75rem 1.5rem; background: #ff6b35; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                  Try Again
+                </button>
+                <button onclick="localStorage.removeItem('product-wishlist'); location.reload()" style="padding: 0.75rem 1.5rem; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                  Clear Wishlist
+                </button>
+              </div>
+            </div>
+          `;
         } else {
-          productsContainer.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">No products found in wishlist.</p>';
+          // Update empty state to be visible
+          const emptyState = document.getElementById('wishlist-empty');
+          if (emptyState) {
+            emptyState.style.display = 'block';
+          }
+          productsContainer.style.display = 'none';
         }
         return;
       }
@@ -460,31 +509,61 @@
       // Bind event listeners
       this.bindProductEvents();
       
-      console.log('✅ Products rendered successfully!');
+      console.log('✅ Products rendered successfully!', products.length, 'products');
     }
 
     getProductHTML(product) {
-      // Handle missing product data gracefully
-      const imageUrl = product.images && product.images.length > 0 ? product.images[0] : product.featured_image || '';
-      const firstVariant = product.variants && product.variants.length > 0 ? product.variants[0] : null;
-      const price = firstVariant ? firstVariant.price : product.price || 0;
-      const comparePrice = firstVariant ? firstVariant.compare_at_price : product.compare_at_price;
-      const variantId = firstVariant ? firstVariant.id : null;
+      console.log('🎨 Rendering product:', product);
+      
+      // Handle both API response format and stored wishlist format
+      let imageUrl, price, comparePrice, productHandle, productTitle, variantId, productId, available;
+      
+      if (product.image && !product.images) {
+        // Stored wishlist format
+        imageUrl = product.image;
+        price = product.price || 0;
+        comparePrice = product.compare_at_price;
+        productHandle = product.handle;
+        productTitle = product.title || 'Untitled Product';
+        productId = product.id;
+        available = product.available !== false;
+        
+        // Get first available variant ID
+        if (product.variants && product.variants.length > 0) {
+          const firstVariant = product.variants.find(v => v.available) || product.variants[0];
+          variantId = firstVariant ? firstVariant.id : null;
+        }
+      } else {
+        // API response format
+        imageUrl = product.images && product.images.length > 0 ? product.images[0] : product.featured_image || '';
+        const firstVariant = product.variants && product.variants.length > 0 ? product.variants[0] : null;
+        price = firstVariant ? firstVariant.price : product.price || 0;
+        comparePrice = firstVariant ? firstVariant.compare_at_price : product.compare_at_price;
+        variantId = firstVariant ? firstVariant.id : null;
+        productHandle = product.handle || product.id;
+        productTitle = product.title || 'Untitled Product';
+        productId = product.id;
+        available = product.available !== false;
+      }
       
       const formattedPrice = this.formatMoney(price);
-      const formattedComparePrice = comparePrice ? this.formatMoney(comparePrice) : null;
+      const formattedComparePrice = comparePrice && comparePrice > price ? this.formatMoney(comparePrice) : null;
       
-      const productHandle = product.handle || product.id;
-      const productTitle = product.title || 'Untitled Product';
+      // Ensure image URL is properly formatted
+      if (imageUrl && !imageUrl.includes('?')) {
+        imageUrl = `${imageUrl}?width=400&height=400`;
+      }
+      
+      const uniqueKey = productHandle || productId;
       
       return `
-        <div class="wishlist-product" data-product-id="${product.id}">
+        <div class="wishlist-product" data-product-id="${productId}" data-product-handle="${productHandle}">
           <div class="wishlist-product__image">
             <a href="/products/${productHandle}">
-              ${imageUrl ? `<img src="${imageUrl}?width=400&height=400" alt="${productTitle}" loading="lazy">` : '<div style="width:100%;height:100%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#999;">No image</div>'}
+              ${imageUrl ? `<img src="${imageUrl}" alt="${productTitle}" loading="lazy">` : '<div style="width:100%;height:100%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#999;font-size:14px;">No image</div>'}
             </a>
             <div class="wishlist-product__actions">
-              <button class="wishlist-product__remove" data-product-id="${product.id}" aria-label="Remove from wishlist">
+              <button class="wishlist-product__remove" data-product-id="${productId}" data-product-handle="${productHandle}" aria-label="Remove from wishlist">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M18 6L6 18M6 6l12 12"/>
                 </svg>
@@ -500,13 +579,13 @@
               ${formattedPrice}
             </div>
             <div class="wishlist-product__actions-bottom">
-              <button class="wishlist-add-to-cart" ${variantId ? `data-variant-id="${variantId}"` : 'disabled'} data-product-id="${product.id}">
+              <button class="wishlist-add-to-cart" ${variantId && available ? `data-variant-id="${variantId}"` : 'disabled'} data-product-id="${productId}">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <circle cx="9" cy="21" r="1"/>
                   <circle cx="20" cy="21" r="1"/>
                   <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
                 </svg>
-                ${variantId ? 'Add to Cart' : 'Unavailable'}
+                ${variantId && available ? 'Add to Cart' : 'Unavailable'}
               </button>
             </div>
           </div>
@@ -518,8 +597,10 @@
       // Remove from wishlist
       document.querySelectorAll('.wishlist-product__remove').forEach(btn => {
         btn.addEventListener('click', (e) => {
-          const productId = e.target.closest('[data-product-id]').dataset.productId;
-          this.removeFromWishlist(productId);
+          const productElement = e.target.closest('[data-product-id]');
+          const productId = productElement.dataset.productId;
+          const productHandle = productElement.dataset.productHandle;
+          this.removeFromWishlist(productId, productHandle);
         });
       });
 
@@ -528,17 +609,31 @@
         btn.addEventListener('click', (e) => {
           const button = e.target.closest('.wishlist-add-to-cart');
           const variantId = button.dataset.variantId;
-          this.addToCart(variantId, button);
+          if (variantId) {
+            this.addToCart(variantId, button);
+          }
         });
       });
     }
 
-    removeFromWishlist(productId) {
+    removeFromWishlist(productId, productHandle = null) {
       let wishlist = this.getWishlist();
-      wishlist = wishlist.filter(id => id !== String(productId));
+      
+      // Filter out the product by ID or handle
+      wishlist = wishlist.filter(item => {
+        if (typeof item === 'string') {
+          return item !== String(productId);
+        } else if (typeof item === 'object') {
+          return item.id !== String(productId) && (!productHandle || item.handle !== productHandle);
+        }
+        return true;
+      });
+      
       this.saveWishlist(wishlist);
       this.loadWishlistProducts();
       this.showToast('Removed from wishlist');
+      
+      console.log('💔 Removed from wishlist:', productId, productHandle);
     }
 
     async addToCart(variantId, button) {
@@ -590,7 +685,23 @@
     }
 
     formatMoney(cents) {
-      return `$${(cents / 100).toFixed(2)}`;
+      // Handle different input formats
+      if (typeof cents === 'string' && cents.includes('.')) {
+        // Already formatted (e.g., "25.00")
+        return `$${cents}`;
+      }
+      
+      const amount = parseInt(cents) || 0;
+      
+      // Shopify typically stores prices in cents (minor units)
+      // but sometimes API returns them in major units
+      if (amount > 999) {
+        // Likely in cents
+        return `$${(amount / 100).toFixed(2)}`;
+      } else {
+        // Likely in dollars already
+        return `$${amount.toFixed(2)}`;
+      }
     }
 
     showToast(message, type = 'success') {
@@ -626,6 +737,11 @@
           const parsedWishlist = JSON.parse(wishlistData);
           console.log('✅ Parsed wishlist:', parsedWishlist);
           console.log('📊 Wishlist count:', parsedWishlist.length);
+          
+          // Show detailed info about each item
+          parsedWishlist.forEach((item, index) => {
+            console.log(`📦 Wishlist item ${index + 1}:`, typeof item, item);
+          });
         } else {
           console.log('❌ No wishlist data found in localStorage');
         }
@@ -636,6 +752,33 @@
     
     new WishlistManager();
   });
+
+  // Add a manual refresh function for debugging
+  window.refreshWishlist = function() {
+    console.log('🔄 Manual wishlist refresh triggered');
+    const manager = new WishlistManager();
+  };
+  
+  // Add a function to manually add test data
+  window.addTestProduct = function() {
+    const testProduct = {
+      id: '12345',
+      handle: 'test-product',
+      title: 'Test Product',
+      image: '/assets/hero.png',
+      price: 2500,
+      compare_at_price: 3000,
+      available: true,
+      variants: [{ id: 67890, available: true, price: 2500 }],
+      added_at: new Date().toISOString()
+    };
+    
+    let wishlist = JSON.parse(localStorage.getItem('product-wishlist')) || [];
+    wishlist.push(testProduct);
+    localStorage.setItem('product-wishlist', JSON.stringify(wishlist));
+    console.log('✅ Added test product to wishlist');
+    window.refreshWishlist();
+  };
 {% endjavascript %}
 
 {% schema %}

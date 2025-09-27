@@ -314,16 +314,33 @@
       });
     }
     
-    // Wishlist functionality (reuse from collection page)
+    // Wishlist functionality
     const wishlistBtn = document.querySelector('.wishlist-btn');
     if (wishlistBtn) {
       const productId = wishlistBtn.dataset.productId;
+      const productHandle = '{{ product.handle }}'; // Get the product handle
+      
+      // Store both ID and handle for better compatibility
+      const productData = {
+        id: productId,
+        handle: productHandle,
+        title: '{{ product.title | escape }}',
+        image: '{{ product.featured_image | image_url: width: 300 }}',
+        price: {{ product.price | json }},
+        compare_at_price: {{ product.compare_at_price | default: 0 | json }},
+        available: {{ product.available | json }},
+        variants: {{ product.variants | json }}
+      };
       
       // Check if product is already in wishlist
       function isInWishlist(productId) {
         try {
           const wishlist = JSON.parse(localStorage.getItem('product-wishlist')) || [];
-          return wishlist.includes(String(productId));
+          return wishlist.some(item => {
+            // Support both old format (just ID) and new format (object with handle)
+            return (typeof item === 'string' && item === String(productId)) ||
+                   (typeof item === 'object' && (item.id === String(productId) || item.handle === productHandle));
+          });
         } catch (e) {
           return false;
         }
@@ -334,22 +351,53 @@
         const inWishlist = isInWishlist(productId);
         wishlistBtn.classList.toggle('in-wishlist', inWishlist);
         wishlistBtn.setAttribute('aria-label', inWishlist ? 'Remove from wishlist' : 'Add to wishlist');
+        
+        // Update SVG fill
+        const svg = wishlistBtn.querySelector('svg');
+        if (svg) {
+          svg.style.fill = inWishlist ? 'currentColor' : 'none';
+        }
       }
       
       // Toggle wishlist
       wishlistBtn.addEventListener('click', function() {
         try {
           let wishlist = JSON.parse(localStorage.getItem('product-wishlist')) || [];
-          const productIdStr = String(productId);
           
-          if (wishlist.includes(productIdStr)) {
-            wishlist = wishlist.filter(id => id !== productIdStr);
+          // Check if already in wishlist and remove
+          const existingIndex = wishlist.findIndex(item => {
+            return (typeof item === 'string' && item === String(productId)) ||
+                   (typeof item === 'object' && (item.id === String(productId) || item.handle === productHandle));
+          });
+          
+          if (existingIndex !== -1) {
+            wishlist.splice(existingIndex, 1);
+            console.log('💔 Removed from wishlist:', productHandle);
           } else {
-            wishlist.push(productIdStr);
+            // Add to wishlist with complete product data
+            const wishlistItem = {
+              id: String(productId),
+              handle: productHandle,
+              title: productData.title,
+              image: productData.image,
+              price: productData.price,
+              compare_at_price: productData.compare_at_price,
+              available: productData.available,
+              variants: productData.variants,
+              added_at: new Date().toISOString()
+            };
+            wishlist.push(wishlistItem);
+            console.log('💖 Added to wishlist:', productHandle, wishlistItem);
           }
           
           localStorage.setItem('product-wishlist', JSON.stringify(wishlist));
           updateWishlistButton();
+          
+          // Dispatch custom event for other components
+          window.dispatchEvent(new CustomEvent('wishlistUpdated', {
+            detail: { productId, productHandle, action: existingIndex !== -1 ? 'removed' : 'added' }
+          }));
+          
         } catch (e) {
           console.error('Error updating wishlist:', e);
         }
@@ -357,6 +405,9 @@
       
       // Initialize wishlist button state
       updateWishlistButton();
+      
+      // Listen for wishlist updates from other parts of the site
+      window.addEventListener('wishlistUpdated', updateWishlistButton);
     }
 
     

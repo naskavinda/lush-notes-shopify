@@ -55,26 +55,46 @@
       },
 
       // Check if product is in wishlist
-      isInWishlist: function(productId) {
-        return this.getWishlist().includes(String(productId));
+      isInWishlist: function(productId, productHandle = null) {
+        const wishlist = this.getWishlist();
+        return wishlist.some(item => {
+          if (typeof item === 'string') {
+            return item === String(productId);
+          } else if (typeof item === 'object') {
+            return item.id === String(productId) || (productHandle && item.handle === productHandle);
+          }
+          return false;
+        });
       },
 
       // Toggle product in/out of wishlist
-      toggleWishlist: function(productId) {
+      toggleWishlist: function(productId, productData = null) {
         let wishlist = this.getWishlist();
         const productIdStr = String(productId);
         
-        if (wishlist.includes(productIdStr)) {
-          wishlist = wishlist.filter(id => id !== productIdStr);
+        // Find and remove if exists
+        const existingIndex = wishlist.findIndex(item => {
+          if (typeof item === 'string') {
+            return item === productIdStr;
+          } else if (typeof item === 'object') {
+            return item.id === productIdStr || (productData && item.handle === productData.handle);
+          }
+          return false;
+        });
+        
+        if (existingIndex !== -1) {
+          wishlist.splice(existingIndex, 1);
           console.log('💔 Removed from wishlist:', productIdStr);
         } else {
-          wishlist.push(productIdStr);
-          console.log('💖 Added to wishlist:', productIdStr);
+          // Add to wishlist - use rich data if available, otherwise just ID
+          const wishlistItem = productData || productIdStr;
+          wishlist.push(wishlistItem);
+          console.log('💖 Added to wishlist:', productIdStr, wishlistItem);
         }
         
         this.saveWishlist(wishlist);
         this.updateAllButtons();
-        return !this.isInWishlist(productId);
+        return existingIndex === -1; // Return true if added, false if removed
       },
 
       // Add product to wishlist
