@@ -892,16 +892,30 @@
           const cartData = await cartResponse.json();
           console.log('🛒 Current cart data:', cartData);
           
-          // Method 1: Update cart count using the existing function from cart-drawer
+          // Method 1: Update cart count using our enhanced function
           this.updateHeaderCartCount(cartData.item_count);
           
-          // Method 2: Dispatch custom events for any other listeners
+          // Method 2: Force update using direct DOM manipulation (backup)
+          setTimeout(() => {
+            const cartCountElement = document.querySelector('.header__cart-count');
+            if (cartCountElement) {
+              cartCountElement.textContent = cartData.item_count;
+              cartCountElement.style.display = cartData.item_count > 0 ? 'block' : 'none';
+              console.log('🔄 Backup cart count update applied:', cartData.item_count);
+            }
+          }, 100);
+          
+          // Method 3: Dispatch custom events for any other listeners
           document.dispatchEvent(new CustomEvent('cart:updated', { 
             detail: { cart: cartData } 
           }));
           document.dispatchEvent(new CustomEvent('cart:item-added', { 
             detail: { cart: cartData } 
           }));
+          
+          // Method 4: Trigger a manual page refresh of cart components
+          const event = new Event('cart:refresh');
+          document.dispatchEvent(event);
           
           console.log('✅ Cart UI updated successfully');
         } else {
@@ -926,17 +940,99 @@
     // Helper method to update cart count - mirrors the one from cart-drawer
     updateHeaderCartCount(count) {
       console.log('🔢 Updating header cart count to:', count);
-      const cartCountElements = document.querySelectorAll('.header__cart-count');
-      cartCountElements.forEach(element => {
-        if (count > 0) {
-          element.textContent = count;
-          element.style.display = '';
-          console.log('✅ Cart count updated to:', count);
-        } else {
-          element.style.display = 'none';
-          console.log('✅ Cart count hidden (0 items)');
+      
+      // Try multiple selectors to find the cart count element
+      const selectors = [
+        '.header__cart-count',
+        '[data-cart-count]',
+        '.cart-count',
+        '.cart__count',
+        '.header-cart-count',
+        '.js-cart-count'
+      ];
+      
+      let elementsFound = 0;
+      selectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        if (elements.length > 0) {
+          console.log(`🎯 Found ${elements.length} elements with selector: ${selector}`);
+          elementsFound += elements.length;
+          
+          elements.forEach(element => {
+            console.log('🔧 Updating element:', element);
+            if (count > 0) {
+              element.textContent = count;
+              element.style.display = 'block';
+              element.style.visibility = 'visible';
+              element.style.opacity = '1';
+              // Remove any hidden classes
+              element.classList.remove('hidden', 'hide', 'd-none');
+              console.log('✅ Updated element text to:', count, element);
+            } else {
+              element.style.display = 'none';
+              console.log('✅ Hidden element (0 items)');
+            }
+          });
         }
       });
+      
+      if (elementsFound === 0) {
+        console.warn('⚠️ No cart count elements found! Trying alternative approach...');
+        
+        // Alternative approach: look for the cart button and add/update count
+        const cartButton = document.querySelector('.header__cart-btn, [data-cart-drawer-open], .cart-btn');
+        if (cartButton) {
+          console.log('🎯 Found cart button, checking for count element inside:', cartButton);
+          
+          let countElement = cartButton.querySelector('.header__cart-count, .cart-count');
+          if (!countElement && count > 0) {
+            // Create count element if it doesn't exist
+            console.log('🔧 Creating new cart count element');
+            countElement = document.createElement('span');
+            countElement.className = 'header__cart-count';
+            countElement.style.cssText = `
+              position: absolute;
+              top: -8px;
+              right: -8px;
+              background: #dc3545;
+              color: white;
+              border-radius: 50%;
+              width: 20px;
+              height: 20px;
+              font-size: 12px;
+              font-weight: 600;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              z-index: 10;
+            `;
+            
+            // Find the cart icon wrapper
+            const iconWrapper = cartButton.querySelector('.header__cart-icon, .cart-icon');
+            if (iconWrapper) {
+              iconWrapper.style.position = 'relative';
+              iconWrapper.appendChild(countElement);
+            } else {
+              cartButton.style.position = 'relative';
+              cartButton.appendChild(countElement);
+            }
+          }
+          
+          if (countElement) {
+            if (count > 0) {
+              countElement.textContent = count;
+              countElement.style.display = 'flex';
+              console.log('✅ Updated cart count element:', countElement);
+            } else {
+              countElement.style.display = 'none';
+            }
+          }
+        } else {
+          console.error('❌ No cart button found either!');
+        }
+      } else {
+        console.log(`✅ Successfully updated ${elementsFound} cart count elements`);
+      }
     }
 
     getLoadingHTML() {
@@ -1130,6 +1226,62 @@
         .catch(error => {
           console.error('🔍 Fetch error:', error);
         });
+    },
+
+    // Debug cart elements
+    debugCartElements() {
+      console.log('🔍 Searching for cart elements...');
+      
+      const selectors = [
+        '.header__cart-count',
+        '[data-cart-count]',
+        '.cart-count',
+        '.cart__count',
+        '.header-cart-count',
+        '.js-cart-count',
+        '.header__cart-btn',
+        '[data-cart-drawer-open]',
+        '.cart-btn'
+      ];
+      
+      selectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        if (elements.length > 0) {
+          console.log(`✅ Found ${elements.length} elements with "${selector}":`);
+          elements.forEach((el, index) => {
+            console.log(`  ${index + 1}:`, el, `Text: "${el.textContent}", Display: "${el.style.display}"`);
+          });
+        } else {
+          console.log(`❌ No elements found for "${selector}"`);
+        }
+      });
+      
+      // Test manual update
+      console.log('🔧 Testing manual cart count update...');
+      const testElement = document.querySelector('.header__cart-count');
+      if (testElement) {
+        const originalText = testElement.textContent;
+        testElement.textContent = '★';
+        testElement.style.background = 'red';
+        console.log('🎯 Cart element should now show a red star');
+        setTimeout(() => {
+          testElement.textContent = originalText;
+          testElement.style.background = '';
+          console.log('🔄 Cart element restored');
+        }, 2000);
+      } else {
+        console.log('❌ No .header__cart-count element found for testing');
+      }
+    },
+
+    // Force update cart count
+    forceUpdateCartCount(count = 1) {
+      console.log(`🔧 Force updating cart count to: ${count}`);
+      if (window.wishlistManager) {
+        window.wishlistManager.updateHeaderCartCount(count);
+      } else {
+        console.log('❌ Wishlist manager not found');
+      }
     },
 
     // Get the first few products from collections to see what valid handles look like
