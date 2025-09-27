@@ -184,6 +184,61 @@
           "info": "Allow customers to add special instructions or notes to their order"
         }
       }
+    },
+    "customer_login": {
+      "name": "Customer Login",
+      "settings": {
+        "header_content": "Content",
+        "custom_title": {
+          "label": "Custom title",
+          "info": "Leave blank to use default title"
+        },
+        "custom_subtitle": {
+          "label": "Custom subtitle",
+          "info": "Leave blank to use default subtitle"
+        }
+      },
+      "presets": {
+        "customer_login": {
+          "name": "Customer Login"
+        }
+      }
+    },
+    "customer_register": {
+      "name": "Customer Register",
+      "settings": {
+        "header_content": "Content",
+        "custom_title": {
+          "label": "Custom title",
+          "info": "Leave blank to use default title"
+        },
+        "custom_subtitle": {
+          "label": "Custom subtitle",
+          "info": "Leave blank to use default subtitle"
+        }
+      },
+      "presets": {
+        "customer_register": {
+          "name": "Customer Register"
+        }
+      }
+    },
+    "customer_account": {
+      "name": "Customer Account",
+      "settings": {
+        "header_display": "Display Options",
+        "show_order_history": {
+          "label": "Show order history"
+        },
+        "show_address_book": {
+          "label": "Show address book"
+        }
+      },
+      "presets": {
+        "customer_account": {
+          "name": "Customer Account"
+        }
+      }
     }
   }
 }

@@ -6,6 +6,9 @@
   },
   "general": {
     "logo": "Logo",
+    "accessibility": {
+      "close": "Close"
+    },
     "navigation": {
       "home": "Home",
       "shop": "Shop",
@@ -38,7 +41,9 @@
     "comment_form_title": "Add a comment"
   },
   "cart": {
-    "checkout": "Login to Checkout",
+    "checkout": "Checkout",
+    "login_to_checkout": "Login to Checkout",
+    "view_cart": "View Cart",
     "title": "Your Cart",
     "update": "Update",
     "remove": "Remove",

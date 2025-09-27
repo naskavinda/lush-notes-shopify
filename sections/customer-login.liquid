@@ -7,6 +7,10 @@
       </div>
 
       {% form 'customer_login', class: 'customer-login__form' %}
+        {% comment %} Add return_url as hidden field if it exists in request {% endcomment %}
+        {% if request.params.return_url %}
+          <input type="hidden" name="return_url" value="{{ request.params.return_url }}">
+        {% endif %}
         {% if form.errors %}
           <div class="customer-login__errors">
             <div class="form-errors">
