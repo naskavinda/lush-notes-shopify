@@ -847,7 +847,23 @@
     wishlist.push(testProduct);
     localStorage.setItem('product-wishlist', JSON.stringify(wishlist));
     console.log('✅ Added test product to wishlist');
-    window.refreshWishlist();
+    if (window.wishlistManager) {
+      window.wishlistManager.loadWishlistProducts();
+    }
+  };
+
+  // Add a global function to force initialize wishlist manager
+  window.forceInitWishlist = function() {
+    console.log('🔄 Force initializing wishlist manager...');
+    try {
+      const manager = new WishlistManager();
+      window.wishlistManager = manager;
+      console.log('✅ Wishlist manager created successfully');
+      return manager;
+    } catch (error) {
+      console.error('❌ Failed to create wishlist manager:', error);
+      return null;
+    }
   };
 {% endjavascript %}
 
