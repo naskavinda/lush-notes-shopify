@@ -96,8 +96,8 @@
     margin: 0 auto;
   }
 
-  /* Product Card Styles - Match your site's design */
-  .product-card {
+  /* Wishlist Product Card Styles - Match your site's design */
+  .wishlist-product-card {
     background: white;
     border-radius: 8px;
     overflow: hidden;
@@ -108,36 +108,36 @@
     position: relative;
   }
 
-  .product-card:hover {
+  .wishlist-product-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   }
 
-  .product-card__image-wrapper {
+  .wishlist-product-card__image-wrapper {
     position: relative;
     width: 100%;
     height: 280px;
     overflow: hidden;
   }
 
-  .product-card__image-link {
+  .wishlist-product-card__image-link {
     display: block;
     width: 100%;
     height: 100%;
   }
 
-  .product-card__image {
+  .wishlist-product-card__image {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
   }
 
-  .product-card__image-wrapper:hover .product-card__image {
+  .wishlist-product-card__image-wrapper:hover .wishlist-product-card__image {
     transform: scale(1.05);
   }
 
-  .product-card__badge {
+  .wishlist-product-card__badge {
     position: absolute;
     top: 12px;
     left: 12px;
@@ -152,14 +152,14 @@
     z-index: 2;
   }
 
-  .product-card__actions {
+  .wishlist-product-card__actions {
     position: absolute;
     top: 12px;
     right: 12px;
     z-index: 2;
   }
 
-  .product-card__wishlist-btn {
+  .wishlist-product-card__wishlist-btn {
     background: rgba(255, 255, 255, 0.9);
     border: none;
     width: 40px;
@@ -174,13 +174,13 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
 
-  .product-card__wishlist-btn:hover {
+  .wishlist-product-card__wishlist-btn:hover {
     background: #dc3545;
     color: white;
     transform: scale(1.1);
   }
 
-  .product-card__info {
+  .wishlist-product-card__info {
     padding: 20px;
     background: white;
     flex-grow: 1;
@@ -188,7 +188,7 @@
     flex-direction: column;
   }
 
-  .product-card__title {
+  .wishlist-product-card__title {
     font-size: 16px;
     font-weight: 600;
     margin: 0 0 12px 0;
@@ -197,37 +197,37 @@
     flex-grow: 1;
   }
 
-  .product-card__title a {
+  .wishlist-product-card__title a {
     color: inherit;
     text-decoration: none;
     transition: color 0.3s ease;
   }
 
-  .product-card__title a:hover {
+  .wishlist-product-card__title a:hover {
     color: #007bff;
   }
 
-  .product-card__price {
+  .wishlist-product-card__price {
     margin-bottom: 16px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
-  .product-card__price-current {
+  .wishlist-product-card__price-current {
     font-size: 18px;
     font-weight: 700;
     color: #333;
   }
 
-  .product-card__price-compare {
+  .wishlist-product-card__price-compare {
     font-size: 14px;
     color: #999;
     text-decoration: line-through;
     font-weight: 400;
   }
 
-  .product-card__add-to-cart {
+  .wishlist-product-card__add-to-cart {
     background: #333;
     color: white;
     border: none;
@@ -246,12 +246,12 @@
     width: 100%;
   }
 
-  .product-card__add-to-cart:hover:not(:disabled) {
+  .wishlist-product-card__add-to-cart:hover:not(:disabled) {
     background: #000;
     transform: translateY(-2px);
   }
 
-  .product-card__add-to-cart:disabled {
+  .wishlist-product-card__add-to-cart:disabled {
     background: #ccc;
     cursor: not-allowed;
     transform: none;
@@ -762,29 +762,29 @@
       }
 
       return `
-        <div class="product-card wishlist-product" data-product-id="${productId}" data-product-handle="${productHandle}">
-          <div class="product-card__image-wrapper">
-            ${discountPercentage ? `<div class="product-card__badge">${discountPercentage}</div>` : ''}
-            <a href="/products/${productHandle}" class="product-card__image-link">
-              <img src="${finalImageUrl}" alt="${productTitle}" class="product-card__image" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400/f0f0f0/999999?text=${encodeURIComponent(productTitle)}'">
+        <div class="wishlist-product-card wishlist-product" data-product-id="${productId}" data-product-handle="${productHandle}">
+          <div class="wishlist-product-card__image-wrapper">
+            ${discountPercentage ? `<div class="wishlist-product-card__badge">${discountPercentage}</div>` : ''}
+            <a href="/products/${productHandle}" class="wishlist-product-card__image-link">
+              <img src="${finalImageUrl}" alt="${productTitle}" class="wishlist-product-card__image" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400/f0f0f0/999999?text=${encodeURIComponent(productTitle)}'">
             </a>
-            <div class="product-card__actions">
-              <button class="product-card__wishlist-btn wishlist-product__remove" data-product-id="${productId}" data-product-handle="${productHandle}" aria-label="Remove from wishlist">
+            <div class="wishlist-product-card__actions">
+              <button class="wishlist-product-card__wishlist-btn wishlist-product__remove" data-product-id="${productId}" data-product-handle="${productHandle}" aria-label="Remove from wishlist">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
               </button>
             </div>
           </div>
-          <div class="product-card__info">
-            <h3 class="product-card__title">
+          <div class="wishlist-product-card__info">
+            <h3 class="wishlist-product-card__title">
               <a href="/products/${productHandle}">${productTitle}</a>
             </h3>
-            <div class="product-card__price">
-              <span class="product-card__price-current">${formattedPrice}</span>
-              ${formattedComparePrice ? `<span class="product-card__price-compare">${formattedComparePrice}</span>` : ''}
+            <div class="wishlist-product-card__price">
+              <span class="wishlist-product-card__price-current">${formattedPrice}</span>
+              ${formattedComparePrice ? `<span class="wishlist-product-card__price-compare">${formattedComparePrice}</span>` : ''}
             </div>
-            <button class="product-card__add-to-cart wishlist-add-to-cart" ${variantId && available ? `data-variant-id="${variantId}"` : 'disabled'} data-product-id="${productId}">
+            <button class="wishlist-product-card__add-to-cart wishlist-add-to-cart" ${variantId && available ? `data-variant-id="${variantId}"` : 'disabled'} data-product-id="${productId}">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="9" cy="21" r="1"/>
                 <circle cx="20" cy="21" r="1"/>
@@ -799,7 +799,7 @@
 
     bindProductEvents() {
       // Remove from wishlist
-      document.querySelectorAll('.product-card__wishlist-btn').forEach(btn => {
+      document.querySelectorAll('.wishlist-product-card__wishlist-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           const productElement = e.target.closest('[data-product-id]');
           const productId = productElement.dataset.productId;
@@ -809,9 +809,9 @@
       });
 
       // Add to cart
-      document.querySelectorAll('.product-card__add-to-cart').forEach(btn => {
+      document.querySelectorAll('.wishlist-product-card__add-to-cart').forEach(btn => {
         btn.addEventListener('click', (e) => {
-          const button = e.target.closest('.product-card__add-to-cart');
+          const button = e.target.closest('.wishlist-product-card__add-to-cart');
           const variantId = button.dataset.variantId;
           if (variantId) {
             this.addToCart(variantId, button);
