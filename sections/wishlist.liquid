@@ -96,143 +96,165 @@
     margin: 0 auto;
   }
 
-  .wishlist-product {
-    background: #fff;
-    border: 1px solid #eee;
-    border-radius: 12px;
+  /* Product Card Styles - Match your site's design */
+  .product-card {
+    background: white;
+    border-radius: 8px;
     overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
     position: relative;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
-  .wishlist-product:hover {
+  .product-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   }
 
-  .wishlist-product__image {
+  .product-card__image-wrapper {
     position: relative;
-    aspect-ratio: 1;
+    width: 100%;
+    height: 280px;
     overflow: hidden;
-    background: #f8f9fa;
   }
 
-  .wishlist-product__image img {
+  .product-card__image-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .product-card__image {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
   }
 
-  .wishlist-product:hover .wishlist-product__image img {
+  .product-card__image-wrapper:hover .product-card__image {
     transform: scale(1.05);
   }
 
-  .wishlist-product__actions {
+  .product-card__badge {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    display: flex;
-    gap: 0.5rem;
+    top: 12px;
+    left: 12px;
+    background: #dc3545;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     z-index: 2;
   }
 
-  .wishlist-product__remove {
-    background: #ff6b35;
+  .product-card__actions {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+  }
+
+  .product-card__wishlist-btn {
+    background: rgba(255, 255, 255, 0.9);
     border: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 4px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease;
+    color: #dc3545;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .product-card__wishlist-btn:hover {
+    background: #dc3545;
     color: white;
-    font-size: 0.9rem;
+    transform: scale(1.1);
   }
 
-  .wishlist-product__remove:hover {
-    background: #e55a2b;
-    transform: translateY(-1px);
-  }
-
-  .wishlist-product__info {
-    padding: 1.5rem;
+  .product-card__info {
+    padding: 20px;
     background: white;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
   }
 
-  .wishlist-product__title {
-    font-size: 1.1rem;
+  .product-card__title {
+    font-size: 16px;
     font-weight: 600;
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 12px 0;
     color: #333;
     line-height: 1.4;
+    flex-grow: 1;
   }
 
-  .wishlist-product__title a {
+  .product-card__title a {
     color: inherit;
     text-decoration: none;
     transition: color 0.3s ease;
   }
 
-  .wishlist-product__title a:hover {
-    color: #ff6b35;
+  .product-card__title a:hover {
+    color: #007bff;
   }
 
-  .wishlist-product__price {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #ff6b35;
-    margin-bottom: 1rem;
+  .product-card__price {
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 8px;
   }
 
-  .wishlist-product__price .compare-price {
-    font-size: 1rem;
+  .product-card__price-current {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+  }
+
+  .product-card__price-compare {
+    font-size: 14px;
     color: #999;
     text-decoration: line-through;
     font-weight: 400;
   }
 
-  .wishlist-product__actions-bottom {
-    display: flex;
-    gap: 0.75rem;
-  }
-
-  .wishlist-add-to-cart {
-    flex: 1;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  .product-card__add-to-cart {
+    background: #333;
     color: white;
     border: none;
-    padding: 1rem 1.5rem;
-    border-radius: 12px;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 14px;
     font-weight: 600;
-    font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    width: 100%;
   }
 
-  .wishlist-add-to-cart:hover {
-    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  .product-card__add-to-cart:hover:not(:disabled) {
+    background: #000;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
   }
 
-  .wishlist-add-to-cart:disabled {
-    background: #bdc3c7;
+  .product-card__add-to-cart:disabled {
+    background: #ccc;
     cursor: not-allowed;
     transform: none;
-    box-shadow: none;
   }
 
   .btn {
@@ -732,38 +754,44 @@
       
       const uniqueKey = productHandle || productId;
       
+      // Calculate discount percentage if there's a compare price
+      let discountPercentage = '';
+      if (formattedComparePrice && comparePrice > price) {
+        const discount = Math.round(((comparePrice - price) / comparePrice) * 100);
+        discountPercentage = `${discount}% OFF`;
+      }
+
       return `
-        <div class="wishlist-product" data-product-id="${productId}" data-product-handle="${productHandle}">
-          <div class="wishlist-product__image">
-            <a href="/products/${productHandle}">
-              <img src="${finalImageUrl}" alt="${productTitle}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400/f0f0f0/999999?text=${encodeURIComponent(productTitle)}'">
+        <div class="product-card wishlist-product" data-product-id="${productId}" data-product-handle="${productHandle}">
+          <div class="product-card__image-wrapper">
+            ${discountPercentage ? `<div class="product-card__badge">${discountPercentage}</div>` : ''}
+            <a href="/products/${productHandle}" class="product-card__image-link">
+              <img src="${finalImageUrl}" alt="${productTitle}" class="product-card__image" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400/f0f0f0/999999?text=${encodeURIComponent(productTitle)}'">
             </a>
-            <div class="wishlist-product__actions">
-              <button class="wishlist-product__remove" data-product-id="${productId}" data-product-handle="${productHandle}" aria-label="Remove from wishlist">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M18 6L6 18M6 6l12 12"/>
+            <div class="product-card__actions">
+              <button class="product-card__wishlist-btn wishlist-product__remove" data-product-id="${productId}" data-product-handle="${productHandle}" aria-label="Remove from wishlist">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
               </button>
             </div>
           </div>
-          <div class="wishlist-product__info">
-            <h3 class="wishlist-product__title">
+          <div class="product-card__info">
+            <h3 class="product-card__title">
               <a href="/products/${productHandle}">${productTitle}</a>
             </h3>
-            <div class="wishlist-product__price">
-              ${formattedComparePrice ? `<span class="compare-price">${formattedComparePrice}</span>` : ''}
-              ${formattedPrice}
+            <div class="product-card__price">
+              <span class="product-card__price-current">${formattedPrice}</span>
+              ${formattedComparePrice ? `<span class="product-card__price-compare">${formattedComparePrice}</span>` : ''}
             </div>
-            <div class="wishlist-product__actions-bottom">
-              <button class="wishlist-add-to-cart" ${variantId && available ? `data-variant-id="${variantId}"` : 'disabled'} data-product-id="${productId}">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="9" cy="21" r="1"/>
-                  <circle cx="20" cy="21" r="1"/>
-                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                </svg>
-                ${variantId && available ? 'Add to Cart' : 'Unavailable'}
-              </button>
-            </div>
+            <button class="product-card__add-to-cart wishlist-add-to-cart" ${variantId && available ? `data-variant-id="${variantId}"` : 'disabled'} data-product-id="${productId}">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="9" cy="21" r="1"/>
+                <circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+              </svg>
+              ${variantId && available ? 'Add to Cart' : 'Unavailable'}
+            </button>
           </div>
         </div>
       `;
@@ -771,7 +799,7 @@
 
     bindProductEvents() {
       // Remove from wishlist
-      document.querySelectorAll('.wishlist-product__remove').forEach(btn => {
+      document.querySelectorAll('.product-card__wishlist-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           const productElement = e.target.closest('[data-product-id]');
           const productId = productElement.dataset.productId;
@@ -781,9 +809,9 @@
       });
 
       // Add to cart
-      document.querySelectorAll('.wishlist-add-to-cart').forEach(btn => {
+      document.querySelectorAll('.product-card__add-to-cart').forEach(btn => {
         btn.addEventListener('click', (e) => {
-          const button = e.target.closest('.wishlist-add-to-cart');
+          const button = e.target.closest('.product-card__add-to-cart');
           const variantId = button.dataset.variantId;
           if (variantId) {
             this.addToCart(variantId, button);
