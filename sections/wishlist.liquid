@@ -33,38 +33,36 @@
 
 {% stylesheet %}
   .wishlist-page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 3rem 1rem;
+    width: 100%;
+    padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    min-height: 80vh;
+    background: transparent;
+    min-height: auto;
   }
 
   .wishlist-header {
     text-align: center;
-    margin-bottom: 4rem;
-    background: white;
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+    padding: 4rem 2rem 2rem;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
   }
 
   .wishlist-title {
-    font-size: 3rem;
-    font-weight: 800;
-    margin: 0 0 1rem 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: #333;
+    background: none;
+    -webkit-text-fill-color: initial;
   }
 
   .wishlist-count {
     color: #666;
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin: 0;
-    font-weight: 500;
+    font-weight: 400;
   }
 
   .wishlist-empty {
@@ -91,42 +89,44 @@
 
   .wishlist-products {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2.5rem;
-    padding: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 0 2rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
   }
 
   .wishlist-product {
     background: #fff;
-    border: none;
-    border-radius: 20px;
+    border: 1px solid #eee;
+    border-radius: 12px;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.3s ease;
     position: relative;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
   .wishlist-product:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   }
 
   .wishlist-product__image {
     position: relative;
     aspect-ratio: 1;
     overflow: hidden;
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: #f8f9fa;
   }
 
   .wishlist-product__image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: transform 0.3s ease;
   }
 
   .wishlist-product:hover .wishlist-product__image img {
-    transform: scale(1.08);
+    transform: scale(1.05);
   }
 
   .wishlist-product__actions {
@@ -139,40 +139,36 @@
   }
 
   .wishlist-product__remove {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: #ff6b35;
     border: none;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-    color: #666;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    color: white;
+    font-size: 0.9rem;
   }
 
   .wishlist-product__remove:hover {
-    background: #ff4757;
-    color: white;
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
+    background: #e55a2b;
+    transform: translateY(-1px);
   }
 
   .wishlist-product__info {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem;
     background: white;
   }
 
   .wishlist-product__title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin: 0 0 1rem 0;
-    color: #2c3e50;
-    line-height: 1.3;
-    min-height: 2.6rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: #333;
+    line-height: 1.4;
   }
 
   .wishlist-product__title a {
@@ -182,24 +178,24 @@
   }
 
   .wishlist-product__title a:hover {
-    color: #667eea;
+    color: #ff6b35;
   }
 
   .wishlist-product__price {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #27ae60;
-    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ff6b35;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
   }
 
   .wishlist-product__price .compare-price {
-    font-size: 1.1rem;
-    color: #95a5a6;
+    font-size: 1rem;
+    color: #999;
     text-decoration: line-through;
-    font-weight: 500;
+    font-weight: 400;
   }
 
   .wishlist-product__actions-bottom {
