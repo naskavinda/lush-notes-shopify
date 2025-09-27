@@ -38,10 +38,26 @@
     "comment_form_title": "Add a comment"
   },
   "cart": {
-    "checkout": "Checkout",
-    "title": "Cart",
+    "checkout": "Login to Checkout",
+    "title": "Your Cart",
     "update": "Update",
-    "remove": "Remove"
+    "remove": "Remove",
+    "continue_shopping": "Continue Shopping",
+    "item_count": {
+      "one": "{{ count }} item in your cart",
+      "other": "{{ count }} items in your cart"
+    },
+    "empty_title": "Your cart is empty",
+    "empty_description": "Looks like you haven't added anything to your cart yet.",
+    "start_shopping": "Start Shopping",
+    "order_summary": "Order Summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "calculated_at_checkout": "Calculated at checkout",
+    "total": "Total",
+    "savings": "Savings",
+    "taxes_and_shipping_note": "* Final taxes and shipping will be calculated at checkout",
+    "secure_checkout": "Secure checkout powered by Shopify"
   },
   "customer": {
     "account": {

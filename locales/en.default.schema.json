@@ -170,6 +170,20 @@
           "label": "Number of related products to show"
         }
       }
+    },
+    "cart": {
+      "name": "Cart",
+      "settings": {
+        "header": "Cart Settings",
+        "show_vendor": {
+          "label": "Show product vendor",
+          "info": "Display the vendor name for each product in the cart"
+        },
+        "show_cart_notes": {
+          "label": "Show cart notes",
+          "info": "Allow customers to add special instructions or notes to their order"
+        }
+      }
     }
   }
 }
