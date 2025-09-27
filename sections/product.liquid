@@ -99,6 +99,10 @@
                     value="{{ variant.id }}"
                     {% if variant == current_variant %}selected="selected"{% endif %}
                     data-available="{{ variant.available }}"
+                    data-price="{{ variant.price }}"
+                    data-compare-at-price="{{ variant.compare_at_price | default: 0 }}"
+                    data-price-formatted="{{ variant.price | money }}"
+                    data-compare-at-price-formatted="{{ variant.compare_at_price | money }}"
                   >
                     {{ variant.title }} - {{ variant.price | money }}{% unless variant.available %} ({{ 'products.product.out_of_stock' | t }}){% endunless %}
                   </option>
@@ -250,6 +254,10 @@
       variantSelect.addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
         const isAvailable = selectedOption.dataset.available === 'true';
+        const price = parseFloat(selectedOption.dataset.price);
+        const compareAtPrice = parseFloat(selectedOption.dataset.compareAtPrice) || 0;
+        const priceFormatted = selectedOption.dataset.priceFormatted;
+        const compareAtPriceFormatted = selectedOption.dataset.compareAtPriceFormatted;
         
         // Update add to cart button
         if (addToCartBtn) {
@@ -257,7 +265,33 @@
           addToCartBtn.textContent = isAvailable ? 'Add to Cart' : 'Out of Stock';
         }
         
-        console.log('Variant changed:', selectedOption.text, 'Available:', isAvailable);
+        // Update pricing display
+        if (currentPrice) {
+          currentPrice.textContent = priceFormatted;
+        }
+        
+        // Handle compare at price and savings
+        if (originalPrice && compareAtPrice > price) {
+          originalPrice.textContent = compareAtPriceFormatted;
+          originalPrice.style.display = 'inline';
+          
+          // Update savings if it exists
+          const savingsElement = document.querySelector('.savings');
+          if (savingsElement) {
+            const savings = compareAtPrice - price;
+            // Format savings to match Shopify's money format (assuming price is in minor units)
+            const savingsFormatted = `Rs ${(savings / 100).toFixed(2)}`;
+            savingsElement.textContent = `Save ${savingsFormatted}`;
+            savingsElement.style.display = 'inline';
+          }
+        } else {
+          // Hide compare at price and savings if not applicable
+          if (originalPrice) originalPrice.style.display = 'none';
+          const savingsElement = document.querySelector('.savings');
+          if (savingsElement) savingsElement.style.display = 'none';
+        }
+        
+        console.log('Variant changed:', selectedOption.text, 'Available:', isAvailable, 'Price:', priceFormatted);
       });
     }
     
