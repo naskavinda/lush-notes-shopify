@@ -53,14 +53,14 @@
 
         <!-- Best Sellers -->
         <li class="header__menu-item">
-          <a href="{{ collections[section.settings.best_sellers_collection].url | default: collections.all.url }}" class="header__menu-link">
+          <a href="{{ collections[section.settings.best_sellers_collection].url | default: '/collections/best-seller' }}" class="header__menu-link">
             {{ 'general.navigation.best_sellers' | t }}
           </a>
         </li>
 
         <!-- Weekly Offers -->
         <li class="header__menu-item">
-          <a href="{{ collections[section.settings.weekly_offers_collection].url | default: collections.all.url }}" class="header__menu-link">
+          <a href="{{ collections[section.settings.weekly_offers_collection].url | default: '/collections/weekly-offer' }}" class="header__menu-link">
             {{ 'general.navigation.weekly_offers' | t }}
           </a>
         </li>
@@ -919,14 +919,14 @@
       "type": "text",
       "id": "best_sellers_collection",
       "label": "Best Sellers collection handle",
-      "default": "best-sellers",
+      "default": "best-seller",
       "info": "Handle of the collection for Best Sellers link"
     },
     {
       "type": "text",
       "id": "weekly_offers_collection",
       "label": "Weekly Offers collection handle",
-      "default": "weekly-offers",
+      "default": "weekly-offer",
       "info": "Handle of the collection for Weekly Offers link"
     },
     {
