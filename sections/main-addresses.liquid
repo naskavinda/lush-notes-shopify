@@ -1,0 +1,387 @@
+<div class="customer-addresses-page">
+  <div class="customer-addresses__container">
+    <div class="customer-addresses__header">
+      <h1 class="customer-addresses__title">{{ 'customer.addresses.title' | t }}</h1>
+      <a href="{{ routes.account_addresses_url }}/new" class="btn btn--primary">
+        {{ 'customer.addresses.add_new' | t }}
+      </a>
+    </div>
+
+    {% if customer.addresses.size > 0 %}
+      <div class="customer-addresses__list">
+        {% for address in customer.addresses %}
+          <div class="customer-address-card" data-address-id="{{ address.id }}">
+            {% if address == customer.default_address %}
+              <div class="customer-address-card__badge">
+                {{ 'customer.addresses.default' | t }}
+              </div>
+            {% endif %}
+
+            <div class="customer-address-card__content">
+              <div class="customer-address-card__name">
+                {{ address.first_name }} {{ address.last_name }}
+              </div>
+              
+              <div class="customer-address-card__details">
+                {% if address.company != blank %}
+                  <div class="customer-address-card__company">{{ address.company }}</div>
+                {% endif %}
+                <div class="customer-address-card__street">{{ address.address1 }}</div>
+                {% if address.address2 != blank %}
+                  <div class="customer-address-card__street">{{ address.address2 }}</div>
+                {% endif %}
+                <div class="customer-address-card__location">
+                  {{ address.city }}{% if address.province != blank %}, {{ address.province }}{% endif %} {{ address.zip }}
+                </div>
+                <div class="customer-address-card__country">{{ address.country }}</div>
+                {% if address.phone != blank %}
+                  <div class="customer-address-card__phone">{{ address.phone }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="customer-address-card__actions">
+              <a href="{{ routes.account_addresses_url }}/{{ address.id }}" class="btn btn--outline btn--small">
+                {{ 'customer.addresses.edit' | t }}
+              </a>
+              
+              {% unless address == customer.default_address %}
+                <form action="{{ routes.account_addresses_url }}/{{ address.id }}" method="post">
+                  <input type="hidden" name="_method" value="delete">
+                  <button type="submit" class="btn btn--outline btn--small btn--destructive" 
+                          onclick="return confirm('{{ 'customer.addresses.delete_confirm' | t }}')">
+                    {{ 'customer.addresses.delete' | t }}
+                  </button>
+                </form>
+              {% endunless %}
+              
+              {% unless address == customer.default_address %}
+                <form action="{{ routes.account_addresses_url }}/{{ address.id }}/default" method="post">
+                  <button type="submit" class="btn btn--text btn--small">
+                    {{ 'customer.addresses.set_default' | t }}
+                  </button>
+                </form>
+              {% endunless %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="customer-addresses__empty">
+        <div class="customer-addresses__empty-content">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" class="customer-addresses__empty-icon">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="2"/>
+            <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <h2 class="customer-addresses__empty-title">{{ 'customer.addresses.no_addresses' | t }}</h2>
+          <p class="customer-addresses__empty-description">{{ 'customer.addresses.no_addresses_description' | t }}</p>
+          <a href="{{ routes.account_addresses_url }}/new" class="btn btn--primary">
+            {{ 'customer.addresses.add_first' | t }}
+          </a>
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="customer-addresses__back">
+      <a href="{{ routes.account_url }}" class="customer-addresses__back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M19 12H5" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        {{ 'customer.addresses.back_to_account' | t }}
+      </a>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .customer-addresses-page {
+    padding: 60px 20px;
+    background-color: var(--color-background);
+    min-height: 70vh;
+  }
+
+  .customer-addresses__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .customer-addresses__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .customer-addresses__title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+    margin: 0;
+  }
+
+  .customer-addresses__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .customer-address-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    position: relative;
+    transition: all 0.2s;
+  }
+
+  .customer-address-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .customer-address-card__badge {
+    position: absolute;
+    top: -8px;
+    left: 20px;
+    background-color: var(--color-primary);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .customer-address-card__content {
+    margin-bottom: 20px;
+  }
+
+  .customer-address-card__name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+    margin-bottom: 12px;
+  }
+
+  .customer-address-card__details {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--color-foreground-secondary);
+  }
+
+  .customer-address-card__company {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .customer-address-card__street,
+  .customer-address-card__location,
+  .customer-address-card__country,
+  .customer-address-card__phone {
+    margin-bottom: 2px;
+  }
+
+  .customer-address-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .customer-address-card__actions form {
+    margin: 0;
+  }
+
+  .customer-addresses__empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    margin-bottom: 40px;
+  }
+
+  .customer-addresses__empty-content {
+    text-align: center;
+    max-width: 400px;
+  }
+
+  .customer-addresses__empty-icon {
+    color: var(--color-foreground-secondary);
+    margin-bottom: 20px;
+  }
+
+  .customer-addresses__empty-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+    margin-bottom: 12px;
+  }
+
+  .customer-addresses__empty-description {
+    color: var(--color-foreground-secondary);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .customer-addresses__back {
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .customer-addresses__back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-foreground-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .customer-addresses__back-link:hover {
+    color: var(--color-primary);
+  }
+
+  /* Button Styles */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 44px;
+  }
+
+  .btn--primary {
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  .btn--primary:hover {
+    background-color: var(--color-primary-dark, var(--color-primary));
+    opacity: 0.9;
+  }
+
+  .btn--outline {
+    background-color: transparent;
+    border: 1px solid #e5e7eb;
+    color: var(--color-foreground);
+  }
+
+  .btn--outline:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .btn--text {
+    background-color: transparent;
+    color: var(--color-foreground-secondary);
+    padding: 8px 16px;
+  }
+
+  .btn--text:hover {
+    color: var(--color-primary);
+  }
+
+  .btn--small {
+    padding: 8px 16px;
+    font-size: 0.75rem;
+    min-height: 36px;
+  }
+
+  .btn--destructive {
+    color: #dc2626;
+  }
+
+  .btn--destructive:hover {
+    border-color: #dc2626;
+    color: #dc2626;
+    background-color: #fef2f2;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .customer-addresses-page {
+      padding: 40px 16px;
+    }
+
+    .customer-addresses__header {
+      flex-direction: column;
+      gap: 20px;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .customer-addresses__title {
+      font-size: 2rem;
+    }
+
+    .customer-addresses__list {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .customer-address-card {
+      padding: 20px;
+    }
+
+    .customer-address-card__actions {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .customer-addresses__title {
+      font-size: 1.75rem;
+    }
+
+    .customer-address-card__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .customer-address-card__actions .btn {
+      width: 100%;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.main_addresses.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.main_addresses.settings.header_display"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_company",
+      "label": "t:sections.main_addresses.settings.show_company.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "t:sections.main_addresses.settings.show_phone.label",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.main_addresses.presets.main_addresses.name"
+    }
+  ]
+}
+{% endschema %}

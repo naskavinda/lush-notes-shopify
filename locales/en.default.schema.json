@@ -251,6 +251,23 @@
           "label": "Show vendor"
         }
       }
+    },
+    "main_addresses": {
+      "name": "Main Addresses",
+      "settings": {
+        "header_display": "Display Options",
+        "show_company": {
+          "label": "Show company field"
+        },
+        "show_phone": {
+          "label": "Show phone field"
+        }
+      },
+      "presets": {
+        "main_addresses": {
+          "name": "Main Addresses"
+        }
+      }
     }
   }
 }
