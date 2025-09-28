@@ -913,7 +913,10 @@
             detail: { cart: cartData } 
           }));
           
-          // Method 4: Trigger a manual page refresh of cart components
+          // Method 4: Refresh cart drawer content
+          await this.refreshCartDrawer();
+          
+          // Method 5: Trigger manual page refresh of cart components
           const event = new Event('cart:refresh');
           document.dispatchEvent(event);
           
@@ -1032,6 +1035,146 @@
         }
       } else {
         console.log(`✅ Successfully updated ${elementsFound} cart count elements`);
+      }
+    }
+
+    async refreshCartDrawer() {
+      try {
+        console.log('🔄 Refreshing cart drawer...');
+        
+        // Method 0: Try global cart drawer instance first
+        if (window.cartDrawer && typeof window.cartDrawer.updateDrawerContent === 'function') {
+          console.log('✅ Method 0: Using global cart drawer instance');
+          await window.cartDrawer.updateDrawerContent();
+          return;
+        }
+        
+        // Method 1: Look for cart drawer element and refresh its content
+        const cartDrawerSelectors = [
+          '.cart-drawer',
+          '[data-cart-drawer]',
+          '.drawer__cart',
+          '.cart-sidebar',
+          '.mini-cart',
+          '.header__cart-drawer'
+        ];
+        
+        let cartDrawerElement = null;
+        for (const selector of cartDrawerSelectors) {
+          cartDrawerElement = document.querySelector(selector);
+          if (cartDrawerElement) {
+            console.log(`🎯 Found cart drawer with selector: ${selector}`);
+            break;
+          }
+        }
+        
+        if (cartDrawerElement) {
+          // Method 1a: Try to find and call existing refresh method
+          if (typeof cartDrawerElement.refresh === 'function') {
+            console.log('🔄 Calling cart drawer refresh method');
+            cartDrawerElement.refresh();
+          }
+          
+          // Method 1b: Fetch and update cart drawer HTML
+          console.log('🔄 Fetching fresh cart drawer HTML...');
+          const response = await fetch(`${window.location.origin}/cart?view=drawer`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+          });
+          
+          if (response.ok) {
+            const html = await response.text();
+            console.log('✅ Got fresh cart drawer HTML');
+            
+            // Find the cart items container within the drawer
+            const cartItemsContainer = cartDrawerElement.querySelector('.cart-drawer__items, .cart__items, .drawer__items, [data-cart-items]');
+            if (cartItemsContainer) {
+              // Parse the new HTML and extract just the items
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = html;
+              const newItems = tempDiv.querySelector('.cart-drawer__items, .cart__items, .drawer__items, [data-cart-items]');
+              
+              if (newItems) {
+                cartItemsContainer.innerHTML = newItems.innerHTML;
+                console.log('✅ Cart drawer items updated');
+              }
+            } else {
+              // If we can't find specific items container, update the whole drawer
+              cartDrawerElement.innerHTML = html;
+              console.log('✅ Entire cart drawer updated');
+            }
+          }
+        }
+        
+        // Method 2: Try to trigger cart drawer refresh via global functions
+        if (typeof window.refreshCartDrawer === 'function') {
+          console.log('🔄 Calling global refreshCartDrawer function');
+          window.refreshCartDrawer();
+        }
+        
+        // Method 3: Dispatch cart drawer specific events
+        document.dispatchEvent(new CustomEvent('cart-drawer:refresh'));
+        document.dispatchEvent(new CustomEvent('drawer:refresh'));
+        
+        // Method 4: Try to access the CartDrawer instance and call updateDrawerContent
+        const cartDrawerScripts = document.querySelectorAll('script');
+        let cartDrawerInstance = null;
+        
+        // Look for CartDrawer instance in global scope or common patterns
+        if (window.cartDrawer && typeof window.cartDrawer.updateDrawerContent === 'function') {
+          console.log('🔄 Found global cartDrawer instance');
+          cartDrawerInstance = window.cartDrawer;
+        } else {
+          // Try to find the drawer element and see if it has the instance attached
+          const drawerEl = document.querySelector('[data-cart-drawer]');
+          if (drawerEl && drawerEl._cartDrawer && typeof drawerEl._cartDrawer.updateDrawerContent === 'function') {
+            console.log('🔄 Found cartDrawer instance on element');
+            cartDrawerInstance = drawerEl._cartDrawer;
+          }
+        }
+        
+        if (cartDrawerInstance && typeof cartDrawerInstance.updateDrawerContent === 'function') {
+          console.log('🔄 Calling CartDrawer.updateDrawerContent()');
+          await cartDrawerInstance.updateDrawerContent();
+        } else {
+          console.log('⚠️ CartDrawer instance not found, using fallback method');
+          
+          // Fallback: manually fetch and update cart drawer
+          const drawerElement = document.querySelector('[data-cart-drawer]');
+          if (drawerElement) {
+            try {
+              const response = await fetch(`${window.location.origin}/?sections=cart-drawer`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+              });
+              
+              if (response.ok) {
+                const data = await response.json();
+                if (data['cart-drawer']) {
+                  const tempDiv = document.createElement('div');
+                  tempDiv.innerHTML = data['cart-drawer'];
+                  const newDrawerContent = tempDiv.querySelector('[data-cart-drawer]');
+                  
+                  if (newDrawerContent) {
+                    drawerElement.innerHTML = newDrawerContent.innerHTML;
+                    console.log('✅ Cart drawer updated via sections API');
+                  }
+                }
+              }
+            } catch (error) {
+              console.error('❌ Fallback cart drawer update failed:', error);
+            }
+          }
+        }
+        
+        // Method 5: Try to access cart drawer via common theme patterns
+        if (window.theme && window.theme.cartDrawer && typeof window.theme.cartDrawer.refresh === 'function') {
+          console.log('🔄 Calling theme cart drawer refresh');
+          window.theme.cartDrawer.refresh();
+        }
+        
+        console.log('✅ Cart drawer refresh completed');
+        
+      } catch (error) {
+        console.error('🚨 Error refreshing cart drawer:', error);
       }
     }
 
@@ -1279,6 +1422,48 @@
       console.log(`🔧 Force updating cart count to: ${count}`);
       if (window.wishlistManager) {
         window.wishlistManager.updateHeaderCartCount(count);
+      } else {
+        console.log('❌ Wishlist manager not found');
+      }
+    },
+
+    // Debug cart drawer
+    debugCartDrawer() {
+      console.log('🔍 Searching for cart drawer...');
+      
+      const drawerSelectors = [
+        '[data-cart-drawer]',
+        '.cart-drawer',
+        '.drawer__cart',
+        '.cart-sidebar',
+        '.mini-cart'
+      ];
+      
+      drawerSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        if (elements.length > 0) {
+          console.log(`✅ Found ${elements.length} cart drawer elements with "${selector}":`);
+          elements.forEach((el, index) => {
+            console.log(`  ${index + 1}:`, el);
+            console.log(`    - Has _cartDrawer:`, !!el._cartDrawer);
+            console.log(`    - innerHTML length:`, el.innerHTML.length);
+          });
+        } else {
+          console.log(`❌ No cart drawer found for "${selector}"`);
+        }
+      });
+      
+      // Check for global instances
+      console.log('🔍 Global cart drawer instances:');
+      console.log('  - window.cartDrawer:', window.cartDrawer);
+      console.log('  - window.theme?.cartDrawer:', window.theme?.cartDrawer);
+    },
+
+    // Force refresh cart drawer
+    async forceRefreshCartDrawer() {
+      console.log('🔧 Force refreshing cart drawer...');
+      if (window.wishlistManager) {
+        await window.wishlistManager.refreshCartDrawer();
       } else {
         console.log('❌ Wishlist manager not found');
       }

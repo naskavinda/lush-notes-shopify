@@ -592,6 +592,7 @@
 
   // Initialize cart drawer when DOM is loaded
   document.addEventListener('DOMContentLoaded', () => {
-    new CartDrawer();
+    window.cartDrawer = new CartDrawer();
+    console.log('🛒 Cart drawer initialized and available as window.cartDrawer');
   });
 {% endjavascript %}
