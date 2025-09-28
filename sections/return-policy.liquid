@@ -1,0 +1,952 @@
+<div class="return-policy">
+  <div class="return-policy__hero">
+    <div class="return-policy__container">
+      <h1 class="return-policy__title">{{ section.settings.title | default: "Return Policy" }}</h1>
+      <p class="return-policy__subtitle">{{ section.settings.subtitle | default: "Your satisfaction is our priority" }}</p>
+    </div>
+  </div>
+
+  <div class="return-policy__content">
+    <div class="return-policy__container">
+      
+      <!-- 2-Week Return Window -->
+      <section class="return-policy__section">
+        <h2 class="return-policy__section-title">{{ section.settings.return_window_title | default: "2-Week Return Window" }}</h2>
+        <p class="return-policy__text">{{ section.settings.return_window_text | default: "At Lush Notes, we offer a 2-week return policy for eligible items. Returns must be initiated within 14 days of your purchase date." }}</p>
+      </section>
+
+      <!-- Eligible for Return -->
+      <section class="return-policy__section">
+        <h2 class="return-policy__section-title">{{ section.settings.eligible_title | default: "Eligible for Return" }}</h2>
+        <ul class="return-policy__list return-policy__list--eligible">
+          <li class="return-policy__list-item">
+            <span class="return-policy__list-icon">✅</span>
+            <div class="return-policy__list-content">
+              <strong>{{ section.settings.eligible_1_title | default: "Unopened perfumes" }}</strong>
+              <span>{{ section.settings.eligible_1_text | default: "in their original packaging with all seals intact" }}</span>
+            </div>
+          </li>
+          <li class="return-policy__list-item">
+            <span class="return-policy__list-icon">✅</span>
+            <div class="return-policy__list-content">
+              <strong>{{ section.settings.eligible_2_title | default: "Unused products" }}</strong>
+              <span>{{ section.settings.eligible_2_text | default: "that have not been opened or tested" }}</span>
+            </div>
+          </li>
+          <li class="return-policy__list-item">
+            <span class="return-policy__list-icon">✅</span>
+            <div class="return-policy__list-content">
+              <strong>{{ section.settings.eligible_3_title | default: "Items with original packaging" }}</strong>
+              <span>{{ section.settings.eligible_3_text | default: "including boxes, labels, and documentation" }}</span>
+            </div>
+          </li>
+          <li class="return-policy__list-item">
+            <span class="return-policy__list-icon">✅</span>
+            <div class="return-policy__list-content">
+              <strong>{{ section.settings.eligible_4_title | default: "Products in perfect condition" }}</strong>
+              <span>{{ section.settings.eligible_4_text | default: "without any damage or wear" }}</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Not Eligible for Return -->
+      <section class="return-policy__section">
+        <h2 class="return-policy__section-title">{{ section.settings.not_eligible_title | default: "Not Eligible for Return" }}</h2>
+        <ul class="return-policy__list return-policy__list--not-eligible">
+          <li class="return-policy__list-item">
+            <span class="return-policy__list-icon">❌</span>
+            <div class="return-policy__list-content">
+              <strong>{{ section.settings.not_eligible_1_title | default: "Opened or used perfumes" }}</strong>
+              <span>{{ section.settings.not_eligible_1_text | default: "Once a fragrance seal is broken, it cannot be returned" }}</span>
+            </div>
+          </li>
+          <li class="return-policy__list-item">
+            <span class="return-policy__list-icon">❌</span>
+            <div class="return-policy__list-content">
+              <strong>{{ section.settings.not_eligible_2_title | default: "Damaged packaging" }}</strong>
+              <span>{{ section.settings.not_eligible_2_text | default: "Products with broken, damaged, or tampered packaging" }}</span>
+            </div>
+          </li>
+          <li class="return-policy__list-item">
+            <span class="return-policy__list-icon">❌</span>
+            <div class="return-policy__list-content">
+              <strong>{{ section.settings.not_eligible_3_title | default: "Items past the 2-week window" }}</strong>
+              <span>{{ section.settings.not_eligible_3_text | default: "Returns requested after 14 days from purchase" }}</span>
+            </div>
+          </li>
+          <li class="return-policy__list-item">
+            <span class="return-policy__list-icon">❌</span>
+            <div class="return-policy__list-content">
+              <strong>{{ section.settings.not_eligible_4_title | default: "Sale or clearance items" }}</strong>
+              <span>{{ section.settings.not_eligible_4_text | default: "Final sale products are not eligible for return" }}</span>
+            </div>
+          </li>
+          <li class="return-policy__list-item">
+            <span class="return-policy__list-icon">❌</span>
+            <div class="return-policy__list-content">
+              <strong>{{ section.settings.not_eligible_5_title | default: "Personalized or custom orders" }}</strong>
+              <span>{{ section.settings.not_eligible_5_text | default: "Items made specifically for you" }}</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- How to Return -->
+      <section class="return-policy__section">
+        <h2 class="return-policy__section-title">{{ section.settings.how_to_title | default: "How to Return" }}</h2>
+        <div class="return-policy__steps">
+          <div class="return-policy__step">
+            <div class="return-policy__step-number">1</div>
+            <div class="return-policy__step-content">
+              <h3 class="return-policy__step-title">{{ section.settings.step_1_title | default: "Contact Us" }}</h3>
+              <p class="return-policy__step-text">{{ section.settings.step_1_text | default: "Email us or call within 14 days to initiate your return" }}</p>
+            </div>
+          </div>
+          <div class="return-policy__step">
+            <div class="return-policy__step-number">2</div>
+            <div class="return-policy__step-content">
+              <h3 class="return-policy__step-title">{{ section.settings.step_2_title | default: "Get Authorization" }}</h3>
+              <p class="return-policy__step-text">{{ section.settings.step_2_text | default: "Receive return authorization and shipping instructions" }}</p>
+            </div>
+          </div>
+          <div class="return-policy__step">
+            <div class="return-policy__step-number">3</div>
+            <div class="return-policy__step-content">
+              <h3 class="return-policy__step-title">{{ section.settings.step_3_title | default: "Ship Back" }}</h3>
+              <p class="return-policy__step-text">{{ section.settings.step_3_text | default: "Securely package and ship your item back to us" }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Important Notes -->
+      <section class="return-policy__section return-policy__important">
+        <h2 class="return-policy__section-title">{{ section.settings.important_title | default: "Important Notes" }}</h2>
+        <div class="return-policy__notes">
+          <div class="return-policy__note">
+            <div class="return-policy__note-icon">⚠️</div>
+            <div class="return-policy__note-content">
+              <strong>{{ section.settings.note_1_title | default: "Hygiene Reasons:" }}</strong>
+              {{ section.settings.note_1_text | default: "Due to the personal nature of fragrances and hygiene considerations, we cannot accept returns of opened or used perfumes." }}
+            </div>
+          </div>
+          <div class="return-policy__note">
+            <div class="return-policy__note-icon">⚠️</div>
+            <div class="return-policy__note-content">
+              <strong>{{ section.settings.note_2_title | default: "Inspection Required:" }}</strong>
+              {{ section.settings.note_2_text | default: "All returned items will be inspected upon receipt. Items that don't meet our return criteria will be sent back to you." }}
+            </div>
+          </div>
+          <div class="return-policy__note">
+            <div class="return-policy__note-icon">⚠️</div>
+            <div class="return-policy__note-content">
+              <strong>{{ section.settings.note_3_title | default: "Return Shipping:" }}</strong>
+              {{ section.settings.note_3_text | default: "Customers are responsible for return shipping costs unless the item was damaged or defective upon arrival." }}
+            </div>
+          </div>
+          <div class="return-policy__note">
+            <div class="return-policy__note-icon">⚠️</div>
+            <div class="return-policy__note-content">
+              <strong>{{ section.settings.note_4_title | default: "Refund Processing:" }}</strong>
+              {{ section.settings.note_4_text | default: "Refunds will be processed within 5-7 business days after we receive and inspect your return." }}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Exchanges -->
+      <section class="return-policy__section">
+        <h2 class="return-policy__section-title">{{ section.settings.exchanges_title | default: "Exchanges" }}</h2>
+        <p class="return-policy__text">{{ section.settings.exchanges_text | default: "We offer exchanges for unopened items within the same 2-week window. If you'd like to exchange for a different fragrance:" }}</p>
+        <ul class="return-policy__list return-policy__list--simple">
+          <li>{{ section.settings.exchange_1 | default: "Contact our customer service team to discuss exchange options" }}</li>
+          <li>{{ section.settings.exchange_2 | default: "Exchanges are subject to product availability" }}</li>
+          <li>{{ section.settings.exchange_3 | default: "Price differences may apply for exchanges to higher-priced items" }}</li>
+        </ul>
+      </section>
+
+      <!-- Need Help -->
+      <section class="return-policy__section return-policy__help">
+        <h2 class="return-policy__section-title">{{ section.settings.help_title | default: "Need Help?" }}</h2>
+        <div class="return-policy__help-grid">
+          <div class="return-policy__help-item">
+            <h3 class="return-policy__help-item-title">{{ section.settings.help_1_title | default: "Customer Service" }}</h3>
+            <p class="return-policy__help-item-text">{{ section.settings.help_1_text | default: "Have questions about your return? Our team is here to help." }}</p>
+            <a href="{{ section.settings.contact_link | default: '/pages/contact' }}" class="btn btn--outline">
+              {{ section.settings.contact_button_text | default: "Contact Us" }} →
+            </a>
+          </div>
+          <div class="return-policy__help-item">
+            <h3 class="return-policy__help-item-title">{{ section.settings.help_2_title | default: "Order Information" }}</h3>
+            <p class="return-policy__help-item-text">{{ section.settings.help_2_text | default: "Check your order status and tracking information." }}</p>
+            <a href="{{ section.settings.orders_link | default: routes.account_url }}" class="btn btn--outline">
+              {{ section.settings.orders_button_text | default: "View Orders" }} →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Custom Blocks for Additional Content -->
+      {% for block in section.blocks %}
+        {% if block.type == "text_block" %}
+          <section class="return-policy__section return-policy__custom-block" {{ block.shopify_attributes }}>
+            {% if block.settings.heading != blank %}
+              <h2 class="return-policy__section-title">{{ block.settings.heading }}</h2>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <div class="return-policy__custom-text">
+                {{ block.settings.text | newline_to_br }}
+              </div>
+            {% endif %}
+          </section>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .return-policy {
+    background-color: var(--color-background);
+  }
+
+  .return-policy__hero {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark, #d97706) 100%);
+    color: white;
+    padding: 80px 20px;
+    text-align: center;
+  }
+
+  .return-policy__container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .return-policy__title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  .return-policy__subtitle {
+    font-size: 1.25rem;
+    font-weight: 300;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .return-policy__content {
+    padding: 80px 0;
+  }
+
+  .return-policy__section {
+    margin-bottom: 60px;
+  }
+
+  .return-policy__section:last-child {
+    margin-bottom: 0;
+  }
+
+  .return-policy__section-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+    margin-bottom: 24px;
+  }
+
+  .return-policy__text {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--color-foreground-secondary);
+    margin-bottom: 24px;
+  }
+
+  /* Lists */
+  .return-policy__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .return-policy__list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .return-policy__list-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .return-policy__list-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .return-policy__list-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .return-policy__list-content strong {
+    color: var(--color-foreground);
+    font-weight: 600;
+  }
+
+  .return-policy__list-content span {
+    color: var(--color-foreground-secondary);
+    font-size: 0.875rem;
+  }
+
+  .return-policy__list--eligible .return-policy__list-item {
+    border-left: 4px solid #10b981;
+  }
+
+  .return-policy__list--not-eligible .return-policy__list-item {
+    border-left: 4px solid #ef4444;
+  }
+
+  .return-policy__list--simple {
+    background: #f8fafc;
+    padding: 24px;
+    border-radius: 12px;
+  }
+
+  .return-policy__list--simple li {
+    color: var(--color-foreground-secondary);
+    margin-bottom: 12px;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .return-policy__list--simple li:before {
+    content: "•";
+    color: var(--color-primary);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+  }
+
+  /* Steps */
+  .return-policy__steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+  }
+
+  .return-policy__step {
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+
+  .return-policy__step:hover {
+    transform: translateY(-5px);
+  }
+
+  .return-policy__step-number {
+    width: 60px;
+    height: 60px;
+    background: var(--color-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 auto 20px;
+  }
+
+  .return-policy__step-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+    margin-bottom: 12px;
+  }
+
+  .return-policy__step-text {
+    color: var(--color-foreground-secondary);
+    line-height: 1.6;
+  }
+
+  /* Important Notes */
+  .return-policy__important {
+    background: #fef3c7;
+    padding: 40px;
+    border-radius: 16px;
+    border: 2px solid #f59e0b;
+  }
+
+  .return-policy__notes {
+    display: grid;
+    gap: 20px;
+  }
+
+  .return-policy__note {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+  }
+
+  .return-policy__note-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .return-policy__note-content {
+    color: var(--color-foreground-secondary);
+    line-height: 1.6;
+  }
+
+  .return-policy__note-content strong {
+    color: var(--color-foreground);
+  }
+
+  /* Help Section */
+  .return-policy__help-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+  }
+
+  .return-policy__help-item {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    text-align: center;
+  }
+
+  .return-policy__help-item-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+    margin-bottom: 12px;
+  }
+
+  .return-policy__help-item-text {
+    color: var(--color-foreground-secondary);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  /* Custom Content */
+  .return-policy__custom-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-foreground-secondary);
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn--outline {
+    background-color: transparent;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .btn--outline:hover {
+    background-color: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .return-policy__hero {
+      padding: 60px 20px;
+    }
+
+    .return-policy__title {
+      font-size: 2.5rem;
+    }
+
+    .return-policy__subtitle {
+      font-size: 1.125rem;
+    }
+
+    .return-policy__content {
+      padding: 60px 0;
+    }
+
+    .return-policy__section {
+      margin-bottom: 50px;
+    }
+
+    .return-policy__section-title {
+      font-size: 1.75rem;
+    }
+
+    .return-policy__steps {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .return-policy__help-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .return-policy__list-item {
+      padding: 16px;
+    }
+
+    .return-policy__step,
+    .return-policy__help-item {
+      padding: 24px;
+    }
+
+    .return-policy__important {
+      padding: 30px 20px;
+    }
+
+    .return-policy__container {
+      padding: 0 15px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .return-policy__title {
+      font-size: 2rem;
+    }
+
+    .return-policy__section-title {
+      font-size: 1.5rem;
+    }
+
+    .return-policy__list-item {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .return-policy__note {
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Return Policy",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Section"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Return Policy"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Your satisfaction is our priority"
+    },
+    {
+      "type": "header",
+      "content": "Return Window Section"
+    },
+    {
+      "type": "text",
+      "id": "return_window_title",
+      "label": "Return Window Title",
+      "default": "2-Week Return Window"
+    },
+    {
+      "type": "textarea",
+      "id": "return_window_text",
+      "label": "Return Window Text",
+      "default": "At Lush Notes, we offer a 2-week return policy for eligible items. Returns must be initiated within 14 days of your purchase date."
+    },
+    {
+      "type": "header",
+      "content": "Eligible Items Section"
+    },
+    {
+      "type": "text",
+      "id": "eligible_title",
+      "label": "Eligible Section Title",
+      "default": "Eligible for Return"
+    },
+    {
+      "type": "text",
+      "id": "eligible_1_title",
+      "label": "Eligible Item 1 Title",
+      "default": "Unopened perfumes"
+    },
+    {
+      "type": "text",
+      "id": "eligible_1_text",
+      "label": "Eligible Item 1 Description",
+      "default": "in their original packaging with all seals intact"
+    },
+    {
+      "type": "text",
+      "id": "eligible_2_title",
+      "label": "Eligible Item 2 Title",
+      "default": "Unused products"
+    },
+    {
+      "type": "text",
+      "id": "eligible_2_text",
+      "label": "Eligible Item 2 Description",
+      "default": "that have not been opened or tested"
+    },
+    {
+      "type": "text",
+      "id": "eligible_3_title",
+      "label": "Eligible Item 3 Title",
+      "default": "Items with original packaging"
+    },
+    {
+      "type": "text",
+      "id": "eligible_3_text",
+      "label": "Eligible Item 3 Description",
+      "default": "including boxes, labels, and documentation"
+    },
+    {
+      "type": "text",
+      "id": "eligible_4_title",
+      "label": "Eligible Item 4 Title",
+      "default": "Products in perfect condition"
+    },
+    {
+      "type": "text",
+      "id": "eligible_4_text",
+      "label": "Eligible Item 4 Description",
+      "default": "without any damage or wear"
+    },
+    {
+      "type": "header",
+      "content": "Not Eligible Items Section"
+    },
+    {
+      "type": "text",
+      "id": "not_eligible_title",
+      "label": "Not Eligible Section Title",
+      "default": "Not Eligible for Return"
+    },
+    {
+      "type": "text",
+      "id": "not_eligible_1_title",
+      "label": "Not Eligible Item 1 Title",
+      "default": "Opened or used perfumes"
+    },
+    {
+      "type": "text",
+      "id": "not_eligible_1_text",
+      "label": "Not Eligible Item 1 Description",
+      "default": "Once a fragrance seal is broken, it cannot be returned"
+    },
+    {
+      "type": "text",
+      "id": "not_eligible_2_title",
+      "label": "Not Eligible Item 2 Title",
+      "default": "Damaged packaging"
+    },
+    {
+      "type": "text",
+      "id": "not_eligible_2_text",
+      "label": "Not Eligible Item 2 Description",
+      "default": "Products with broken, damaged, or tampered packaging"
+    },
+    {
+      "type": "text",
+      "id": "not_eligible_3_title",
+      "label": "Not Eligible Item 3 Title",
+      "default": "Items past the 2-week window"
+    },
+    {
+      "type": "text",
+      "id": "not_eligible_3_text",
+      "label": "Not Eligible Item 3 Description",
+      "default": "Returns requested after 14 days from purchase"
+    },
+    {
+      "type": "text",
+      "id": "not_eligible_4_title",
+      "label": "Not Eligible Item 4 Title",
+      "default": "Sale or clearance items"
+    },
+    {
+      "type": "text",
+      "id": "not_eligible_4_text",
+      "label": "Not Eligible Item 4 Description",
+      "default": "Final sale products are not eligible for return"
+    },
+    {
+      "type": "text",
+      "id": "not_eligible_5_title",
+      "label": "Not Eligible Item 5 Title",
+      "default": "Personalized or custom orders"
+    },
+    {
+      "type": "text",
+      "id": "not_eligible_5_text",
+      "label": "Not Eligible Item 5 Description",
+      "default": "Items made specifically for you"
+    },
+    {
+      "type": "header",
+      "content": "How to Return Section"
+    },
+    {
+      "type": "text",
+      "id": "how_to_title",
+      "label": "How to Return Title",
+      "default": "How to Return"
+    },
+    {
+      "type": "text",
+      "id": "step_1_title",
+      "label": "Step 1 Title",
+      "default": "Contact Us"
+    },
+    {
+      "type": "text",
+      "id": "step_1_text",
+      "label": "Step 1 Description",
+      "default": "Email us or call within 14 days to initiate your return"
+    },
+    {
+      "type": "text",
+      "id": "step_2_title",
+      "label": "Step 2 Title",
+      "default": "Get Authorization"
+    },
+    {
+      "type": "text",
+      "id": "step_2_text",
+      "label": "Step 2 Description",
+      "default": "Receive return authorization and shipping instructions"
+    },
+    {
+      "type": "text",
+      "id": "step_3_title",
+      "label": "Step 3 Title",
+      "default": "Ship Back"
+    },
+    {
+      "type": "text",
+      "id": "step_3_text",
+      "label": "Step 3 Description",
+      "default": "Securely package and ship your item back to us"
+    },
+    {
+      "type": "header",
+      "content": "Important Notes Section"
+    },
+    {
+      "type": "text",
+      "id": "important_title",
+      "label": "Important Notes Title",
+      "default": "Important Notes"
+    },
+    {
+      "type": "text",
+      "id": "note_1_title",
+      "label": "Note 1 Title",
+      "default": "Hygiene Reasons:"
+    },
+    {
+      "type": "textarea",
+      "id": "note_1_text",
+      "label": "Note 1 Text",
+      "default": "Due to the personal nature of fragrances and hygiene considerations, we cannot accept returns of opened or used perfumes."
+    },
+    {
+      "type": "text",
+      "id": "note_2_title",
+      "label": "Note 2 Title",
+      "default": "Inspection Required:"
+    },
+    {
+      "type": "textarea",
+      "id": "note_2_text",
+      "label": "Note 2 Text",
+      "default": "All returned items will be inspected upon receipt. Items that don't meet our return criteria will be sent back to you."
+    },
+    {
+      "type": "text",
+      "id": "note_3_title",
+      "label": "Note 3 Title",
+      "default": "Return Shipping:"
+    },
+    {
+      "type": "textarea",
+      "id": "note_3_text",
+      "label": "Note 3 Text",
+      "default": "Customers are responsible for return shipping costs unless the item was damaged or defective upon arrival."
+    },
+    {
+      "type": "text",
+      "id": "note_4_title",
+      "label": "Note 4 Title",
+      "default": "Refund Processing:"
+    },
+    {
+      "type": "textarea",
+      "id": "note_4_text",
+      "label": "Note 4 Text",
+      "default": "Refunds will be processed within 5-7 business days after we receive and inspect your return."
+    },
+    {
+      "type": "header",
+      "content": "Exchanges Section"
+    },
+    {
+      "type": "text",
+      "id": "exchanges_title",
+      "label": "Exchanges Title",
+      "default": "Exchanges"
+    },
+    {
+      "type": "textarea",
+      "id": "exchanges_text",
+      "label": "Exchanges Description",
+      "default": "We offer exchanges for unopened items within the same 2-week window. If you'd like to exchange for a different fragrance:"
+    },
+    {
+      "type": "text",
+      "id": "exchange_1",
+      "label": "Exchange Point 1",
+      "default": "Contact our customer service team to discuss exchange options"
+    },
+    {
+      "type": "text",
+      "id": "exchange_2",
+      "label": "Exchange Point 2",
+      "default": "Exchanges are subject to product availability"
+    },
+    {
+      "type": "text",
+      "id": "exchange_3",
+      "label": "Exchange Point 3",
+      "default": "Price differences may apply for exchanges to higher-priced items"
+    },
+    {
+      "type": "header",
+      "content": "Help Section"
+    },
+    {
+      "type": "text",
+      "id": "help_title",
+      "label": "Help Section Title",
+      "default": "Need Help?"
+    },
+    {
+      "type": "text",
+      "id": "help_1_title",
+      "label": "Help Item 1 Title",
+      "default": "Customer Service"
+    },
+    {
+      "type": "text",
+      "id": "help_1_text",
+      "label": "Help Item 1 Text",
+      "default": "Have questions about your return? Our team is here to help."
+    },
+    {
+      "type": "url",
+      "id": "contact_link",
+      "label": "Contact Link"
+    },
+    {
+      "type": "text",
+      "id": "contact_button_text",
+      "label": "Contact Button Text",
+      "default": "Contact Us"
+    },
+    {
+      "type": "text",
+      "id": "help_2_title",
+      "label": "Help Item 2 Title",
+      "default": "Order Information"
+    },
+    {
+      "type": "text",
+      "id": "help_2_text",
+      "label": "Help Item 2 Text",
+      "default": "Check your order status and tracking information."
+    },
+    {
+      "type": "url",
+      "id": "orders_link",
+      "label": "Orders Link"
+    },
+    {
+      "type": "text",
+      "id": "orders_button_text",
+      "label": "Orders Button Text",
+      "default": "View Orders"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_block",
+      "name": "Custom Text Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Return Policy",
+      "settings": {
+        "title": "Return Policy",
+        "subtitle": "Your satisfaction is our priority"
+      }
+    }
+  ]
+}
+{% endschema %}
