@@ -1,289 +1,36 @@
-<div class="about-us full-width">
+<div class="about-us">
   <div class="about-us__content">
-    <!-- Hero Section -->
-    <div class="about-us__hero">
-      <h1 class="about-us__title">{{ section.settings.hero_title | default: 'About Lush Notes' }}</h1>
-      <p class="about-us__subtitle">{{ section.settings.hero_subtitle | default: 'Crafting luxury fragrances that define your essence and elevate your presence.' }}</p>
-      <p class="about-us__tagline">{{ section.settings.hero_description | default: "Every scent tells a story, and we're here to help you write yours." }}</p>
-    </div>
-
-    <!-- Our Story Section -->
-    <div class="about-us__section">
-      <h2 class="about-us__section-title">{{ section.settings.story_title | default: 'Our Story' }}</h2>
-      <div class="about-us__story-content">
-        <div class="about-us__story-text">
-          <p>{{ section.settings.story_paragraph_1 | default: 'Founded with a passion for exceptional fragrances, Lush Notes began as a dream to make luxury perfumes accessible to everyone. We believe that the right scent has the power to transform not just how others perceive you, but how you feel about yourself.' }}</p>
-          
-          <p>{{ section.settings.story_paragraph_2 | default: "Our journey started with a simple observation: great fragrances shouldn't be exclusive to high-end boutiques. We set out to curate and create scents that rival the most prestigious brands, while maintaining authenticity and affordability." }}</p>
-          
-          <p>{{ section.settings.story_paragraph_3 | default: "Today, we're proud to serve thousands of fragrance enthusiasts worldwide, helping them discover their signature scent and express their unique personality through the art of perfumery." }}</p>
-        </div>
-        
-        <div class="about-us__story-highlight">
-          <div class="about-us__since">
-            <h3>{{ section.settings.since_year | default: 'Since 2020' }}</h3>
-            <p>{{ section.settings.since_description | default: 'Crafting luxury fragrances' }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Our Values Section -->
-    <div class="about-us__section">
-      <h2 class="about-us__section-title">{{ section.settings.values_title | default: 'Our Values' }}</h2>
-      <p class="about-us__values-subtitle">{{ section.settings.values_subtitle | default: 'The principles that guide everything we do, from sourcing ingredients to delivering your perfect scent.' }}</p>
-      
-      <div class="about-us__values-grid">
-        {% for block in section.blocks %}
-          {% if block.type == 'value' %}
-            <div class="about-us__value" {{ block.shopify_attributes }}>
-              <h3 class="about-us__value-title">{{ block.settings.title }}</h3>
-              <p class="about-us__value-description">{{ block.settings.description }}</p>
-            </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- Our Commitment Section -->
-    <div class="about-us__section">
-      <h2 class="about-us__section-title">{{ section.settings.commitment_title | default: 'Our Commitment to You' }}</h2>
-      <p class="about-us__commitment-description">{{ section.settings.commitment_description | default: 'We\'re not just selling fragrances; we\'re building relationships. Every interaction matters, and your satisfaction is our success.' }}</p>
-      
-      <div class="about-us__commitment-features">
-        {% for block in section.blocks %}
-          {% if block.type == 'commitment_feature' %}
-            <div class="about-us__feature" {{ block.shopify_attributes }}>
-              <h4 class="about-us__feature-title">{{ block.settings.title }}</h4>
-            </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-      
-      {% if section.settings.show_cta %}
-        <div class="about-us__cta">
-          <h3>{{ section.settings.cta_text | default: 'Ready to find your signature scent?' }}</h3>
-          <a href="{{ section.settings.cta_url | default: '/collections/all' }}" class="about-us__cta-button">
-            {{ section.settings.cta_button_text | default: 'Explore Our Collection' }}
-          </a>
+    <h1>{{ section.settings.title | default: "About Lush Notes" }}</h1>
+    <p>{{ section.settings.description | default: "Crafting luxury fragrances that define your essence and elevate your presence." }}</p>
+    
+    {% for block in section.blocks %}
+      {% if block.type == "text_block" %}
+        <div {{ block.shopify_attributes }}>
+          <h2>{{ block.settings.heading }}</h2>
+          <p>{{ block.settings.text }}</p>
         </div>
       {% endif %}
-    </div>
+    {% endfor %}
   </div>
 </div>
 
 {% stylesheet %}
-  .about-us {
-    padding: 3rem 0;
-  }
-
-  .about-us__content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-  }
-
-  .about-us__hero {
-    text-align: center;
-    margin-bottom: 4rem;
-    padding: 2rem 0;
-  }
-
-  .about-us__title {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--color-foreground);
-  }
-
-  .about-us__subtitle {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-    color: var(--color-foreground-75);
-  }
-
-  .about-us__tagline {
-    font-size: 1rem;
-    color: var(--color-foreground-75);
-    font-style: italic;
-  }
-
-  .about-us__section {
-    margin-bottom: 4rem;
-  }
-
-  .about-us__section-title {
-    font-size: 2.5rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    color: var(--color-foreground);
-  }
-
-  .about-us__story-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 3rem;
-    align-items: start;
-  }
-
-  .about-us__story-text p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-    color: var(--color-foreground-75);
-  }
-
-  .about-us__story-highlight {
-    position: sticky;
-    top: 2rem;
-  }
-
-  .about-us__since {
-    background: var(--color-background-alt);
-    padding: 2rem;
-    border-radius: 8px;
-    text-align: center;
-  }
-
-  .about-us__since h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--color-foreground);
-  }
-
-  .about-us__since p {
-    color: var(--color-foreground-75);
-  }
-
-  .about-us__values-subtitle {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    color: var(--color-foreground-75);
-  }
-
-  .about-us__values-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-  }
-
-  .about-us__value {
-    padding: 2rem;
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .about-us__value:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  }
-
-  .about-us__value-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--color-foreground);
-  }
-
-  .about-us__value-description {
-    color: var(--color-foreground-75);
-    line-height: 1.6;
-  }
-
-  .about-us__commitment-description {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    color: var(--color-foreground-75);
-    text-align: center;
-  }
-
-  .about-us__commitment-features {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-bottom: 3rem;
-    flex-wrap: wrap;
-  }
-
-  .about-us__feature {
-    padding: 1rem 2rem;
-    background: var(--color-background-alt);
-    border-radius: 50px;
-    text-align: center;
-  }
-
-  .about-us__feature-title {
-    font-weight: 500;
-    color: var(--color-foreground);
-    white-space: nowrap;
-  }
-
-  .about-us__cta {
-    text-align: center;
-    padding: 3rem 2rem;
-    background: var(--color-background-alt);
-    border-radius: 12px;
-  }
-
-  .about-us__cta h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    color: var(--color-foreground);
-  }
-
-  .about-us__cta-button {
-    display: inline-block;
-    padding: 1rem 2rem;
-    background: var(--color-button);
-    color: var(--color-button-text);
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-  }
-
-  .about-us__cta-button:hover {
-    background: var(--color-button-hover);
-  }
-
-  /* Mobile Styles */
-  @media (max-width: 768px) {
-    .about-us__content {
-      padding: 0 1rem;
-    }
-
-    .about-us__title {
-      font-size: 2rem;
-    }
-
-    .about-us__section-title {
-      font-size: 2rem;
-    }
-
-    .about-us__story-content {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    .about-us__story-highlight {
-      position: static;
-    }
-
-    .about-us__values-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .about-us__commitment-features {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .about-us__cta {
-      padding: 2rem 1rem;
-    }
-  }
+.about-us {
+  padding: 2rem 0;
+}
+.about-us__content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+.about-us h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.about-us h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
 {% endstylesheet %}
 
 {% schema %}
@@ -291,208 +38,39 @@
   "name": "About Us",
   "settings": [
     {
-      "type": "header",
-      "content": "Hero Section"
-    },
-    {
       "type": "text",
-      "id": "hero_title",
-      "label": "Hero Title",
+      "id": "title",
+      "label": "Title",
       "default": "About Lush Notes"
     },
     {
-      "type": "text",
-      "id": "hero_subtitle",
-      "label": "Hero Subtitle",
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
       "default": "Crafting luxury fragrances that define your essence and elevate your presence."
-    },
-    {
-      "type": "text",
-      "id": "hero_description",
-      "label": "Hero Description",
-      "default": "Every scent tells a story, and we are here to help you write yours."
-    },
-    {
-      "type": "header",
-      "content": "Our Story Section"
-    },
-    {
-      "type": "text",
-      "id": "story_title",
-      "label": "Story Title",
-      "default": "Our Story"
-    },
-    {
-      "type": "textarea",
-      "id": "story_paragraph_1",
-      "label": "Story Paragraph 1",
-      "default": "Founded with a passion for exceptional fragrances, Lush Notes began as a dream to make luxury perfumes accessible to everyone. We believe that the right scent has the power to transform not just how others perceive you, but how you feel about yourself."
-    },
-    {
-      "type": "textarea",
-      "id": "story_paragraph_2",
-      "label": "Story Paragraph 2",
-      "default": "Our journey started with a simple observation: great fragrances should not be exclusive to high-end boutiques. We set out to curate and create scents that rival the most prestigious brands, while maintaining authenticity and affordability."
-    },
-    {
-      "type": "textarea",
-      "id": "story_paragraph_3",
-      "label": "Story Paragraph 3",
-      "default": "Today, we are proud to serve thousands of fragrance enthusiasts worldwide, helping them discover their signature scent and express their unique personality through the art of perfumery."
-    },
-    {
-      "type": "text",
-      "id": "since_year",
-      "label": "Since Year",
-      "default": "Since 2020"
-    },
-    {
-      "type": "text",
-      "id": "since_description",
-      "label": "Since Description",
-      "default": "Crafting luxury fragrances"
-    },
-    {
-      "type": "header",
-      "content": "Our Values Section"
-    },
-    {
-      "type": "text",
-      "id": "values_title",
-      "label": "Values Title",
-      "default": "Our Values"
-    },
-    {
-      "type": "textarea",
-      "id": "values_subtitle",
-      "label": "Values Subtitle",
-      "default": "The principles that guide everything we do, from sourcing ingredients to delivering your perfect scent."
-    },
-    {
-      "type": "header",
-      "content": "Our Commitment Section"
-    },
-    {
-      "type": "text",
-      "id": "commitment_title",
-      "label": "Commitment Title",
-      "default": "Our Commitment to You"
-    },
-    {
-      "type": "textarea",
-      "id": "commitment_description",
-      "label": "Commitment Description",
-      "default": "We are not just selling fragrances; we are building relationships. Every interaction matters, and your satisfaction is our success."
-    },
-    {
-      "type": "header",
-      "content": "Call to Action"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_cta",
-      "label": "Show Call to Action",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "cta_text",
-      "label": "CTA Text",
-      "default": "Ready to find your signature scent?"
-    },
-    {
-      "type": "text",
-      "id": "cta_button_text",
-      "label": "CTA Button Text",
-      "default": "Explore Our Collection"
-    },
-    {
-      "type": "url",
-      "id": "cta_url",
-      "label": "CTA URL",
-      "default": "/collections/all"
     }
   ],
   "blocks": [
     {
-      "type": "value",
-      "name": "Value",
+      "type": "text_block",
+      "name": "Text Block",
       "settings": [
         {
           "type": "text",
-          "id": "title",
-          "label": "Value Title"
+          "id": "heading",
+          "label": "Heading"
         },
         {
           "type": "textarea",
-          "id": "description",
-          "label": "Value Description"
-        }
-      ]
-    },
-    {
-      "type": "commitment_feature",
-      "name": "Commitment Feature",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Feature Title"
+          "id": "text",
+          "label": "Text"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "About Us",
-      "blocks": [
-        {
-          "type": "value",
-          "settings": {
-            "title": "Quality First",
-            "description": "We source only the finest ingredients and work with master perfumers to ensure exceptional quality in every bottle."
-          }
-        },
-        {
-          "type": "value",
-          "settings": {
-            "title": "Passion Driven",
-            "description": "Our love for fragrances drives everything we do. We are not just selling perfumes; we are sharing our passion with you."
-          }
-        },
-        {
-          "type": "value",
-          "settings": {
-            "title": "Sustainable",
-            "description": "We are committed to ethical sourcing and sustainable practices, protecting the environment for future generations."
-          }
-        },
-        {
-          "type": "value",
-          "settings": {
-            "title": "Customer Focused",
-            "description": "Your satisfaction is our priority. We listen, we care, and we are always here to help you find your perfect scent."
-          }
-        },
-        {
-          "type": "commitment_feature",
-          "settings": {
-            "title": "Fast & Reliable Shipping"
-          }
-        },
-        {
-          "type": "commitment_feature",
-          "settings": {
-            "title": "100% Authentic Products"
-          }
-        },
-        {
-          "type": "commitment_feature",
-          "settings": {
-            "title": "Exceptional Customer Service"
-          }
-        }
-      ]
+      "name": "About Us"
     }
   ]
 }
