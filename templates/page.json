@@ -12,6 +12,10 @@
     "main": {
       "type": "page",
       "settings": {}
+    },
+    "about-us": {
+      "type": "about-us",
+      "disabled": true
     }
   },
   "order": [
