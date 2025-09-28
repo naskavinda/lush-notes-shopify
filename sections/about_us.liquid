@@ -1,42 +1,417 @@
 <div class="about-us">
+  <div class="about-us__hero">
+    <div class="about-us__container">
+      <h1 class="about-us__title">{{ section.settings.title | default: "About Lush Notes" }}</h1>
+      <p class="about-us__subtitle">{{ section.settings.subtitle | default: "Crafting luxury fragrances that define your essence and elevate your presence." }}</p>
+    </div>
+  </div>
+
   <div class="about-us__content">
-    <h1>{{ section.settings.title | default: "About Lush Notes" }}</h1>
-    <p>{{ section.settings.description | default: "Crafting luxury fragrances that define your essence and elevate your presence." }}</p>
-    
-    {% for block in section.blocks %}
-      {% if block.type == "text_block" %}
-        <div {{ block.shopify_attributes }}>
-          <h2>{{ block.settings.heading }}</h2>
-          <p>{{ block.settings.text }}</p>
+    <div class="about-us__container">
+      <!-- Our Story Section -->
+      <section class="about-us__section">
+        <h2 class="about-us__section-title">{{ section.settings.story_title | default: "Our Story" }}</h2>
+        <div class="about-us__story-content">
+          <p>{{ section.settings.story_p1 | default: "Founded with a passion for exceptional fragrances, Lush Notes began as a dream to make luxury perfumes accessible to everyone. We believe that the right scent has the power to transform not just how others perceive you, but how you feel about yourself." }}</p>
+          
+          <p>{{ section.settings.story_p2 | default: "Our journey started with a simple observation: great fragrances shouldn't be exclusive to high-end boutiques. We set out to curate and create scents that rival the most prestigious brands, while maintaining authenticity and affordability." }}</p>
+          
+          <p>{{ section.settings.story_p3 | default: "Today, we're proud to serve thousands of fragrance enthusiasts worldwide, helping them discover their signature scent and express their unique personality through the art of perfumery." }}</p>
+          
+          <div class="about-us__since">
+            <div class="about-us__since-year">{{ section.settings.since_year | default: "Since 2020" }}</div>
+            <div class="about-us__since-text">{{ section.settings.since_text | default: "Crafting luxury fragrances" }}</div>
+          </div>
         </div>
-      {% endif %}
-    {% endfor %}
+      </section>
+
+      <!-- Our Values Section -->
+      <section class="about-us__section about-us__values">
+        <h2 class="about-us__section-title">{{ section.settings.values_title | default: "Our Values" }}</h2>
+        <p class="about-us__values-intro">{{ section.settings.values_intro | default: "The principles that guide everything we do, from sourcing ingredients to delivering your perfect scent." }}</p>
+        
+        <div class="about-us__values-grid">
+          <div class="about-us__value">
+            <h3 class="about-us__value-title">{{ section.settings.value1_title | default: "Quality First" }}</h3>
+            <p class="about-us__value-text">{{ section.settings.value1_text | default: "We source only the finest ingredients and work with master perfumers to ensure exceptional quality in every bottle." }}</p>
+          </div>
+          
+          <div class="about-us__value">
+            <h3 class="about-us__value-title">{{ section.settings.value2_title | default: "Passion Driven" }}</h3>
+            <p class="about-us__value-text">{{ section.settings.value2_text | default: "Our love for fragrances drives everything we do. We're not just selling perfumes; we're sharing our passion with you." }}</p>
+          </div>
+          
+          <div class="about-us__value">
+            <h3 class="about-us__value-title">{{ section.settings.value3_title | default: "Sustainable" }}</h3>
+            <p class="about-us__value-text">{{ section.settings.value3_text | default: "We're committed to ethical sourcing and sustainable practices, protecting the environment for future generations." }}</p>
+          </div>
+          
+          <div class="about-us__value">
+            <h3 class="about-us__value-title">{{ section.settings.value4_title | default: "Customer Focused" }}</h3>
+            <p class="about-us__value-text">{{ section.settings.value4_text | default: "Your satisfaction is our priority. We listen, we care, and we're always here to help you find your perfect scent." }}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Our Commitment Section -->
+      <section class="about-us__section about-us__commitment">
+        <h2 class="about-us__section-title">{{ section.settings.commitment_title | default: "Our Commitment to You" }}</h2>
+        <p class="about-us__commitment-text">{{ section.settings.commitment_text | default: "We're not just selling fragrances; we're building relationships. Every interaction matters, and your satisfaction is our success." }}</p>
+        
+        <div class="about-us__features">
+          <div class="about-us__feature">
+            <div class="about-us__feature-icon">🚚</div>
+            <h4 class="about-us__feature-title">{{ section.settings.feature1_title | default: "Fast & Reliable Shipping" }}</h4>
+          </div>
+          
+          <div class="about-us__feature">
+            <div class="about-us__feature-icon">✅</div>
+            <h4 class="about-us__feature-title">{{ section.settings.feature2_title | default: "100% Authentic Products" }}</h4>
+          </div>
+          
+          <div class="about-us__feature">
+            <div class="about-us__feature-icon">💬</div>
+            <h4 class="about-us__feature-title">{{ section.settings.feature3_title | default: "Exceptional Customer Service" }}</h4>
+          </div>
+        </div>
+        
+        <div class="about-us__cta">
+          <p class="about-us__cta-text">{{ section.settings.cta_text | default: "Ready to find your signature scent?" }}</p>
+          <a href="{{ section.settings.cta_link | default: routes.collections_url }}" class="btn btn--primary">
+            {{ section.settings.cta_button_text | default: "Explore Our Collection" }}
+          </a>
+        </div>
+      </section>
+
+      <!-- Custom Blocks for Additional Content -->
+      {% for block in section.blocks %}
+        {% if block.type == "text_block" %}
+          <section class="about-us__section about-us__custom-block" {{ block.shopify_attributes }}>
+            {% if block.settings.heading != blank %}
+              <h2 class="about-us__section-title">{{ block.settings.heading }}</h2>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <div class="about-us__custom-text">
+                {{ block.settings.text | newline_to_br }}
+              </div>
+            {% endif %}
+          </section>
+        {% endif %}
+      {% endfor %}
+    </div>
   </div>
 </div>
 
 {% stylesheet %}
-.about-us {
-  padding: 2rem 0;
-}
-.about-us__content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-.about-us h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-.about-us h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
+  .about-us {
+    background-color: var(--color-background);
+  }
+
+  .about-us__hero {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark, #d97706) 100%);
+    color: white;
+    padding: 80px 20px;
+    text-align: center;
+  }
+
+  .about-us__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .about-us__title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  .about-us__subtitle {
+    font-size: 1.25rem;
+    font-weight: 300;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .about-us__content {
+    padding: 80px 0;
+  }
+
+  .about-us__section {
+    margin-bottom: 80px;
+  }
+
+  .about-us__section:last-child {
+    margin-bottom: 0;
+  }
+
+  .about-us__section-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .about-us__story-content p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-foreground-secondary);
+    margin-bottom: 24px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .about-us__since {
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 40px auto 0;
+  }
+
+  .about-us__since-year {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+  }
+
+  .about-us__since-text {
+    font-size: 1rem;
+    color: var(--color-foreground-secondary);
+    font-style: italic;
+  }
+
+  .about-us__values {
+    background: #f8fafc;
+    padding: 60px 0;
+    margin: 0 -20px;
+    border-radius: 20px;
+  }
+
+  .about-us__values-intro {
+    font-size: 1.125rem;
+    color: var(--color-foreground-secondary);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 50px;
+    line-height: 1.6;
+  }
+
+  .about-us__values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .about-us__value {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .about-us__value:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .about-us__value-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+    margin-bottom: 16px;
+  }
+
+  .about-us__value-text {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-foreground-secondary);
+  }
+
+  .about-us__commitment-text {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--color-foreground-secondary);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 50px;
+  }
+
+  .about-us__features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 32px;
+    margin-bottom: 50px;
+  }
+
+  .about-us__feature {
+    background: white;
+    padding: 32px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  .about-us__feature:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-3px);
+  }
+
+  .about-us__feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+  }
+
+  .about-us__feature-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+    margin: 0;
+  }
+
+  .about-us__cta {
+    text-align: center;
+    padding: 50px 40px;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark, #d97706) 100%);
+    border-radius: 16px;
+    color: white;
+  }
+
+  .about-us__cta-text {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+
+  .about-us__custom-block {
+    text-align: center;
+  }
+
+  .about-us__custom-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-foreground-secondary);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn--primary {
+    background-color: white;
+    color: var(--color-primary);
+  }
+
+  .btn--primary:hover {
+    background-color: #f8fafc;
+    transform: translateY(-2px);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .about-us__hero {
+      padding: 60px 20px;
+    }
+
+    .about-us__title {
+      font-size: 2.5rem;
+    }
+
+    .about-us__subtitle {
+      font-size: 1.125rem;
+    }
+
+    .about-us__content {
+      padding: 60px 0;
+    }
+
+    .about-us__section {
+      margin-bottom: 60px;
+    }
+
+    .about-us__section-title {
+      font-size: 2rem;
+    }
+
+    .about-us__values-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .about-us__features {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .about-us__values {
+      margin: 0 -10px;
+      padding: 40px 20px;
+    }
+
+    .about-us__cta {
+      padding: 40px 30px;
+    }
+
+    .about-us__container {
+      padding: 0 15px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .about-us__title {
+      font-size: 2rem;
+    }
+
+    .about-us__section-title {
+      font-size: 1.75rem;
+    }
+
+    .about-us__value,
+    .about-us__feature {
+      padding: 24px;
+    }
+
+    .about-us__since {
+      padding: 30px 20px;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "About Us",
   "settings": [
+    {
+      "type": "header",
+      "content": "Hero Section"
+    },
     {
       "type": "text",
       "id": "title",
@@ -45,15 +420,170 @@
     },
     {
       "type": "textarea",
-      "id": "description",
-      "label": "Description",
+      "id": "subtitle",
+      "label": "Subtitle",
       "default": "Crafting luxury fragrances that define your essence and elevate your presence."
+    },
+    {
+      "type": "header",
+      "content": "Our Story Section"
+    },
+    {
+      "type": "text",
+      "id": "story_title",
+      "label": "Story Section Title",
+      "default": "Our Story"
+    },
+    {
+      "type": "textarea",
+      "id": "story_p1",
+      "label": "Story Paragraph 1",
+      "default": "Founded with a passion for exceptional fragrances, Lush Notes began as a dream to make luxury perfumes accessible to everyone. We believe that the right scent has the power to transform not just how others perceive you, but how you feel about yourself."
+    },
+    {
+      "type": "textarea",
+      "id": "story_p2",
+      "label": "Story Paragraph 2",
+      "default": "Our journey started with a simple observation: great fragrances shouldn't be exclusive to high-end boutiques. We set out to curate and create scents that rival the most prestigious brands, while maintaining authenticity and affordability."
+    },
+    {
+      "type": "textarea",
+      "id": "story_p3",
+      "label": "Story Paragraph 3",
+      "default": "Today, we're proud to serve thousands of fragrance enthusiasts worldwide, helping them discover their signature scent and express their unique personality through the art of perfumery."
+    },
+    {
+      "type": "text",
+      "id": "since_year",
+      "label": "Since Year",
+      "default": "Since 2020"
+    },
+    {
+      "type": "text",
+      "id": "since_text",
+      "label": "Since Text",
+      "default": "Crafting luxury fragrances"
+    },
+    {
+      "type": "header",
+      "content": "Our Values Section"
+    },
+    {
+      "type": "text",
+      "id": "values_title",
+      "label": "Values Section Title",
+      "default": "Our Values"
+    },
+    {
+      "type": "textarea",
+      "id": "values_intro",
+      "label": "Values Introduction",
+      "default": "The principles that guide everything we do, from sourcing ingredients to delivering your perfect scent."
+    },
+    {
+      "type": "text",
+      "id": "value1_title",
+      "label": "Value 1 Title",
+      "default": "Quality First"
+    },
+    {
+      "type": "textarea",
+      "id": "value1_text",
+      "label": "Value 1 Text",
+      "default": "We source only the finest ingredients and work with master perfumers to ensure exceptional quality in every bottle."
+    },
+    {
+      "type": "text",
+      "id": "value2_title",
+      "label": "Value 2 Title",
+      "default": "Passion Driven"
+    },
+    {
+      "type": "textarea",
+      "id": "value2_text",
+      "label": "Value 2 Text",
+      "default": "Our love for fragrances drives everything we do. We're not just selling perfumes; we're sharing our passion with you."
+    },
+    {
+      "type": "text",
+      "id": "value3_title",
+      "label": "Value 3 Title",
+      "default": "Sustainable"
+    },
+    {
+      "type": "textarea",
+      "id": "value3_text",
+      "label": "Value 3 Text",
+      "default": "We're committed to ethical sourcing and sustainable practices, protecting the environment for future generations."
+    },
+    {
+      "type": "text",
+      "id": "value4_title",
+      "label": "Value 4 Title",
+      "default": "Customer Focused"
+    },
+    {
+      "type": "textarea",
+      "id": "value4_text",
+      "label": "Value 4 Text",
+      "default": "Your satisfaction is our priority. We listen, we care, and we're always here to help you find your perfect scent."
+    },
+    {
+      "type": "header",
+      "content": "Our Commitment Section"
+    },
+    {
+      "type": "text",
+      "id": "commitment_title",
+      "label": "Commitment Section Title",
+      "default": "Our Commitment to You"
+    },
+    {
+      "type": "textarea",
+      "id": "commitment_text",
+      "label": "Commitment Text",
+      "default": "We're not just selling fragrances; we're building relationships. Every interaction matters, and your satisfaction is our success."
+    },
+    {
+      "type": "text",
+      "id": "feature1_title",
+      "label": "Feature 1 Title",
+      "default": "Fast & Reliable Shipping"
+    },
+    {
+      "type": "text",
+      "id": "feature2_title",
+      "label": "Feature 2 Title",
+      "default": "100% Authentic Products"
+    },
+    {
+      "type": "text",
+      "id": "feature3_title",
+      "label": "Feature 3 Title",
+      "default": "Exceptional Customer Service"
+    },
+    {
+      "type": "textarea",
+      "id": "cta_text",
+      "label": "Call to Action Text",
+      "default": "Ready to find your signature scent?"
+    },
+    {
+      "type": "text",
+      "id": "cta_button_text",
+      "label": "CTA Button Text",
+      "default": "Explore Our Collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Button Link"
     }
   ],
   "blocks": [
     {
       "type": "text_block",
-      "name": "Text Block",
+      "name": "Custom Text Block",
       "settings": [
         {
           "type": "text",
@@ -70,7 +600,14 @@
   ],
   "presets": [
     {
-      "name": "About Us"
+      "name": "About Us",
+      "settings": {
+        "title": "About Lush Notes",
+        "subtitle": "Crafting luxury fragrances that define your essence and elevate your presence.",
+        "story_title": "Our Story",
+        "values_title": "Our Values",
+        "commitment_title": "Our Commitment to You"
+      }
     }
   ]
 }
