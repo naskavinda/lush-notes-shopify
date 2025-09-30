@@ -9,7 +9,7 @@
     <span class="breadcrumb-separator">/</span>
     <a href="{{ routes.collections_url }}" class="breadcrumb-item">{{ 'general.navigation.shop' | t }}</a>
     <span class="breadcrumb-separator">/</span>
-    <span class="breadcrumb-item current">{{ product.title }}</span>
+    <span class="breadcrumb-item current">{{ product.title | capitalize }}</span>
   </nav>
 
   <div class="product-main">
@@ -52,7 +52,7 @@
     <div class="product-info">
       <div class="product-header">
         <h1 class="product-title">
-          {{ product.title }}
+          {{ product.title | capitalize }}
           {% if product.compare_at_price > product.price %}
             <span class="discount-badge">
               {% assign discount = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price %}

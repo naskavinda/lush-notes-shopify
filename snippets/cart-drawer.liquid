@@ -46,7 +46,7 @@
               
               <div class="cart-drawer__item-details">
                 <h4 class="cart-drawer__item-title">
-                  <a href="{{ item.url }}">{{ item.product.title }}</a>
+                  <a href="{{ item.url }}">{{ item.product.title | capitalize }}</a>
                 </h4>
                 {% if item.variant.title != 'Default Title' %}
                   <p class="cart-drawer__item-variant">{{ item.variant.title }}</p>

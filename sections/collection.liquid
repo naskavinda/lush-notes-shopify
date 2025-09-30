@@ -123,7 +123,7 @@
 
           <div class="product-card__content">
             <h3 class="product-card__title">
-              <a href="{{ product.url }}">{{ product.title | escape }}</a>
+              <a href="{{ product.url }}">{{ product.title | capitalize | escape }}</a>
             </h3>
 
             <!-- List view additional info -->
