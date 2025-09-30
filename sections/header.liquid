@@ -242,6 +242,11 @@
     overflow: hidden;
   }
 
+  /* Prevent horizontal scroll globally */
+  body {
+    overflow-x: hidden;
+  }
+
   .header {
     background-color: #1a1a1a;
     border-bottom: 1px solid #333;
@@ -249,18 +254,22 @@
     top: 0;
     z-index: 1000;
     width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
 
   .header__container {
     width: 100%;
     max-width: 100vw;
-    padding: 0 2rem;
+    padding: 0 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 70px;
     overflow-x: hidden;
+    box-sizing: border-box;
   }
 
   /* Navigation */
@@ -274,7 +283,7 @@
 
   /* Logo in navigation */
   .header__logo-item {
-    margin-right: 1.5rem;
+    margin-right: 1rem;
     flex-shrink: 0;
   }
 
@@ -303,12 +312,13 @@
   .header__menu {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
     list-style: none;
     margin: 0;
     padding: 0;
     flex-wrap: nowrap;
     white-space: nowrap;
+    overflow: hidden;
   }
 
   .header__menu-item {
@@ -323,10 +333,11 @@
     color: #fff;
     text-decoration: none;
     font-weight: 400;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     letter-spacing: 0.025em;
     transition: color 0.2s ease;
+    white-space: nowrap;
   }
 
   .header__menu-link:hover,
@@ -390,7 +401,8 @@
   .header__actions {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
+    flex-shrink: 0;
   }
 
   .header__action-btn {
@@ -516,6 +528,21 @@
 
   .header__mobile-toggle.active .header__mobile-toggle-line:last-child {
     transform: rotate(-45deg) translate(7px, -6px);
+  }
+
+  /* Ensure no horizontal scroll on any screen size */
+  @media (max-width: 1200px) {
+    .header__menu {
+      gap: 0.8rem;
+    }
+    
+    .header__menu-link {
+      font-size: 0.85rem;
+    }
+    
+    .header__container {
+      padding: 0 0.5rem;
+    }
   }
 
   /* Mobile Responsive */
