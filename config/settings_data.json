@@ -8,5 +8,20 @@
  * ------------------------------------------------------------
  */
 {
-  "current": {}
+  "current": {
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo": "logo.jpg",
+          "logo_width": 150,
+          "show_default_navigation": true,
+          "best_sellers_collection": "best-seller",
+          "weekly_offers_collection": "weekly-offer",
+          "pre_order_collection": "pre-order"
+        }
+      }
+    },
+    "order": ["header"]
+  }
 }
