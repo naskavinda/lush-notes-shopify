@@ -1,0 +1,976 @@
+<div class="privacy-policy">
+  <div class="privacy-policy__hero">
+    <div class="privacy-policy__container">
+      <div class="privacy-policy__breadcrumb">
+        <a href="{{ routes.root_url }}" class="privacy-policy__back-link">
+          ← {{ section.settings.back_text | default: "Back to Home" }}
+        </a>
+      </div>
+      <h1 class="privacy-policy__title">{{ section.settings.title | default: "Privacy Policy" }}</h1>
+      <p class="privacy-policy__subtitle">{{ section.settings.subtitle | default: "Your privacy is important to us. Learn how we protect your information." }}</p>
+    </div>
+  </div>
+
+  <div class="privacy-policy__content">
+    <div class="privacy-policy__container">
+      
+      <!-- Last Updated -->
+      <div class="privacy-policy__last-updated">
+        <div class="privacy-policy__updated-icon">📅</div>
+        <div class="privacy-policy__updated-content">
+          <strong>{{ section.settings.last_updated_label | default: "Last updated:" }}</strong>
+          {{ section.settings.last_updated_date | default: "September 28, 2025" }}
+        </div>
+      </div>
+
+      <!-- Introduction -->
+      <div class="privacy-policy__intro">
+        <p>{{ section.settings.intro_text | default: "At Lush Notes, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy describes how we collect, use, disclose, and safeguard your information when you visit our website, make purchases, or interact with our services." }}</p>
+      </div>
+
+      <!-- Information We Collect -->
+      <section class="privacy-policy__section">
+        <h2 class="privacy-policy__section-title">
+          <span class="privacy-policy__section-icon">📋</span>
+          {{ section.settings.collect_title | default: "Information We Collect" }}
+        </h2>
+        
+        <div class="privacy-policy__subsection">
+          <h3 class="privacy-policy__subsection-title">{{ section.settings.personal_info_title | default: "Personal Information" }}</h3>
+          <ul class="privacy-policy__list">
+            <li><strong>{{ section.settings.account_info_title | default: "Account Information:" }}</strong> {{ section.settings.account_info_text | default: "Names, email address, phone number, and password" }}</li>
+            <li><strong>{{ section.settings.billing_info_title | default: "Billing Information:" }}</strong> {{ section.settings.billing_info_text | default: "Billing address and payment method details" }}</li>
+            <li><strong>{{ section.settings.shipping_info_title | default: "Shipping Information:" }}</strong> {{ section.settings.shipping_info_text | default: "Delivery addresses and contact information" }}</li>
+            <li><strong>{{ section.settings.purchase_history_title | default: "Purchase History:" }}</strong> {{ section.settings.purchase_history_text | default: "Products purchased, order dates, and transaction details" }}</li>
+          </ul>
+        </div>
+
+        <div class="privacy-policy__subsection">
+          <h3 class="privacy-policy__subsection-title">{{ section.settings.auto_collected_title | default: "Automatically Collected Information" }}</h3>
+          <ul class="privacy-policy__list">
+            <li><strong>{{ section.settings.device_info_title | default: "Device Information:" }}</strong> {{ section.settings.device_info_text | default: "IP address, browser type, operating system" }}</li>
+            <li><strong>{{ section.settings.usage_data_title | default: "Usage Data:" }}</strong> {{ section.settings.usage_data_text | default: "Pages visited, time spent on site, click patterns" }}</li>
+            <li><strong>{{ section.settings.cookies_title | default: "Cookies:" }}</strong> {{ section.settings.cookies_text | default: "Information stored by your browser for site functionality" }}</li>
+            <li><strong>{{ section.settings.location_data_title | default: "Location Data:" }}</strong> {{ section.settings.location_data_text | default: "General geographic location based on IP address" }}</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- How We Use Your Information -->
+      <section class="privacy-policy__section">
+        <h2 class="privacy-policy__section-title">
+          <span class="privacy-policy__section-icon">🔧</span>
+          {{ section.settings.use_title | default: "How We Use Your Information" }}
+        </h2>
+        
+        <div class="privacy-policy__two-column">
+          <div class="privacy-policy__column">
+            <h3 class="privacy-policy__subsection-title">{{ section.settings.service_provision_title | default: "Service Provision" }}</h3>
+            <ul class="privacy-policy__list">
+              <li>{{ section.settings.service_1 | default: "Process and fulfill your orders" }}</li>
+              <li>{{ section.settings.service_2 | default: "Manage your account and preferences" }}</li>
+              <li>{{ section.settings.service_3 | default: "Provide customer support" }}</li>
+              <li>{{ section.settings.service_4 | default: "Send order confirmations and updates" }}</li>
+              <li>{{ section.settings.service_5 | default: "Handle returns and exchanges" }}</li>
+            </ul>
+          </div>
+          
+          <div class="privacy-policy__column">
+            <h3 class="privacy-policy__subsection-title">{{ section.settings.business_ops_title | default: "Business Operations" }}</h3>
+            <ul class="privacy-policy__list">
+              <li>{{ section.settings.business_1 | default: "Analyze website usage and trends" }}</li>
+              <li>{{ section.settings.business_2 | default: "Maintain usage patterns and records" }}</li>
+              <li>{{ section.settings.business_3 | default: "Prevent fraud and enhance security" }}</li>
+              <li>{{ section.settings.business_4 | default: "Comply with legal obligations" }}</li>
+              <li>{{ section.settings.business_5 | default: "Personalize your shopping experience" }}</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Information Sharing -->
+      <section class="privacy-policy__section">
+        <h2 class="privacy-policy__section-title">
+          <span class="privacy-policy__section-icon">🔒</span>
+          {{ section.settings.sharing_title | default: "Information Sharing" }}
+        </h2>
+        
+        <div class="privacy-policy__highlight-box">
+          <h3 class="privacy-policy__highlight-title">{{ section.settings.no_sell_title | default: "We DO NOT sell your personal information" }}</h3>
+          <p>{{ section.settings.no_sell_text | default: "We do not sell, rent, or trade your personal information to third parties for their marketing purposes." }}</p>
+        </div>
+
+        <div class="privacy-policy__subsection">
+          <h3 class="privacy-policy__subsection-title">{{ section.settings.limited_sharing_title | default: "Limited Sharing Circumstances" }}</h3>
+          <ul class="privacy-policy__list">
+            <li><strong>{{ section.settings.service_providers_title | default: "Service Providers:" }}</strong> {{ section.settings.service_providers_text | default: "Trusted partners who help us operate our business (payment processors, shipping companies, email services)" }}</li>
+            <li><strong>{{ section.settings.legal_requirements_title | default: "Legal Requirements:" }}</strong> {{ section.settings.legal_requirements_text | default: "When required by law, court order, or legal process" }}</li>
+            <li><strong>{{ section.settings.business_transfer_title | default: "Business Transfer:" }}</strong> {{ section.settings.business_transfer_text | default: "In the event of a merger, acquisition, or sale of our business" }}</li>
+            <li><strong>{{ section.settings.safety_security_title | default: "Safety & Security:" }}</strong> {{ section.settings.safety_security_text | default: "To protect the rights, property, or safety of our customers and business" }}</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Data Security -->
+      <section class="privacy-policy__section">
+        <h2 class="privacy-policy__section-title">
+          <span class="privacy-policy__section-icon">🛡️</span>
+          {{ section.settings.security_title | default: "Data Security" }}
+        </h2>
+        
+        <p class="privacy-policy__text">{{ section.settings.security_intro | default: "We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction." }}</p>
+
+        <div class="privacy-policy__two-column">
+          <div class="privacy-policy__column">
+            <h3 class="privacy-policy__subsection-title">{{ section.settings.technical_measures_title | default: "Technical Measures" }}</h3>
+            <ul class="privacy-policy__list">
+              <li>{{ section.settings.technical_1 | default: "SSL encryption for data transmission" }}</li>
+              <li>{{ section.settings.technical_2 | default: "Secure payment processing" }}</li>
+              <li>{{ section.settings.technical_3 | default: "Regular security audits" }}</li>
+              <li>{{ section.settings.technical_4 | default: "Firewalls and intrusion detection" }}</li>
+            </ul>
+          </div>
+          
+          <div class="privacy-policy__column">
+            <h3 class="privacy-policy__subsection-title">{{ section.settings.organizational_measures_title | default: "Organizational Measures" }}</h3>
+            <ul class="privacy-policy__list">
+              <li>{{ section.settings.organizational_1 | default: "Employee training on data protection" }}</li>
+              <li>{{ section.settings.organizational_2 | default: "Limited access to personal information" }}</li>
+              <li>{{ section.settings.organizational_3 | default: "Regular policy reviews and updates" }}</li>
+              <li>{{ section.settings.organizational_4 | default: "Incident response procedures" }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="privacy-policy__note">
+          <p><strong>{{ section.settings.security_note_title | default: "Note:" }}</strong> {{ section.settings.security_note_text | default: "While we strive to protect your personal information, no method of transmission over the Internet is 100% secure." }}</p>
+        </div>
+      </section>
+
+      <!-- Your Privacy Rights -->
+      <section class="privacy-policy__section">
+        <h2 class="privacy-policy__section-title">
+          <span class="privacy-policy__section-icon">⚖️</span>
+          {{ section.settings.rights_title | default: "Your Privacy Rights" }}
+        </h2>
+        
+        <div class="privacy-policy__rights-grid">
+          <div class="privacy-policy__right-item">
+            <div class="privacy-policy__right-icon">👁️</div>
+            <h3 class="privacy-policy__right-title">{{ section.settings.access_title | default: "Access Your Information" }}</h3>
+            <p class="privacy-policy__right-text">{{ section.settings.access_text | default: "Request a copy of the personal information we have about you" }}</p>
+          </div>
+          
+          <div class="privacy-policy__right-item">
+            <div class="privacy-policy__right-icon">✏️</div>
+            <h3 class="privacy-policy__right-title">{{ section.settings.update_title | default: "Update Your Information" }}</h3>
+            <p class="privacy-policy__right-text">{{ section.settings.update_text | default: "Correct or update your personal information through your account settings" }}</p>
+          </div>
+          
+          <div class="privacy-policy__right-item">
+            <div class="privacy-policy__right-icon">🗑️</div>
+            <h3 class="privacy-policy__right-title">{{ section.settings.delete_title | default: "Delete Your Account" }}</h3>
+            <p class="privacy-policy__right-text">{{ section.settings.delete_text | default: "Request deletion of your account and associated personal information" }}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cookies and Tracking -->
+      <section class="privacy-policy__section">
+        <h2 class="privacy-policy__section-title">
+          <span class="privacy-policy__section-icon">🍪</span>
+          {{ section.settings.cookies_section_title | default: "Cookies and Tracking" }}
+        </h2>
+        
+        <p class="privacy-policy__text">{{ section.settings.cookies_intro | default: "We use cookies and similar tracking technologies to enhance your browsing experience, analyze site traffic, and personalize content." }}</p>
+
+        <div class="privacy-policy__subsection">
+          <h3 class="privacy-policy__subsection-title">{{ section.settings.essential_cookies_title | default: "Essential Cookies" }}</h3>
+          <p>{{ section.settings.essential_cookies_text | default: "Required for basic site functionality, shopping cart, and user authentication." }}</p>
+        </div>
+
+        <div class="privacy-policy__subsection">
+          <h3 class="privacy-policy__subsection-title">{{ section.settings.analytics_cookies_title | default: "Analytics Cookies" }}</h3>
+          <p>{{ section.settings.analytics_cookies_text | default: "Help us understand how visitors use our site and track campaign effectiveness." }}</p>
+        </div>
+
+        <div class="privacy-policy__subsection">
+          <h3 class="privacy-policy__subsection-title">{{ section.settings.marketing_cookies_title | default: "Marketing Cookies" }}</h3>
+          <p>{{ section.settings.marketing_cookies_text | default: "Used to deliver personalized advertisements and track campaign effectiveness." }}</p>
+          
+          <div class="privacy-policy__note">
+            <p>{{ section.settings.cookie_control_text | default: "You can control your cookie preferences through your browser settings. Note that disabling certain cookies may affect site functionality." }}</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Children's Privacy -->
+      <section class="privacy-policy__section">
+        <h2 class="privacy-policy__section-title">
+          <span class="privacy-policy__section-icon">👶</span>
+          {{ section.settings.children_title | default: "Children's Privacy" }}
+        </h2>
+        
+        <p class="privacy-policy__text">{{ section.settings.children_text | default: "Our services are not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately so we can delete such information." }}</p>
+      </section>
+
+      <!-- Changes to This Privacy Policy -->
+      <section class="privacy-policy__section">
+        <h2 class="privacy-policy__section-title">
+          <span class="privacy-policy__section-icon">🔄</span>
+          {{ section.settings.changes_title | default: "Changes to This Privacy Policy" }}
+        </h2>
+        
+        <p class="privacy-policy__text">{{ section.settings.changes_text | default: "We may update this Privacy Policy from time to time to reflect changes in our practices or for other operational, legal, or regulatory reasons. We will notify you of any material changes by posting the new Privacy Policy on this page and updating the 'Last Updated' date. We encourage you to review this Privacy Policy periodically." }}</p>
+      </section>
+
+      <!-- Contact Us -->
+      <section class="privacy-policy__section">
+        <h2 class="privacy-policy__section-title">
+          <span class="privacy-policy__section-icon">📞</span>
+          {{ section.settings.contact_title | default: "Contact Us" }}
+        </h2>
+        
+        <p class="privacy-policy__text">{{ section.settings.contact_intro | default: "If you have any questions about this Privacy Policy, your personal information, or our privacy practices, please contact us:" }}</p>
+        
+        <div class="privacy-policy__contact-info">
+          <div class="privacy-policy__contact-item">
+            <strong>{{ section.settings.email_label | default: "Email:" }}</strong>
+            <a href="mailto:{{ section.settings.contact_email | default: 'lushnotes175@gmail.com' }}">{{ section.settings.contact_email | default: "lushnotes175@gmail.com" }}</a>
+          </div>
+          
+          <div class="privacy-policy__contact-item">
+            <strong>{{ section.settings.website_label | default: "Website:" }}</strong>
+            <a href="{{ section.settings.contact_form_link | default: '/pages/contact' }}">{{ section.settings.contact_form_text | default: "Contact Form" }}</a>
+          </div>
+          
+          <div class="privacy-policy__contact-item">
+            <strong>{{ section.settings.response_time_label | default: "Response Time:" }}</strong>
+            {{ section.settings.response_time_text | default: "We respond to inquiries within 48 hours of receipt." }}
+          </div>
+        </div>
+      </section>
+
+      <!-- Custom Blocks for Additional Content -->
+      {% for block in section.blocks %}
+        {% if block.type == "text_block" %}
+          <section class="privacy-policy__section privacy-policy__custom-block" {{ block.shopify_attributes }}>
+            {% if block.settings.heading != blank %}
+              <h2 class="privacy-policy__section-title">
+                <span class="privacy-policy__section-icon">📄</span>
+                {{ block.settings.heading }}
+              </h2>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <div class="privacy-policy__custom-text">
+                {{ block.settings.text | newline_to_br }}
+              </div>
+            {% endif %}
+          </section>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .privacy-policy {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+  }
+
+  .privacy-policy__hero {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    padding: 20px 20px 60px;
+  }
+
+  .privacy-policy__container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .privacy-policy__breadcrumb {
+    margin-bottom: 20px;
+  }
+
+  .privacy-policy__back-link {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .privacy-policy__back-link:hover {
+    color: white;
+    text-decoration: underline;
+  }
+
+  .privacy-policy__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .privacy-policy__subtitle {
+    font-size: 1.125rem;
+    opacity: 0.9;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .privacy-policy__content {
+    padding: 40px 0;
+    background: white;
+    margin-top: -20px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .privacy-policy__last-updated {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #e3f2fd;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 32px;
+    border-left: 4px solid #2196f3;
+  }
+
+  .privacy-policy__updated-icon {
+    font-size: 1.25rem;
+  }
+
+  .privacy-policy__updated-content {
+    font-size: 0.875rem;
+    color: #1565c0;
+  }
+
+  .privacy-policy__updated-content strong {
+    color: #0d47a1;
+  }
+
+  .privacy-policy__intro {
+    margin-bottom: 40px;
+    padding: 0 20px;
+  }
+
+  .privacy-policy__intro p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #495057;
+    margin: 0;
+  }
+
+  .privacy-policy__section {
+    margin-bottom: 50px;
+    padding: 0 20px;
+  }
+
+  .privacy-policy__section:last-child {
+    margin-bottom: 0;
+  }
+
+  .privacy-policy__section-title {
+    font-size: 1.375rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .privacy-policy__section-icon {
+    font-size: 1.25rem;
+  }
+
+  .privacy-policy__subsection {
+    margin-bottom: 32px;
+  }
+
+  .privacy-policy__subsection:last-child {
+    margin-bottom: 0;
+  }
+
+  .privacy-policy__subsection-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 12px;
+  }
+
+  .privacy-policy__text {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #495057;
+    margin-bottom: 20px;
+  }
+
+  .privacy-policy__list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0 16px;
+  }
+
+  .privacy-policy__list li {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #495057;
+    margin-bottom: 8px;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .privacy-policy__list li:before {
+    content: "•";
+    color: #6c757d;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+  }
+
+  .privacy-policy__list li strong {
+    color: #2c3e50;
+  }
+
+  .privacy-policy__two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 20px;
+  }
+
+  .privacy-policy__column {
+    background: #f8f9fa;
+    padding: 24px;
+    border-radius: 8px;
+  }
+
+  .privacy-policy__highlight-box {
+    background: #f0f9ff;
+    border: 2px solid #0ea5e9;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+
+  .privacy-policy__highlight-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #0369a1;
+    margin-bottom: 12px;
+  }
+
+  .privacy-policy__highlight-box p {
+    font-size: 0.875rem;
+    color: #0c4a6e;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .privacy-policy__rights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
+  }
+
+  .privacy-policy__right-item {
+    background: #f8f9fa;
+    padding: 24px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .privacy-policy__right-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+
+  .privacy-policy__right-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+
+  .privacy-policy__right-text {
+    font-size: 0.875rem;
+    color: #6c757d;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .privacy-policy__note {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 6px;
+    padding: 16px;
+    margin-top: 20px;
+  }
+
+  .privacy-policy__note p {
+    font-size: 0.875rem;
+    color: #856404;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .privacy-policy__note strong {
+    color: #533f03;
+  }
+
+  .privacy-policy__contact-info {
+    background: #f8f9fa;
+    padding: 24px;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+
+  .privacy-policy__contact-item {
+    font-size: 0.875rem;
+    color: #495057;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  .privacy-policy__contact-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .privacy-policy__contact-item strong {
+    color: #2c3e50;
+    display: inline-block;
+    min-width: 120px;
+  }
+
+  .privacy-policy__contact-item a {
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  .privacy-policy__contact-item a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+
+  .privacy-policy__custom-text {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: #495057;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .privacy-policy__hero {
+      padding: 15px 15px 40px;
+    }
+
+    .privacy-policy__title {
+      font-size: 2rem;
+    }
+
+    .privacy-policy__subtitle {
+      font-size: 1rem;
+    }
+
+    .privacy-policy__content {
+      padding: 30px 0;
+    }
+
+    .privacy-policy__section {
+      margin-bottom: 40px;
+      padding: 0 15px;
+    }
+
+    .privacy-policy__container {
+      padding: 0 15px;
+    }
+
+    .privacy-policy__two-column {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .privacy-policy__rights-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .privacy-policy__last-updated {
+      margin: 0 15px 32px;
+    }
+
+    .privacy-policy__intro {
+      padding: 0 15px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .privacy-policy__title {
+      font-size: 1.75rem;
+    }
+
+    .privacy-policy__section-title {
+      font-size: 1.25rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .privacy-policy__column,
+    .privacy-policy__right-item,
+    .privacy-policy__contact-info {
+      padding: 20px;
+    }
+
+    .privacy-policy__list {
+      margin-left: 12px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Privacy Policy",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Section"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Privacy Policy"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Your privacy is important to us. Learn how we protect your information."
+    },
+    {
+      "type": "text",
+      "id": "back_text",
+      "label": "Back Link Text",
+      "default": "Back to Home"
+    },
+    {
+      "type": "header",
+      "content": "Last Updated"
+    },
+    {
+      "type": "text",
+      "id": "last_updated_label",
+      "label": "Last Updated Label",
+      "default": "Last updated:"
+    },
+    {
+      "type": "text",
+      "id": "last_updated_date",
+      "label": "Last Updated Date",
+      "default": "September 28, 2025"
+    },
+    {
+      "type": "header",
+      "content": "Introduction"
+    },
+    {
+      "type": "textarea",
+      "id": "intro_text",
+      "label": "Introduction Text",
+      "default": "At Lush Notes, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy describes how we collect, use, disclose, and safeguard your information when you visit our website, make purchases, or interact with our services."
+    },
+    {
+      "type": "header",
+      "content": "Information We Collect"
+    },
+    {
+      "type": "text",
+      "id": "collect_title",
+      "label": "Section Title",
+      "default": "Information We Collect"
+    },
+    {
+      "type": "text",
+      "id": "personal_info_title",
+      "label": "Personal Information Title",
+      "default": "Personal Information"
+    },
+    {
+      "type": "text",
+      "id": "account_info_title",
+      "label": "Account Info Title",
+      "default": "Account Information:"
+    },
+    {
+      "type": "text",
+      "id": "account_info_text",
+      "label": "Account Info Text",
+      "default": "Names, email address, phone number, and password"
+    },
+    {
+      "type": "text",
+      "id": "billing_info_title",
+      "label": "Billing Info Title",
+      "default": "Billing Information:"
+    },
+    {
+      "type": "text",
+      "id": "billing_info_text",
+      "label": "Billing Info Text",
+      "default": "Billing address and payment method details"
+    },
+    {
+      "type": "text",
+      "id": "shipping_info_title",
+      "label": "Shipping Info Title",
+      "default": "Shipping Information:"
+    },
+    {
+      "type": "text",
+      "id": "shipping_info_text",
+      "label": "Shipping Info Text",
+      "default": "Delivery addresses and contact information"
+    },
+    {
+      "type": "text",
+      "id": "purchase_history_title",
+      "label": "Purchase History Title",
+      "default": "Purchase History:"
+    },
+    {
+      "type": "text",
+      "id": "purchase_history_text",
+      "label": "Purchase History Text",
+      "default": "Products purchased, order dates, and transaction details"
+    },
+    {
+      "type": "text",
+      "id": "auto_collected_title",
+      "label": "Auto Collected Title",
+      "default": "Automatically Collected Information"
+    },
+    {
+      "type": "text",
+      "id": "device_info_title",
+      "label": "Device Info Title",
+      "default": "Device Information:"
+    },
+    {
+      "type": "text",
+      "id": "device_info_text",
+      "label": "Device Info Text",
+      "default": "IP address, browser type, operating system"
+    },
+    {
+      "type": "text",
+      "id": "usage_data_title",
+      "label": "Usage Data Title",
+      "default": "Usage Data:"
+    },
+    {
+      "type": "text",
+      "id": "usage_data_text",
+      "label": "Usage Data Text",
+      "default": "Pages visited, time spent on site, click patterns"
+    },
+    {
+      "type": "text",
+      "id": "cookies_title",
+      "label": "Cookies Title",
+      "default": "Cookies:"
+    },
+    {
+      "type": "text",
+      "id": "cookies_text",
+      "label": "Cookies Text",
+      "default": "Information stored by your browser for site functionality"
+    },
+    {
+      "type": "text",
+      "id": "location_data_title",
+      "label": "Location Data Title",
+      "default": "Location Data:"
+    },
+    {
+      "type": "text",
+      "id": "location_data_text",
+      "label": "Location Data Text",
+      "default": "General geographic location based on IP address"
+    },
+    {
+      "type": "header",
+      "content": "How We Use Your Information"
+    },
+    {
+      "type": "text",
+      "id": "use_title",
+      "label": "Section Title",
+      "default": "How We Use Your Information"
+    },
+    {
+      "type": "text",
+      "id": "service_provision_title",
+      "label": "Service Provision Title",
+      "default": "Service Provision"
+    },
+    {
+      "type": "text",
+      "id": "service_1",
+      "label": "Service Point 1",
+      "default": "Process and fulfill your orders"
+    },
+    {
+      "type": "text",
+      "id": "service_2",
+      "label": "Service Point 2",
+      "default": "Manage your account and preferences"
+    },
+    {
+      "type": "text",
+      "id": "service_3",
+      "label": "Service Point 3",
+      "default": "Provide customer support"
+    },
+    {
+      "type": "text",
+      "id": "service_4",
+      "label": "Service Point 4",
+      "default": "Send order confirmations and updates"
+    },
+    {
+      "type": "text",
+      "id": "service_5",
+      "label": "Service Point 5",
+      "default": "Handle returns and exchanges"
+    },
+    {
+      "type": "text",
+      "id": "business_ops_title",
+      "label": "Business Operations Title",
+      "default": "Business Operations"
+    },
+    {
+      "type": "text",
+      "id": "business_1",
+      "label": "Business Point 1",
+      "default": "Analyze website usage and trends"
+    },
+    {
+      "type": "text",
+      "id": "business_2",
+      "label": "Business Point 2",
+      "default": "Maintain usage patterns and records"
+    },
+    {
+      "type": "text",
+      "id": "business_3",
+      "label": "Business Point 3",
+      "default": "Prevent fraud and enhance security"
+    },
+    {
+      "type": "text",
+      "id": "business_4",
+      "label": "Business Point 4",
+      "default": "Comply with legal obligations"
+    },
+    {
+      "type": "text",
+      "id": "business_5",
+      "label": "Business Point 5",
+      "default": "Personalize your shopping experience"
+    },
+    {
+      "type": "header",
+      "content": "Contact Information"
+    },
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "Contact Section Title",
+      "default": "Contact Us"
+    },
+    {
+      "type": "textarea",
+      "id": "contact_intro",
+      "label": "Contact Introduction",
+      "default": "If you have any questions about this Privacy Policy, your personal information, or our privacy practices, please contact us:"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email Label",
+      "default": "Email:"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Contact Email",
+      "default": "lushnotes175@gmail.com"
+    },
+    {
+      "type": "text",
+      "id": "website_label",
+      "label": "Website Label",
+      "default": "Website:"
+    },
+    {
+      "type": "url",
+      "id": "contact_form_link",
+      "label": "Contact Form Link"
+    },
+    {
+      "type": "text",
+      "id": "contact_form_text",
+      "label": "Contact Form Text",
+      "default": "Contact Form"
+    },
+    {
+      "type": "text",
+      "id": "response_time_label",
+      "label": "Response Time Label",
+      "default": "Response Time:"
+    },
+    {
+      "type": "text",
+      "id": "response_time_text",
+      "label": "Response Time Text",
+      "default": "We respond to inquiries within 48 hours of receipt."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_block",
+      "name": "Custom Text Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Privacy Policy",
+      "settings": {
+        "title": "Privacy Policy",
+        "subtitle": "Your privacy is important to us. Learn how we protect your information."
+      }
+    }
+  ]
+}
+{% endschema %}
