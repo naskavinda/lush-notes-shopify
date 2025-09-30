@@ -138,6 +138,7 @@ button, .btn {
   grid-template-columns: var(--content-grid);
   display: grid;
   width: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Child elements, by default, are constrained to the central column of the grid. */
@@ -159,6 +160,7 @@ button, .btn {
   body {
     font-size: 14px;
     line-height: 1.5;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
   }
   
   /* Improve touch targets */
@@ -183,15 +185,22 @@ button, .btn {
     font-size: 0.9rem;
     line-height: 1.6;
   }
+  
+  /* Ensure sections don't overflow */
+  .shopify-section {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
 }
 
 @media (max-width: 480px) {
   :root {
-    --page-margin: 0.75rem;
+    --page-margin: 1rem;
   }
   
   body {
     font-size: 13px;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
   }
   
   h1 {
@@ -208,5 +217,17 @@ button, .btn {
   
   p {
     font-size: 0.85rem;
+  }
+  
+  /* Ensure no content exceeds viewport */
+  * {
+    max-width: 100%;
+  }
+  
+  /* Container improvements */
+  .shopify-section {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 }

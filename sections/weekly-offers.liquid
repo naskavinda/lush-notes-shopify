@@ -127,18 +127,15 @@
   .weekly-offers {
     padding: 4rem 0 1rem 0;
     background-color: #fbf9fa;
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   .weekly-offers__container {
     width: 100%;
     padding: 0 2rem;
-    max-width: none;
+    max-width: 1400px;
+    margin: 0 auto;
   }
 
   .weekly-offers__header {
@@ -174,7 +171,7 @@
     display: flex;
     align-items: center;
     gap: 2rem;
-    max-width: 90%;
+    max-width: 100%;
     margin: 0 auto;
   }
 
@@ -191,6 +188,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 10;
   }
 
   .weekly-offers__nav:hover {
@@ -468,7 +466,7 @@
 
     .weekly-offers__header {
       margin-bottom: 2rem;
-      padding: 0 0.5rem;
+      padding: 0;
     }
 
     .weekly-offers__title {
@@ -482,35 +480,47 @@
     }
 
     .weekly-offers__content {
-      max-width: 100%;
-      gap: 1rem;
+      gap: 0.75rem;
     }
 
     .weekly-offers__nav {
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       position: relative;
-      z-index: 2;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .weekly-offers__nav svg {
+      width: 20px;
+      height: 20px;
     }
 
     .weekly-offers__products {
       gap: 1rem;
       padding: 0.5rem 0 1rem 0;
-      margin: 0 -0.5rem;
+      margin: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .weekly-offers__products::-webkit-scrollbar {
+      display: none;
     }
 
     .weekly-offers__product-card {
-      flex: 0 0 260px;
-      min-width: 260px;
+      flex: 0 0 280px;
+      min-width: 280px;
     }
 
     .weekly-offers__footer {
       margin-top: 2rem;
-      padding: 0 1rem;
+      padding: 0;
     }
 
     .weekly-offers__view-all {
-      padding: 0.875rem 1.75rem;
+      padding: 1rem 2rem;
       font-size: 0.95rem;
     }
   }
@@ -521,7 +531,7 @@
     }
 
     .weekly-offers__container {
-      padding: 0 0.75rem;
+      padding: 0 1rem;
     }
 
     .weekly-offers__header {
@@ -529,30 +539,38 @@
     }
 
     .weekly-offers__title {
-      font-size: 1.6rem;
+      font-size: 1.75rem;
+      line-height: 1.2;
     }
 
     .weekly-offers__subtitle {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
 
     .weekly-offers__content {
-      gap: 0.75rem;
+      gap: 0.5rem;
     }
 
     .weekly-offers__nav {
-      width: 36px;
-      height: 36px;
+      width: 44px;
+      height: 44px;
+    }
+
+    .weekly-offers__nav svg {
+      width: 18px;
+      height: 18px;
     }
 
     .weekly-offers__products {
-      gap: 0.75rem;
-      margin: 0 -0.25rem;
+      gap: 1rem;
+      margin: 0;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
     }
 
     .weekly-offers__product-card {
-      flex: 0 0 240px;
-      min-width: 240px;
+      flex: 0 0 260px;
+      min-width: 260px;
     }
 
     .product-card__content {
@@ -561,15 +579,17 @@
 
     .product-card__title a {
       font-size: 0.95rem;
+      line-height: 1.3;
     }
 
     .product-card__description {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
     }
 
     .product-card__add-to-cart {
-      padding: 0.75rem 1rem;
-      font-size: 0.8rem;
+      padding: 0.875rem 1rem;
+      font-size: 0.85rem;
+      min-height: 44px;
     }
   }
 {% endstylesheet %}
@@ -581,88 +601,109 @@
     const productsGrid = document.querySelector('.weekly-offers__products');
 
     if (prevBtn && nextBtn && productsGrid) {
-      // Calculate scroll amount based on product card width plus gap
+      // Calculate scroll amount based on product card width
       function getScrollAmount() {
         const productCard = productsGrid.querySelector('.weekly-offers__product-card');
         if (productCard) {
           const cardWidth = productCard.offsetWidth;
-          const gap = 24; // 1.5rem gap in pixels
+          const gap = window.innerWidth <= 480 ? 16 : 24; // Gap in pixels
           return cardWidth + gap;
         }
-        return 300; // fallback
+        return window.innerWidth <= 480 ? 260 : 300; // fallback
       }
 
-      prevBtn.addEventListener('click', function() {
+      prevBtn.addEventListener('click', function(e) {
+        e.preventDefault();
         const scrollAmount = getScrollAmount();
-        console.log('Scrolling left by:', scrollAmount);
         productsGrid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
       });
 
-      nextBtn.addEventListener('click', function() {
+      nextBtn.addEventListener('click', function(e) {
+        e.preventDefault();
         const scrollAmount = getScrollAmount();
-        console.log('Scrolling right by:', scrollAmount);
         productsGrid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
       });
 
       // Update button states based on scroll position
       function updateButtonStates() {
-        const tolerance = 5; // Allow small tolerance for floating point precision
+        const tolerance = 5;
         const isAtStart = productsGrid.scrollLeft <= tolerance;
         const isAtEnd = productsGrid.scrollLeft >= (productsGrid.scrollWidth - productsGrid.clientWidth - tolerance);
         
         prevBtn.disabled = isAtStart;
         nextBtn.disabled = isAtEnd;
         
-        // Update visual states
+        // Visual feedback
         prevBtn.style.opacity = isAtStart ? '0.5' : '1';
         nextBtn.style.opacity = isAtEnd ? '0.5' : '1';
       }
 
-      // Listen for scroll events
-      productsGrid.addEventListener('scroll', updateButtonStates);
-      
-      // Initial state and resize handler
-      updateButtonStates();
-      window.addEventListener('resize', updateButtonStates);
-      
-      // Handle touch/swipe on mobile
+      // Enhanced touch support for mobile
       let startX = 0;
       let scrollLeft = 0;
       let isDown = false;
+      let hasMoved = false;
 
-      productsGrid.addEventListener('mousedown', (e) => {
-        isDown = true;
-        startX = e.pageX - productsGrid.offsetLeft;
-        scrollLeft = productsGrid.scrollLeft;
-      });
-
-      productsGrid.addEventListener('mouseleave', () => {
-        isDown = false;
-      });
-
-      productsGrid.addEventListener('mouseup', () => {
-        isDown = false;
-      });
-
-      productsGrid.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - productsGrid.offsetLeft;
-        const walk = (x - startX) * 2;
-        productsGrid.scrollLeft = scrollLeft - walk;
-      });
-      
-      // Touch events for mobile
       productsGrid.addEventListener('touchstart', (e) => {
+        isDown = true;
+        hasMoved = false;
         startX = e.touches[0].pageX - productsGrid.offsetLeft;
         scrollLeft = productsGrid.scrollLeft;
       });
 
       productsGrid.addEventListener('touchmove', (e) => {
+        if (!isDown) return;
+        hasMoved = true;
         const x = e.touches[0].pageX - productsGrid.offsetLeft;
-        const walk = (x - startX) * 2;
+        const walk = (x - startX) * 1.5;
         productsGrid.scrollLeft = scrollLeft - walk;
       });
+
+      productsGrid.addEventListener('touchend', () => {
+        isDown = false;
+      });
+
+      // Mouse support for desktop
+      productsGrid.addEventListener('mousedown', (e) => {
+        isDown = true;
+        hasMoved = false;
+        startX = e.pageX - productsGrid.offsetLeft;
+        scrollLeft = productsGrid.scrollLeft;
+        productsGrid.style.cursor = 'grabbing';
+      });
+
+      productsGrid.addEventListener('mouseleave', () => {
+        isDown = false;
+        productsGrid.style.cursor = 'grab';
+      });
+
+      productsGrid.addEventListener('mouseup', () => {
+        isDown = false;
+        productsGrid.style.cursor = 'grab';
+      });
+
+      productsGrid.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        hasMoved = true;
+        const x = e.pageX - productsGrid.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        productsGrid.scrollLeft = scrollLeft - walk;
+      });
+
+      // Prevent click events on dragged items
+      productsGrid.addEventListener('click', (e) => {
+        if (hasMoved) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      });
+
+      productsGrid.addEventListener('scroll', updateButtonStates);
+      updateButtonStates(); // Initial state
+      
+      // Update on resize
+      window.addEventListener('resize', updateButtonStates);
     }
   });
 {% endjavascript %}
