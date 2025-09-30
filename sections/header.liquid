@@ -16,7 +16,13 @@
             {% if section.settings.logo != blank %}
               {{ section.settings.logo | image_url: width: section.settings.logo_width | image_tag: class: 'header__logo-image', alt: shop.name }}
             {% else %}
-              {{ 'logo.jpg' | asset_url | image_tag: class: 'header__logo-image', alt: shop.name, width: section.settings.logo_width }}
+              <img 
+                src="{{ 'logo.jpg' | asset_url }}" 
+                alt="{{ shop.name }}" 
+                class="header__logo-image"
+                width="{{ section.settings.logo_width | default: 150 }}"
+                height="auto"
+              >
             {% endif %}
           </a>
         </li>
