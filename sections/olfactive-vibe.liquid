@@ -310,57 +310,110 @@
   /* Mobile Responsive */
   @media (max-width: 768px) {
     .olfactive-vibe {
-      padding: 3rem 0 1.5rem 0;
+      padding: 2.5rem 0 1rem 0;
     }
 
     .olfactive-vibe__container {
       padding: 0 1rem;
     }
 
+    .olfactive-vibe__header {
+      margin-bottom: 2.5rem;
+      padding: 0 0.5rem;
+    }
+
     .olfactive-vibe__title {
-      font-size: 2rem;
+      font-size: clamp(1.75rem, 6vw, 2.25rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .olfactive-vibe__subtitle {
+      font-size: 1rem;
+      line-height: 1.5;
     }
 
     .olfactive-vibe__categories {
       grid-template-columns: 1fr;
-      gap: 1.5rem;
+      gap: 1.25rem;
+      max-width: 100%;
     }
 
     .olfactive-category {
-      min-height: 350px;
-      aspect-ratio: 1.2;
+      min-height: 280px;
+      aspect-ratio: 16/9;
+      border-radius: 12px;
     }
 
     .olfactive-category__content {
-      top: 1.5rem;
-      left: 1.5rem;
-      right: 1.5rem;
+      top: 1.25rem;
+      left: 1.25rem;
+      right: 1.25rem;
     }
 
     .olfactive-category__title {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .olfactive-category__subtitle {
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .olfactive-category__description {
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
     }
   }
 
   @media (max-width: 480px) {
+    .olfactive-vibe {
+      padding: 2rem 0 0.5rem 0;
+    }
+
+    .olfactive-vibe__container {
+      padding: 0 0.75rem;
+    }
+
     .olfactive-vibe__header {
       margin-bottom: 2rem;
+      padding: 0;
+    }
+
+    .olfactive-vibe__title {
+      font-size: 1.6rem;
+    }
+
+    .olfactive-vibe__subtitle {
+      font-size: 0.9rem;
+    }
+
+    .olfactive-vibe__categories {
+      gap: 1rem;
     }
 
     .olfactive-category {
-      min-height: 250px;
+      min-height: 240px;
+      border-radius: 10px;
     }
 
     .olfactive-category__content {
-      padding: 1rem;
+      top: 1rem;
+      left: 1rem;
+      right: 1rem;
     }
 
     .olfactive-category__title {
       font-size: 1.3rem;
     }
 
+    .olfactive-category__subtitle {
+      font-size: 0.8rem;
+    }
+
     .olfactive-category__description {
-      font-size: 0.9rem;
+      font-size: 0.75rem;
+      line-height: 1.4;
     }
   }
 {% endstylesheet %}

@@ -463,52 +463,117 @@
   /* Mobile Responsive */
   @media (max-width: 768px) {
     .best-sellers {
-      padding: 3rem 0;
+      padding: 2.5rem 0;
     }
 
     .best-sellers__container {
       padding: 0 1rem;
     }
 
+    .best-sellers__header {
+      margin-bottom: 2rem;
+      padding: 0 0.5rem;
+    }
+
     .best-sellers__title {
-      font-size: 2rem;
+      font-size: clamp(1.75rem, 6vw, 2.25rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .best-sellers__subtitle {
+      font-size: 1rem;
+      line-height: 1.5;
     }
 
     .best-sellers__content {
-      flex-direction: column;
+      max-width: 100%;
       gap: 1rem;
     }
 
     .best-sellers__nav {
-      display: flex;
+      width: 40px;
+      height: 40px;
+      position: relative;
+      z-index: 2;
     }
 
     .best-sellers__products {
       gap: 1rem;
+      padding: 0.5rem 0 1rem 0;
+      margin: 0 -0.5rem;
     }
 
     .best-sellers__product-card {
-      flex: 0 0 250px;
-      min-width: 250px;
+      flex: 0 0 260px;
+      min-width: 260px;
+    }
+
+    .best-sellers__footer {
+      margin-top: 2rem;
+      padding: 0 1rem;
+    }
+
+    .best-sellers__view-all {
+      padding: 0.875rem 1.75rem;
+      font-size: 0.95rem;
     }
   }
 
   @media (max-width: 480px) {
-    .best-sellers__product-card {
-      flex: 0 0 220px;
-      min-width: 220px;
+    .best-sellers {
+      padding: 2rem 0;
+    }
+
+    .best-sellers__container {
+      padding: 0 0.75rem;
+    }
+
+    .best-sellers__header {
+      margin-bottom: 1.5rem;
+    }
+
+    .best-sellers__title {
+      font-size: 1.6rem;
+    }
+
+    .best-sellers__subtitle {
+      font-size: 0.9rem;
+    }
+
+    .best-sellers__content {
+      gap: 0.75rem;
+    }
+
+    .best-sellers__nav {
+      width: 36px;
+      height: 36px;
     }
 
     .best-sellers__products {
       gap: 0.75rem;
+      margin: 0 -0.25rem;
+    }
+
+    .best-sellers__product-card {
+      flex: 0 0 240px;
+      min-width: 240px;
     }
 
     .product-card__content {
       padding: 1rem;
     }
 
-    .best-sellers__title {
-      font-size: 1.75rem;
+    .product-card__title a {
+      font-size: 0.95rem;
+    }
+
+    .product-card__description {
+      font-size: 0.8rem;
+    }
+
+    .product-card__add-to-cart {
+      padding: 0.75rem 1rem;
+      font-size: 0.8rem;
     }
   }
 {% endstylesheet %}
