@@ -654,6 +654,165 @@
       "response": "We will respond to your inquiry within 30 days of receipt."
     }
   },
+  "terms_conditions": {
+    "acceptance": {
+      "title": "Acceptance of Terms",
+      "intro": "By using our website, placing an order, or accessing our services, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions and our Privacy Policy.",
+      "age": "You must be at least 18 years old to use our services",
+      "accurate": "You agree to provide accurate and complete information",
+      "security": "You are responsible for maintaining the security of your account"
+    },
+    "accounts": {
+      "title": "User Accounts",
+      "registration": {
+        "title": "Account Registration",
+        "create": "You may create an account to access certain features and services",
+        "responsible": "You are responsible for all activities that occur under your account",
+        "notify": "You must notify us immediately of any unauthorized use of your account",
+        "suspend": "We reserve the right to suspend or terminate accounts that violate these terms"
+      },
+      "security": {
+        "title": "Account Security",
+        "password": "Choose a strong, unique password for your account",
+        "share": "Do not share your login credentials with others",
+        "logout": "Log out of your account when using shared devices"
+      }
+    },
+    "products": {
+      "title": "Products and Services",
+      "info": {
+        "title": "Product Information",
+        "accurate": "We strive to provide accurate product descriptions and images",
+        "colors": "Colors and scents may vary slightly from what appears on your screen",
+        "modify": "We reserve the right to modify product information without notice",
+        "availability": "Product availability is subject to change"
+      },
+      "pricing": {
+        "title": "Pricing and Availability",
+        "usd": "All prices are listed in USD and are subject to change without notice",
+        "exclude": "Prices do not include shipping, taxes, or duties unless specified",
+        "errors": "We reserve the right to correct pricing errors",
+        "guarantee": "Product availability is not guaranteed until order confirmation"
+      }
+    },
+    "orders": {
+      "title": "Orders and Payments",
+      "processing": {
+        "title": "Order Processing",
+        "intro": "When you place an order, you are making an offer to purchase products subject to these terms."
+      },
+      "acceptance": {
+        "title": "Order Acceptance",
+        "subject": "Orders are subject to acceptance and availability",
+        "refuse": "We reserve the right to refuse or cancel orders",
+        "confirmation": "Order confirmation does not guarantee product availability",
+        "verify": "We may contact you to verify order details"
+      },
+      "payment": {
+        "title": "Payment Terms",
+        "due": "Payment is due at the time of order placement",
+        "accept": "We accept major credit cards and approved payment methods",
+        "secure": "Your payment information is processed securely",
+        "failed": "Failed payments may result in order cancellation"
+      }
+    },
+    "shipping": {
+      "title": "Shipping and Delivery",
+      "intro": "We strive to process and ship orders promptly, but delivery times may vary based on location and product availability.",
+      "info": {
+        "title": "Shipping Information",
+        "costs": "Shipping costs are calculated at checkout",
+        "times": "Delivery times are estimates, not guarantees",
+        "risk": "Risk of loss passes to you upon delivery",
+        "delays": "We are not responsible for delivery delays"
+      },
+      "delivery": {
+        "title": "Delivery Requirements",
+        "available": "Ensure someone is available to receive packages",
+        "accurate": "Provide accurate shipping information",
+        "fees": "Additional fees may apply for re-delivery attempts",
+        "signature": "Signature may be required for delivery"
+      }
+    },
+    "returns": {
+      "title": "Returns and Refunds",
+      "intro": "Our return policy is designed to ensure customer satisfaction while maintaining product quality and hygiene standards.",
+      "window": {
+        "title": "Return Window",
+        "desc": "Returns must be initiated within 14 days of purchase date"
+      },
+      "eligible": {
+        "title": "Eligible Items",
+        "desc": "Only unopened, unused products in original packaging are eligible for return"
+      },
+      "refund": {
+        "title": "Refund Processing",
+        "desc": "Refunds are processed within 5-7 business days after return inspection"
+      },
+      "policy_link": "For detailed return information, please review our Return Policy"
+    },
+    "prohibited": {
+      "title": "Prohibited Uses",
+      "intro": "You agree not to use our website or services for any unlawful or prohibited purposes, including but not limited to:",
+      "laws": "Violating any local laws",
+      "malicious": "Transmitting harmful or malicious code",
+      "access": "Attempting to gain unauthorized access",
+      "interfering": "Interfering with website functionality",
+      "automated": "Using automated systems to access the site",
+      "copying": "Copying or reproducing website content",
+      "reselling": "Reselling products without authorization",
+      "fraudulent": "Engaging in fraudulent activities"
+    },
+    "ip": {
+      "title": "Intellectual Property",
+      "intro": "All content on this website, including text, graphics, logos, images, and software, is the property of Lush Notes or our content suppliers and is protected by copyright and other intellectual property laws.",
+      "rights": {
+        "title": "Our Rights",
+        "desc": "We retain all rights to our trademarks, copyrights, and proprietary content"
+      },
+      "license": {
+        "title": "Your License",
+        "desc": "You are granted a limited license to access and use our website for personal, non-commercial purposes"
+      },
+      "restrictions": {
+        "title": "Restrictions",
+        "desc": "You may not reproduce, distribute, or create derivative works without written permission"
+      }
+    },
+    "disclaimers": {
+      "title": "Disclaimers and Limitation of Liability",
+      "warranty": {
+        "title": "Disclaimer of Warranties",
+        "desc": "Our website and services are provided 'as is' without warranties of any kind, either express or implied. We do not guarantee that our website will be uninterrupted, error-free, or free of viruses."
+      },
+      "liability": {
+        "title": "Limitation of Liability",
+        "desc": "To the fullest extent permitted by law, Lush Notes shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our website or products."
+      },
+      "note": "Note: Some jurisdictions do not allow the exclusion of certain warranties or limitations of liability, so these limitations may not apply to you."
+    },
+    "indemnification": {
+      "title": "Indemnification",
+      "desc": "You agree to indemnify and hold harmless Lush Notes, its officers, directors, employees, and agents from any claims, damages, losses, or expenses arising from your use of our website, violation of these terms, or infringement of any third-party rights."
+    },
+    "governing": {
+      "title": "Governing Law",
+      "law": "These Terms and Conditions are governed by and construed in accordance with the laws of the jurisdiction in which Lush Notes operates, without regard to conflict of law principles.",
+      "disputes": "Any disputes arising from these terms or your use of our website shall be resolved through binding arbitration or in the courts of competent jurisdiction in our operating location."
+    },
+    "changes": {
+      "title": "Changes to Terms",
+      "desc": "We reserve the right to modify these Terms and Conditions at any time. Changes will be effective immediately upon posting on our website. Your continued use of our website after changes are posted constitutes acceptance of the modified terms. We encourage you to review these terms periodically."
+    },
+    "contact": {
+      "title": "Contact Information",
+      "intro": "If you have any questions about these Terms and Conditions, please contact us:",
+      "form": "Contact Form",
+      "response_label": "Response Time",
+      "response_time": "We will respond to your inquiry within 30 days of receipt.",
+      "acknowledgment": "By using our website, you acknowledge that you have read and understood these Terms and Conditions and agree to be bound by them."
+    }
+  },
   "products": {
     "product": {
       "add_to_cart": "Add to Cart",
