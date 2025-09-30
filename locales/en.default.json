@@ -40,6 +40,18 @@
       "website": "Website"
     }
   },
+  "contact": {
+    "form": {
+      "post_success": "Thank you for contacting us! We'll get back to you within 24 hours.",
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "subject": "Subject",
+      "subject_placeholder": "Select a subject",
+      "message": "Message",
+      "send": "Send Message"
+    }
+  },
   "labels": {
     "logo": "Logo image",
     "logo_width": "Logo width",

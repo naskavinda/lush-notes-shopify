@@ -1,0 +1,842 @@
+<div class="contact-page">
+  <div class="contact-page__container">
+    <!-- Hero Section -->
+    <div class="contact-page__hero">
+      <h1 class="contact-page__title">{{ section.settings.title | default: "Get in Touch" }}</h1>
+      <p class="contact-page__subtitle">
+        {{ section.settings.subtitle | default: "Have questions about our fragrances? Need help finding your perfect scent? Our fragrance experts are here to help you discover your signature fragrance." }}
+      </p>
+    </div>
+
+    <!-- Contact Methods -->
+    <div class="contact-page__methods">
+      <div class="contact-method">
+        <div class="contact-method__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+        </div>
+        <div class="contact-method__content">
+          <h3 class="contact-method__title">{{ section.settings.phone_title | default: "Call Us" }}</h3>
+          <p class="contact-method__description">{{ section.settings.phone_description | default: "Speak with our fragrance experts" }}</p>
+          <a href="tel:{{ section.settings.phone_number | default: '+94771234567' }}" class="contact-method__link">
+            {{ section.settings.phone_display | default: "+94 (77) 123-4567" }}
+          </a>
+          <p class="contact-method__hours">{{ section.settings.phone_hours | default: "Mon-Sat: 9AM-8PM" }}</p>
+        </div>
+      </div>
+
+      <div class="contact-method">
+        <div class="contact-method__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <div class="contact-method__content">
+          <h3 class="contact-method__title">{{ section.settings.email_title | default: "Email Us" }}</h3>
+          <p class="contact-method__description">{{ section.settings.email_description | default: "Get detailed fragrance advice" }}</p>
+          <a href="mailto:{{ section.settings.email_address | default: 'Lushnotes175@gmail.com' }}" class="contact-method__link">
+            {{ section.settings.email_address | default: "Lushnotes175@gmail.com" }}
+          </a>
+          <p class="contact-method__hours">{{ section.settings.email_response | default: "We reply within 24 hours" }}</p>
+        </div>
+      </div>
+
+      <div class="contact-method">
+        <div class="contact-method__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <div class="contact-method__content">
+          <h3 class="contact-method__title">{{ section.settings.location_title | default: "Visit Us" }}</h3>
+          <p class="contact-method__description">{{ section.settings.location_description | default: "Experience fragrances in person" }}</p>
+          <p class="contact-method__link contact-method__address">
+            {{ section.settings.address_line1 | default: "123 Fragrance Street" }}<br>
+            {{ section.settings.address_line2 | default: "Colombo 03, Sri Lanka" }}
+          </p>
+          <p class="contact-method__hours">{{ section.settings.visit_hours | default: "By appointment only" }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="contact-page__form-section">
+      <h2 class="contact-page__form-title">{{ section.settings.form_title | default: "Send Us a Message" }}</h2>
+      <p class="contact-page__form-subtitle">
+        {{ section.settings.form_subtitle | default: "Fill out the form below and our fragrance experts will get back to you within 24 hours." }}
+      </p>
+
+      {% form 'contact', class: 'contact-form' %}
+        {% if form.posted_successfully? %}
+          <div class="contact-form__success">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22,4 12,14.01 9,11.01"/>
+            </svg>
+            {{ 'contact.form.post_success' | t }}
+          </div>
+        {% endif %}
+
+        {% if form.errors %}
+          <div class="contact-form__errors">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="15" y1="9" x2="9" y2="15"/>
+              <line x1="9" y1="9" x2="15" y2="15"/>
+            </svg>
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+        <div class="contact-form__row">
+          <div class="contact-form__field">
+            <label for="contact_name" class="contact-form__label">
+              {{ 'contact.form.name' | t }} <span class="required">*</span>
+            </label>
+            <input
+              type="text"
+              id="contact_name"
+              name="contact[name]"
+              class="contact-form__input"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+              required
+            >
+          </div>
+
+          <div class="contact-form__field">
+            <label for="contact_email" class="contact-form__label">
+              {{ 'contact.form.email' | t }} <span class="required">*</span>
+            </label>
+            <input
+              type="email"
+              id="contact_email"
+              name="contact[email]"
+              class="contact-form__input"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="contact-form__row">
+          <div class="contact-form__field">
+            <label for="contact_phone" class="contact-form__label">
+              {{ 'contact.form.phone' | t }}
+            </label>
+            <input
+              type="tel"
+              id="contact_phone"
+              name="contact[phone]"
+              class="contact-form__input"
+              value="{{ form.phone }}"
+            >
+          </div>
+
+          <div class="contact-form__field">
+            <label for="contact_subject" class="contact-form__label">
+              {{ 'contact.form.subject' | t }} <span class="required">*</span>
+            </label>
+            <select id="contact_subject" name="contact[subject]" class="contact-form__select" required>
+              <option value="">{{ 'contact.form.subject_placeholder' | t }}</option>
+              <option value="General Inquiry" {% if form.subject == 'General Inquiry' %}selected{% endif %}>General Inquiry</option>
+              <option value="Fragrance Consultation" {% if form.subject == 'Fragrance Consultation' %}selected{% endif %}>Fragrance Consultation</option>
+              <option value="Order Support" {% if form.subject == 'Order Support' %}selected{% endif %}>Order Support</option>
+              <option value="Returns & Exchanges" {% if form.subject == 'Returns & Exchanges' %}selected{% endif %}>Returns & Exchanges</option>
+              <option value="Wholesale Inquiry" {% if form.subject == 'Wholesale Inquiry' %}selected{% endif %}>Wholesale Inquiry</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="contact-form__field">
+          <label for="contact_message" class="contact-form__label">
+            {{ 'contact.form.message' | t }} <span class="required">*</span>
+          </label>
+          <textarea
+            id="contact_message"
+            name="contact[body]"
+            class="contact-form__textarea"
+            rows="6"
+            required
+          >{{ form.body }}</textarea>
+        </div>
+
+        <div class="contact-form__submit">
+          <button type="submit" class="contact-form__button">
+            {{ 'contact.form.send' | t }}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22,2 15,22 11,13 2,9 22,2"/>
+            </svg>
+          </button>
+        </div>
+      {% endform %}
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="contact-page__faq">
+      <h2 class="contact-page__faq-title">{{ section.settings.faq_title | default: "Frequently Asked Questions" }}</h2>
+      <p class="contact-page__faq-subtitle">{{ section.settings.faq_subtitle | default: "Quick answers to common questions about our fragrances and services." }}</p>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-item__question" type="button">
+            <span>{{ section.settings.faq1_question | default: "How do I choose the right fragrance for me?" }}</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6,9 12,15 18,9"/>
+            </svg>
+          </button>
+          <div class="faq-item__answer">
+            <p>{{ section.settings.faq1_answer | default: "Our fragrance experts can help you find your perfect scent based on your preferences, lifestyle, and personality. Contact us for personalized recommendations or visit our fragrance guide on the website." }}</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__question" type="button">
+            <span>{{ section.settings.faq2_question | default: "What is your return and exchange policy?" }}</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6,9 12,15 18,9"/>
+            </svg>
+          </button>
+          <div class="faq-item__answer">
+            <p>{{ section.settings.faq2_answer | default: "We offer a 2-week return policy for unopened items in original packaging. Important: We cannot accept returns for opened or used perfumes due to hygiene reasons." }}</p>
+            <a href="{{ routes.policies_url }}/return-policy" class="faq-item__link">View Complete Return Policy →</a>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__question" type="button">
+            <span>{{ section.settings.faq3_question | default: "How long does shipping take?" }}</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6,9 12,15 18,9"/>
+            </svg>
+          </button>
+          <div class="faq-item__answer">
+            <p>{{ section.settings.faq3_answer | default: "Standard shipping within Sri Lanka takes 2-5 business days. Express shipping is available for next-day delivery in Colombo. International shipping takes 7-14 business days depending on the destination." }}</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__question" type="button">
+            <span>{{ section.settings.faq4_question | default: "Are your fragrances authentic?" }}</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6,9 12,15 18,9"/>
+            </svg>
+          </button>
+          <div class="faq-item__answer">
+            <p>{{ section.settings.faq4_answer | default: "Yes, all our fragrances are 100% authentic. We work directly with authorized distributors and maintain strict quality control to ensure you receive genuine products with full authenticity guarantees." }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .contact-page {
+    background: #ffffff;
+    min-height: 100vh;
+  }
+
+  .contact-page__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  /* Hero Section */
+  .contact-page__hero {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .contact-page__title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: -0.025em;
+  }
+
+  .contact-page__subtitle {
+    font-size: 1.125rem;
+    color: #666;
+    max-width: 650px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Contact Methods */
+  .contact-page__methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-bottom: 80px;
+  }
+
+  .contact-method {
+    display: flex;
+    gap: 20px;
+    padding: 30px;
+    background: #f8f9fa;
+    border-radius: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .contact-method:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  .contact-method__icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: #ff6b35;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  .contact-method__content {
+    flex: 1;
+  }
+
+  .contact-method__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 8px;
+  }
+
+  .contact-method__description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0 0 12px;
+  }
+
+  .contact-method__link {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ff6b35;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 8px;
+    transition: color 0.3s ease;
+  }
+
+  .contact-method__link:hover {
+    color: #e55a2b;
+    text-decoration: underline;
+  }
+
+  .contact-method__address {
+    color: #333 !important;
+    font-weight: 500;
+  }
+
+  .contact-method__address:hover {
+    color: #333 !important;
+    text-decoration: none !important;
+  }
+
+  .contact-method__hours {
+    font-size: 0.875rem;
+    color: #888;
+    margin: 0;
+  }
+
+  /* Form Section */
+  .contact-page__form-section {
+    background: #f8f9fa;
+    padding: 60px 40px;
+    border-radius: 20px;
+    margin-bottom: 80px;
+  }
+
+  .contact-page__form-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-align: center;
+    margin: 0 0 16px;
+  }
+
+  .contact-page__form-subtitle {
+    font-size: 1rem;
+    color: #666;
+    text-align: center;
+    margin: 0 0 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Contact Form */
+  .contact-form {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .contact-form__success,
+  .contact-form__errors {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    font-weight: 500;
+  }
+
+  .contact-form__success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+  .contact-form__errors {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+
+  .contact-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .contact-form__field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact-form__label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  .required {
+    color: #e74c3c;
+  }
+
+  .contact-form__input,
+  .contact-form__select,
+  .contact-form__textarea {
+    padding: 16px 20px;
+    border: 2px solid #e1e5e9;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background: white;
+  }
+
+  .contact-form__input:focus,
+  .contact-form__select:focus,
+  .contact-form__textarea:focus {
+    outline: none;
+    border-color: #ff6b35;
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+  }
+
+  .contact-form__textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .contact-form__submit {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  .contact-form__button {
+    background: #ff6b35;
+    color: white;
+    border: none;
+    padding: 18px 40px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: inherit;
+  }
+
+  .contact-form__button:hover {
+    background: #e55a2b;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+  }
+
+  /* FAQ Section */
+  .contact-page__faq {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .contact-page__faq-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-align: center;
+    margin: 0 0 16px;
+  }
+
+  .contact-page__faq-subtitle {
+    font-size: 1rem;
+    color: #666;
+    text-align: center;
+    margin: 0 0 50px;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .faq-item {
+    background: white;
+    border: 1px solid #e1e5e9;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .faq-item__question {
+    width: 100%;
+    padding: 20px 24px;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    font-family: inherit;
+  }
+
+  .faq-item__question:hover {
+    background: #f8f9fa;
+  }
+
+  .faq-item__question svg {
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .faq-item.active .faq-item__question svg {
+    transform: rotate(180deg);
+  }
+
+  .faq-item__answer {
+    padding: 0 24px;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .faq-item.active .faq-item__answer {
+    padding: 0 24px 20px;
+    max-height: 200px;
+  }
+
+  .faq-item__answer p {
+    color: #666;
+    line-height: 1.6;
+    margin: 0 0 12px;
+  }
+
+  .faq-item__link {
+    color: #ff6b35;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .faq-item__link:hover {
+    color: #e55a2b;
+    text-decoration: underline;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .contact-page__container {
+      padding: 20px 16px;
+    }
+
+    .contact-page__title {
+      font-size: 2rem;
+    }
+
+    .contact-page__methods {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .contact-method {
+      padding: 24px 20px;
+    }
+
+    .contact-page__form-section {
+      padding: 40px 20px;
+      margin-bottom: 60px;
+    }
+
+    .contact-form__row {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .contact-page__form-title {
+      font-size: 1.5rem;
+    }
+
+    .faq-item__question {
+      padding: 16px 20px;
+      font-size: 1rem;
+    }
+
+    .faq-item.active .faq-item__answer {
+      padding: 0 20px 16px;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  // FAQ Toggle Functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+      const question = item.querySelector('.faq-item__question');
+      
+      question.addEventListener('click', function() {
+        const isActive = item.classList.contains('active');
+        
+        // Close all other FAQ items
+        faqItems.forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.classList.remove('active');
+          }
+        });
+        
+        // Toggle current item
+        if (isActive) {
+          item.classList.remove('active');
+        } else {
+          item.classList.add('active');
+        }
+      });
+    });
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Contact Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Section"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Page Title",
+      "default": "Get in Touch"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Page Subtitle",
+      "default": "Have questions about our fragrances? Need help finding your perfect scent? Our fragrance experts are here to help you discover your signature fragrance."
+    },
+    {
+      "type": "header",
+      "content": "Contact Methods"
+    },
+    {
+      "type": "text",
+      "id": "phone_title",
+      "label": "Phone Section Title",
+      "default": "Call Us"
+    },
+    {
+      "type": "text",
+      "id": "phone_description",
+      "label": "Phone Description",
+      "default": "Speak with our fragrance experts"
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Phone Number (for tel: link)",
+      "default": "+94771234567"
+    },
+    {
+      "type": "text",
+      "id": "phone_display",
+      "label": "Phone Display Text",
+      "default": "+94 (77) 123-4567"
+    },
+    {
+      "type": "text",
+      "id": "phone_hours",
+      "label": "Phone Hours",
+      "default": "Mon-Sat: 9AM-8PM"
+    },
+    {
+      "type": "text",
+      "id": "email_title",
+      "label": "Email Section Title",
+      "default": "Email Us"
+    },
+    {
+      "type": "text",
+      "id": "email_description",
+      "label": "Email Description",
+      "default": "Get detailed fragrance advice"
+    },
+    {
+      "type": "text",
+      "id": "email_address",
+      "label": "Email Address",
+      "default": "Lushnotes175@gmail.com"
+    },
+    {
+      "type": "text",
+      "id": "email_response",
+      "label": "Email Response Time",
+      "default": "We reply within 24 hours"
+    },
+    {
+      "type": "text",
+      "id": "location_title",
+      "label": "Location Section Title",
+      "default": "Visit Us"
+    },
+    {
+      "type": "text",
+      "id": "location_description",
+      "label": "Location Description",
+      "default": "Experience fragrances in person"
+    },
+    {
+      "type": "text",
+      "id": "address_line1",
+      "label": "Address Line 1",
+      "default": "123 Fragrance Street"
+    },
+    {
+      "type": "text",
+      "id": "address_line2",
+      "label": "Address Line 2",
+      "default": "Colombo 03, Sri Lanka"
+    },
+    {
+      "type": "text",
+      "id": "visit_hours",
+      "label": "Visit Hours",
+      "default": "By appointment only"
+    },
+    {
+      "type": "header",
+      "content": "Contact Form"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form Title",
+      "default": "Send Us a Message"
+    },
+    {
+      "type": "textarea",
+      "id": "form_subtitle",
+      "label": "Form Subtitle",
+      "default": "Fill out the form below and our fragrance experts will get back to you within 24 hours."
+    },
+    {
+      "type": "header",
+      "content": "FAQ Section"
+    },
+    {
+      "type": "text",
+      "id": "faq_title",
+      "label": "FAQ Title",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "text",
+      "id": "faq_subtitle",
+      "label": "FAQ Subtitle",
+      "default": "Quick answers to common questions about our fragrances and services."
+    },
+    {
+      "type": "text",
+      "id": "faq1_question",
+      "label": "FAQ 1 Question",
+      "default": "How do I choose the right fragrance for me?"
+    },
+    {
+      "type": "textarea",
+      "id": "faq1_answer",
+      "label": "FAQ 1 Answer",
+      "default": "Our fragrance experts can help you find your perfect scent based on your preferences, lifestyle, and personality. Contact us for personalized recommendations or visit our fragrance guide on the website."
+    },
+    {
+      "type": "text",
+      "id": "faq2_question",
+      "label": "FAQ 2 Question",
+      "default": "What is your return and exchange policy?"
+    },
+    {
+      "type": "textarea",
+      "id": "faq2_answer",
+      "label": "FAQ 2 Answer",
+      "default": "We offer a 2-week return policy for unopened items in original packaging. Important: We cannot accept returns for opened or used perfumes due to hygiene reasons."
+    },
+    {
+      "type": "text",
+      "id": "faq3_question",
+      "label": "FAQ 3 Question",
+      "default": "How long does shipping take?"
+    },
+    {
+      "type": "textarea",
+      "id": "faq3_answer",
+      "label": "FAQ 3 Answer",
+      "default": "Standard shipping within Sri Lanka takes 2-5 business days. Express shipping is available for next-day delivery in Colombo. International shipping takes 7-14 business days depending on the destination."
+    },
+    {
+      "type": "text",
+      "id": "faq4_question",
+      "label": "FAQ 4 Question",
+      "default": "Are your fragrances authentic?"
+    },
+    {
+      "type": "textarea",
+      "id": "faq4_answer",
+      "label": "FAQ 4 Answer",
+      "default": "Yes, all our fragrances are 100% authentic. We work directly with authorized distributors and maintain strict quality control to ensure you receive genuine products with full authenticity guarantees."
+    }
+  ]
+}
+{% endschema %}
