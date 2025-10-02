@@ -115,7 +115,7 @@
     <!-- Right Side Actions -->
     <div class="header__actions">
       <!-- Search Icon -->
-      <button class="header__action-btn header__search-btn" type="button" aria-label="{{ 'general.search.title' | t }}">
+      <button class="header__action-btn header__search-btn" type="button" aria-label="{{ 'general.search.title' | t }}" data-search-toggle>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
           <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2"/>
@@ -228,6 +228,43 @@
     </div>
   </div>
 </header>
+
+<!-- Search Modal -->
+<div class="header__search-modal" data-search-modal>
+  <div class="header__search-modal-backdrop" data-search-close></div>
+  <div class="header__search-modal-content">
+    <div class="header__search-modal-header">
+      <h2 class="header__search-modal-title">{{ 'general.search.title' | t }}</h2>
+      <button class="header__search-modal-close" type="button" aria-label="{{ 'general.close' | t }}" data-search-close>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="header__search-form">
+      <div class="header__search-input-wrapper">
+        <svg class="header__search-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+          <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <input
+          type="search"
+          name="q"
+          class="header__search-input"
+          placeholder="{{ 'general.search.placeholder' | t }}"
+          autocomplete="off"
+          data-search-input
+        >
+      </div>
+      <button type="submit" class="header__search-submit">
+        {{ 'general.search.submit' | t }}
+      </button>
+    </form>
+    <div class="header__search-suggestions">
+      <p class="header__search-suggestions-text">{{ 'general.search.suggestions' | t }}</p>
+    </div>
+  </div>
+</div>
 
 {% stylesheet %}
   /* Simple, clean header styles - no horizontal scrollbar */
@@ -609,6 +646,170 @@
     background-color: #d4633f;
     color: white;
   }
+
+  /* Search Modal */
+  .header__search-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .header__search-modal--open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .header__search-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+  }
+
+  .header__search-modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    background-color: #fff;
+    margin-top: 80px;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+  }
+
+  .header__search-modal--open .header__search-modal-content {
+    transform: translateY(0);
+  }
+
+  .header__search-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .header__search-modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111;
+    margin: 0;
+  }
+
+  .header__search-modal-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .header__search-modal-close:hover {
+    background-color: #f3f4f6;
+    color: #111;
+  }
+
+  .header__search-form {
+    padding: 24px;
+    display: flex;
+    gap: 12px;
+  }
+
+  .header__search-input-wrapper {
+    position: relative;
+    flex: 1;
+  }
+
+  .header__search-input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    pointer-events: none;
+  }
+
+  .header__search-input {
+    width: 100%;
+    padding: 14px 16px 14px 48px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: #111;
+    transition: all 0.2s ease;
+    outline: none;
+  }
+
+  .header__search-input:focus {
+    border-color: #ff6b35;
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+  }
+
+  .header__search-submit {
+    padding: 14px 28px;
+    background-color: #ff6b35;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .header__search-submit:hover {
+    background-color: #e55a28;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+  }
+
+  .header__search-suggestions {
+    padding: 16px 24px 24px;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .header__search-suggestions-text {
+    font-size: 0.875rem;
+    color: #666;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .header__search-modal-content {
+      margin: 16px;
+      margin-top: 80px;
+      max-width: calc(100% - 32px);
+    }
+
+    .header__search-form {
+      flex-direction: column;
+    }
+
+    .header__search-submit {
+      width: 100%;
+    }
+  }
 {% endstylesheet %}
 
 {% javascript %}
@@ -714,6 +915,43 @@
     });
 
     window.addEventListener('wishlistUpdated', updateWishlistCount);
+
+    // Search modal functionality
+    const searchToggle = document.querySelector('[data-search-toggle]');
+    const searchModal = document.querySelector('[data-search-modal]');
+    const searchCloseButtons = document.querySelectorAll('[data-search-close]');
+    const searchInput = document.querySelector('[data-search-input]');
+
+    if (searchToggle && searchModal) {
+      // Open search modal
+      searchToggle.addEventListener('click', function() {
+        searchModal.classList.add('header__search-modal--open');
+        document.body.style.overflow = 'hidden';
+        
+        // Focus on search input after modal opens
+        setTimeout(function() {
+          if (searchInput) {
+            searchInput.focus();
+          }
+        }, 100);
+      });
+
+      // Close search modal
+      searchCloseButtons.forEach(function(closeBtn) {
+        closeBtn.addEventListener('click', function() {
+          searchModal.classList.remove('header__search-modal--open');
+          document.body.style.overflow = '';
+        });
+      });
+
+      // Close modal on Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && searchModal.classList.contains('header__search-modal--open')) {
+          searchModal.classList.remove('header__search-modal--open');
+          document.body.style.overflow = '';
+        }
+      });
+    }
   });
 {% endjavascript %}
 

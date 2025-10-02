@@ -6,6 +6,7 @@
   },
   "general": {
     "logo": "Logo",
+    "close": "Close",
     "accessibility": {
       "close": "Close"
     },
@@ -20,7 +21,10 @@
       "view_all": "View All"
     },
     "search": {
-      "title": "Search"
+      "title": "Search",
+      "placeholder": "Search for products...",
+      "submit": "Search",
+      "suggestions": "Popular: Perfumes, Best Sellers, Gift Sets"
     },
     "wishlist": {
       "title": "Wishlist",
