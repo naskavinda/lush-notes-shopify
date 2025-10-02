@@ -13,10 +13,17 @@
   "sections": {
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "logo_width": 150,
+        "show_default_navigation": true,
+        "menu": "",
+        "best_sellers_collection": "best-seller",
+        "weekly_offers_collection": "weekly-offer",
+        "pre_order_collection": "pre-order"
+      }
     }
   },
   "order": [
     "header"
-  ],
+  ]
 }
