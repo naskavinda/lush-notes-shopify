@@ -11,7 +11,14 @@
   "sections": {
     "main": {
       "type": "product",
-      "settings": {}
+      "settings": {
+        "show_pickup_availability": true,
+        "pickup_location": "Tangalle Office",
+        "show_rating": false,
+        "show_trust_badges": true,
+        "show_related_products": true,
+        "related_products_count": 4
+      }
     }
   },
   "order": [
