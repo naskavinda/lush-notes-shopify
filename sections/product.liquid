@@ -193,101 +193,122 @@
 </div>
 
 <!-- People Also Bought Section Debug -->
-{% comment %}
-  Debug Info:
-  - show_related_products: {{ section.settings.show_related_products }}
-  - product.collections.size: {{ product.collections.size }}
-  - related_products_count: {{ section.settings.related_products_count }}
-{% endcomment %}
+<!-- Temporary Debug Info (Remove after testing) -->
+<div style="background: #f0f0f0; padding: 20px; margin: 20px 0; border: 1px solid #ddd;">
+  <h3>Debug Info for People Also Bought:</h3>
+  <ul>
+    <li><strong>Show related products setting:</strong> {{ section.settings.show_related_products }}</li>
+    <li><strong>Product collections count:</strong> {{ product.collections.size }}</li>
+    <li><strong>Related products count setting:</strong> {{ section.settings.related_products_count }}</li>
+    {% if product.collections.size > 0 %}
+      {% assign related_collection = product.collections.first %}
+      <li><strong>First collection:</strong> {{ related_collection.title }}</li>
+      <li><strong>Products in collection:</strong> {{ related_collection.products.size }}</li>
+      {% assign available_count = 0 %}
+      {% for test_product in related_collection.products %}
+        {% if test_product.available and test_product.id != product.id %}
+          {% assign available_count = available_count | plus: 1 %}
+        {% endif %}
+      {% endfor %}
+      <li><strong>Available related products:</strong> {{ available_count }}</li>
+    {% endif %}
+  </ul>
+</div>
 
 <!-- People Also Bought Section -->
 {% if product.collections.size > 0 %}
   {% assign related_collection = product.collections.first %}
   {% assign related_products = related_collection.products %}
-  {% assign filtered_products = '' | split: '' %}
   
+  {% comment %} Count available related products {% endcomment %}
+  {% assign available_count = 0 %}
   {% for related_product in related_products %}
     {% if related_product.available and related_product.id != product.id %}
-      {% assign filtered_products = filtered_products | concat: related_product %}
+      {% assign available_count = available_count | plus: 1 %}
     {% endif %}
   {% endfor %}
   
-  {% if filtered_products.size > 0 and section.settings.show_related_products %}
+  {% if available_count > 0 and section.settings.show_related_products %}
     <section class="people-also-bought">
       <div class="people-also-bought__container">
         <h2 class="people-also-bought__title">{{ 'products.product.people_also_bought' | t }}</h2>
         
         <div class="people-also-bought__products">
-          {% for related_product in filtered_products limit: section.settings.related_products_count %}
-            <div class="people-also-bought__product-card">
-              <div class="product-card product-card--compact">
-                <div class="product-card__image">
-                  {% if related_product.featured_image %}
-                    <a href="{{ related_product.url }}">
-                      {{ related_product.featured_image | image_url: width: 300 | image_tag: alt: related_product.title, loading: 'lazy' }}
-                    </a>
-                  {% else %}
-                    <div class="product-card__placeholder">
-                      {{ 'image' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
-                    </div>
-                  {% endif %}
-                  
-                  {% if related_product.compare_at_price > related_product.price %}
-                    {% assign discount_percentage = related_product.compare_at_price | minus: related_product.price | times: 100 | divided_by: related_product.compare_at_price | round %}
-                    <span class="product-card__badge product-card__badge--sale">
-                      {{ discount_percentage }}% {{ 'products.product.off' | t }}
-                    </span>
-                  {% endif %}
-                  
-                  <!-- Wishlist button -->
-                  <button class="product-card__wishlist" 
-                          type="button" 
-                          data-product-id="{{ related_product.id }}"
-                          data-product-handle="{{ related_product.handle }}"
-                          aria-label="{{ 'products.product.add_to_wishlist' | t }}">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2"/>
-                    </svg>
-                  </button>
-                </div>
-
-                <div class="product-card__content">
-                  <h3 class="product-card__title">
-                    <a href="{{ related_product.url }}">{{ related_product.title | capitalize }}</a>
-                  </h3>
-                  
-                  <div class="product-card__price">
-                    {% if related_product.compare_at_price > related_product.price %}
-                      <span class="product-card__price--sale">{{ related_product.price | money }}</span>
-                      <span class="product-card__price--original">{{ related_product.compare_at_price | money }}</span>
+          {% assign products_shown = 0 %}
+          {% for related_product in related_products %}
+            {% if related_product.available and related_product.id != product.id and products_shown < section.settings.related_products_count %}
+              {% assign products_shown = products_shown | plus: 1 %}
+              <div class="people-also-bought__product-card">
+                <div class="product-card product-card--compact">
+                  <div class="product-card__image">
+                    {% if related_product.featured_image %}
+                      <a href="{{ related_product.url }}">
+                        {{ related_product.featured_image | image_url: width: 300 | image_tag: alt: related_product.title, loading: 'lazy' }}
+                      </a>
                     {% else %}
-                      <span class="product-card__price--regular">{{ related_product.price | money }}</span>
+                      <div class="product-card__placeholder">
+                        {{ 'image' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+                      </div>
                     {% endif %}
+                    
+                    {% if related_product.compare_at_price > related_product.price %}
+                      {% assign discount_percentage = related_product.compare_at_price | minus: related_product.price | times: 100 | divided_by: related_product.compare_at_price | round %}
+                      <span class="product-card__badge product-card__badge--sale">
+                        {{ discount_percentage }}% {{ 'products.product.off' | t }}
+                      </span>
+                    {% endif %}
+                    
+                    <!-- Wishlist button -->
+                    <button class="product-card__wishlist" 
+                            type="button" 
+                            data-product-id="{{ related_product.id }}"
+                            data-product-handle="{{ related_product.handle }}"
+                            aria-label="{{ 'products.product.add_to_wishlist' | t }}">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                    </button>
                   </div>
 
-                  {% form 'product', related_product, class: 'product-card__form' %}
-                    <input type="hidden" name="id" value="{{ related_product.selected_or_first_available_variant.id }}">
-                    <button type="submit" class="product-card__add-to-cart" {% unless related_product.available %}disabled{% endunless %}>
-                      {% if related_product.available %}
-                        {{ 'products.product.add_to_cart' | t }}
+                  <div class="product-card__content">
+                    <h3 class="product-card__title">
+                      <a href="{{ related_product.url }}">{{ related_product.title | capitalize }}</a>
+                    </h3>
+                    
+                    <div class="product-card__price">
+                      {% if related_product.compare_at_price > related_product.price %}
+                        <span class="product-card__price--sale">{{ related_product.price | money }}</span>
+                        <span class="product-card__price--original">{{ related_product.compare_at_price | money }}</span>
                       {% else %}
-                        {{ 'products.product.sold_out' | t }}
+                        <span class="product-card__price--regular">{{ related_product.price | money }}</span>
                       {% endif %}
-                    </button>
-                  {% endform %}
+                    </div>
+
+                    {% form 'product', related_product, class: 'product-card__form' %}
+                      <input type="hidden" name="id" value="{{ related_product.selected_or_first_available_variant.id }}">
+                      <button type="submit" class="product-card__add-to-cart" {% unless related_product.available %}disabled{% endunless %}>
+                        {% if related_product.available %}
+                          {{ 'products.product.add_to_cart' | t }}
+                        {% else %}
+                          {{ 'products.product.sold_out' | t }}
+                        {% endif %}
+                      </button>
+                    {% endform %}
+                  </div>
                 </div>
               </div>
-            </div>
+            {% endif %}
           {% endfor %}
         </div>
       </div>
     </section>
   {% else %}
     {% comment %}
-      Debug: No filtered products found
+      Debug: No available products found
       - related_collection: {{ related_collection.title }}
       - related_products.size: {{ related_products.size }}
-      - filtered_products.size: {{ filtered_products.size }}
+      - available_count: {{ available_count }}
+      - show_related_products: {{ section.settings.show_related_products }}
     {% endcomment %}
   {% endif %}
 {% else %}
