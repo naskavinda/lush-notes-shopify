@@ -192,29 +192,6 @@
   </div>
 </div>
 
-<!-- People Also Bought Section Debug -->
-<!-- Temporary Debug Info (Remove after testing) -->
-<div style="background: #f0f0f0; padding: 20px; margin: 20px 0; border: 1px solid #ddd;">
-  <h3>Debug Info for People Also Bought:</h3>
-  <ul>
-    <li><strong>Show related products setting:</strong> {{ section.settings.show_related_products }}</li>
-    <li><strong>Product collections count:</strong> {{ product.collections.size }}</li>
-    <li><strong>Related products count setting:</strong> {{ section.settings.related_products_count }}</li>
-    {% if product.collections.size > 0 %}
-      {% assign related_collection = product.collections.first %}
-      <li><strong>First collection:</strong> {{ related_collection.title }}</li>
-      <li><strong>Products in collection:</strong> {{ related_collection.products.size }}</li>
-      {% assign available_count = 0 %}
-      {% for test_product in related_collection.products %}
-        {% if test_product.available and test_product.id != product.id %}
-          {% assign available_count = available_count | plus: 1 %}
-        {% endif %}
-      {% endfor %}
-      <li><strong>Available related products:</strong> {{ available_count }}</li>
-    {% endif %}
-  </ul>
-</div>
-
 <!-- People Also Bought Section -->
 {% if product.collections.size > 0 %}
   {% assign related_collection = product.collections.first %}
