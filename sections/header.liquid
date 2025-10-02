@@ -242,21 +242,24 @@
     border-bottom: 1px solid #333;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 10001; /* Higher than cart drawer (9999) */
     width: 100%;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     overflow-x: hidden; /* Prevent horizontal scrollbar */
+    box-sizing: border-box; /* Include padding and border in width calculation */
   }
 
   .header__container {
     width: 100%;
     max-width: 100vw; /* Prevent container from exceeding viewport width */
-    padding: 0 2rem;
+    padding: 0 1rem; /* Reduce padding to prevent overflow */
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 70px;
     overflow-x: hidden; /* Prevent horizontal scrollbar */
+    box-sizing: border-box; /* Include padding in width calculation */
+    min-width: 0; /* Allow flex items to shrink */
   }
 
   /* Logo */
@@ -291,16 +294,18 @@
     display: flex;
     justify-content: center;
     overflow: visible; /* Ensure submenus can overflow the nav container */
+    min-width: 0; /* Allow flex items to shrink */
   }
 
   .header__menu {
     display: flex;
     align-items: center;
-    gap: 2.5rem;
+    gap: 1.5rem; /* Reduce gap to prevent overflow */
     list-style: none;
     margin: 0;
     padding: 0;
     overflow: visible; /* Ensure submenus can overflow the menu container */
+    flex-wrap: nowrap; /* Prevent menu items from wrapping */
   }
 
   .header__menu-item {
@@ -316,10 +321,11 @@
     color: #fff;
     text-decoration: none;
     font-weight: 400;
-    font-size: 1rem;
+    font-size: 0.95rem; /* Slightly smaller font size */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     letter-spacing: 0.025em;
     transition: color 0.2s ease;
+    white-space: nowrap; /* Prevent text wrapping */
   }
 
   .header__menu-link:hover,
@@ -351,13 +357,19 @@
     transition: all 0.2s ease;
     list-style: none;
     margin: 0;
-    z-index: 9999; /* Ensure submenu appears above all other elements */
+    z-index: 10002; /* Higher than header and cart drawer */
+    border: 1px solid #333; /* Add border for better definition */
   }
 
   .header__menu-item:hover .header__submenu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+  }
+
+  /* Ensure submenu is always on top */
+  .header__menu-item:hover {
+    z-index: 10002;
   }
 
   .header__submenu-item {
@@ -516,11 +528,21 @@
   /* Mobile Responsive */
   @media (max-width: 768px) {
     .header__container {
-      padding: 0 1rem;
+      padding: 0 0.5rem; /* Further reduce padding on mobile */
       height: 60px;
       width: 100%;
       max-width: 100vw; /* Prevent container from exceeding viewport width */
       overflow-x: hidden; /* Prevent horizontal scrollbar */
+      box-sizing: border-box;
+    }
+    
+    .header__menu {
+      gap: 1rem; /* Further reduce gap on mobile */
+    }
+    
+    .header__menu-link {
+      font-size: 0.875rem; /* Smaller font on mobile */
+      padding: 0.5rem 0;
     }
 
     .header__mobile-toggle {
@@ -593,7 +615,7 @@
     }
 
     .header__actions {
-      gap: 0.5rem;
+      gap: 0.25rem; /* Reduce gap on mobile */
       order: 3;
       flex-shrink: 0; /* Prevent actions from shrinking */
       min-width: fit-content; /* Ensure actions maintain their minimum required width */
@@ -646,7 +668,7 @@
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.2s ease;
-    z-index: 10000; /* Ensure account dropdown appears above all other elements */
+    z-index: 10003; /* Highest z-index for account dropdown */
   }
 
   .header__account-dropdown--open {
