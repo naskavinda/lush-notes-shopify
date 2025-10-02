@@ -9,9 +9,11 @@
 
     <!-- Mobile Menu Toggle -->
     <button class="header__mobile-toggle" type="button" aria-label="Toggle menu">
-      <span class="header__mobile-toggle-line"></span>
-      <span class="header__mobile-toggle-line"></span>
-      <span class="header__mobile-toggle-line"></span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
     </button>
 
     <!-- Main Navigation -->
@@ -398,22 +400,25 @@
   /* Mobile toggle (hidden on desktop) */
   .header__mobile-toggle {
     display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 16px;
-    height: 12px;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
+    padding: 4px;
+    color: #fff;
+    transition: color 0.2s ease;
   }
 
-  .header__mobile-toggle-line {
-    display: block;
-    width: 100%;
-    height: 1.5px;
-    background-color: #fff;
-    transition: all 0.3s ease;
+  .header__mobile-toggle:hover {
+    color: #ff6b35;
+  }
+
+  .header__mobile-toggle svg {
+    width: 20px;
+    height: 20px;
   }
 
   /* Tablet adjustments */
