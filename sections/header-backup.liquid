@@ -232,7 +232,11 @@
 </header>
 
 {% stylesheet %}
-  /* Simple, clean header styles - no horizontal scrollbar */
+  /* Prevent scrolling when mobile menu is open */
+  body.menu-open {
+    overflow: hidden;
+  }
+
   .header {
     background-color: #1a1a1a;
     border-bottom: 1px solid #333;
@@ -240,6 +244,7 @@
     top: 0;
     z-index: 1000;
     width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
 
   .header__container {
@@ -254,15 +259,22 @@
 
   /* Logo */
   .header__logo-link {
-    color: #fff;
     text-decoration: none;
+    color: #fff;
     font-size: 1.75rem;
     font-weight: 700;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: -0.025em;
   }
 
   .header__logo-image {
     max-height: 40px;
     width: auto;
+  }
+
+  .header__logo-text {
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
 
   /* Navigation */
@@ -274,10 +286,11 @@
 
   .header__menu {
     display: flex;
+    align-items: center;
+    gap: 2rem;
     list-style: none;
     margin: 0;
     padding: 0;
-    gap: 2rem;
   }
 
   .header__menu-item {
@@ -291,7 +304,10 @@
     padding: 0.75rem 0;
     color: #fff;
     text-decoration: none;
+    font-weight: 400;
     font-size: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: 0.025em;
     transition: color 0.2s ease;
   }
 
@@ -333,12 +349,26 @@
     transform: translateY(0);
   }
 
+  /* Ensure submenu is always on top */
+  .header__menu-item:hover {
+    z-index: 10002;
+  }
+
+
+
+  .header__submenu-item {
+    margin: 0;
+  }
+
   .header__submenu-link {
     display: block;
     padding: 0.5rem 1rem;
     color: #fff;
     text-decoration: none;
     font-size: 0.875rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.025em;
     transition: background-color 0.2s ease;
   }
 
@@ -361,8 +391,8 @@
     background: none;
     border: none;
     color: #fff;
-    cursor: pointer;
     text-decoration: none;
+    cursor: pointer;
     transition: color 0.2s ease;
   }
 
@@ -370,13 +400,63 @@
     color: #ff6b35;
   }
 
-  /* Cart/Wishlist icons with count */
-  .header__cart-icon,
+  .header__action-text {
+    font-size: 0.875rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  /* Sign In Button */
+  .header__sign-in-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #ff6b35;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    letter-spacing: 0.025em;
+    transition: background-color 0.2s ease;
+  }
+
+  .header__sign-in-btn:hover {
+    background-color: #e55a2e;
+    color: #fff;
+  }
+
+  /* Cart */
+  .header__cart-icon {
+    position: relative;
+  }
+
+  .header__cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff6b35;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.15rem 0.4rem;
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  /* Wishlist */
   .header__wishlist-icon {
     position: relative;
   }
 
-  .header__cart-count,
   .header__wishlist-count {
     position: absolute;
     top: -8px;
@@ -392,9 +472,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    line-height: 1;
   }
 
-  /* Mobile toggle (hidden on desktop) */
+  /* Mobile Menu Toggle */
   .header__mobile-toggle {
     display: none;
     flex-direction: column;
@@ -415,15 +496,70 @@
     transition: all 0.3s ease;
   }
 
-  /* Mobile styles */
+  .header__mobile-toggle.active .header__mobile-toggle-line:first-child {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .header__mobile-toggle.active .header__mobile-toggle-line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .header__mobile-toggle.active .header__mobile-toggle-line:last-child {
+    transform: rotate(-45deg) translate(7px, -6px);
+  }
+
+  /* Tablet and smaller desktop screens */
+  @media (max-width: 1024px) {
+    .header__container {
+      padding: 0 0.5rem;
+    }
+    
+    .header__menu {
+      gap: 0.75rem;
+    }
+    
+    .header__menu-link {
+      font-size: 0.85rem;
+    }
+    
+    .header__actions {
+      gap: 0.25rem;
+    }
+  }
+
+  /* Mobile Responsive */
   @media (max-width: 768px) {
     .header__container {
-      padding: 0 1rem;
+      padding: 0 0.25rem; /* Minimal padding on mobile */
       height: 60px;
+      width: 100%;
+      max-width: 100vw; /* Prevent container from exceeding viewport width */
+      overflow-x: hidden; /* Prevent horizontal scrollbar */
+      box-sizing: border-box;
+      gap: 0.25rem; /* Reduce gap between sections */
+    }
+    
+    .header__menu {
+      gap: 0.5rem; /* Minimal gap on mobile */
+    }
+    
+    .header__menu-link {
+      font-size: 0.8rem; /* Smaller font on mobile */
+      padding: 0.25rem 0;
+      letter-spacing: 0;
+    }
+    
+    .header__actions {
+      gap: 0.125rem; /* Very tight spacing on mobile */
     }
 
     .header__mobile-toggle {
       display: flex;
+      order: 2;
+    }
+
+    .header__logo {
+      order: 1;
     }
 
     .header__nav {
@@ -438,6 +574,7 @@
       opacity: 0;
       visibility: hidden;
       transition: all 0.3s ease;
+      order: 4;
     }
 
     .header__nav.active {
@@ -455,6 +592,10 @@
     .header__menu-item {
       width: 100%;
       border-bottom: 1px solid #333;
+    }
+
+    .header__menu-item:last-child {
+      border-bottom: none;
     }
 
     .header__menu-link {
@@ -481,14 +622,45 @@
       max-height: 300px;
     }
 
+    .header__actions {
+      gap: 0.125rem; /* Very tight spacing on mobile */
+      order: 3;
+      flex-shrink: 0; /* Prevent actions from shrinking */
+      min-width: fit-content; /* Ensure actions maintain their minimum required width */
+    }
+
     .header__action-text {
       display: none;
     }
+
+    .header__sign-in-btn {
+      padding: 0.5rem;
+    }
+
+    .header__sign-in-btn span {
+      display: none;
+    }
+  }
   }
 
-  /* Account dropdown styles */
+  /* Account Dropdown Styles */
   .header__account-wrapper {
     position: relative;
+    z-index: 1001; /* Ensure account dropdown appears above submenus */
+  }
+
+  .header__account-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .header__account-arrow {
+    transition: transform 0.2s ease;
+  }
+
+  .header__account-btn[aria-expanded="true"] .header__account-arrow {
+    transform: rotate(180deg);
   }
 
   .header__account-dropdown {
@@ -505,7 +677,7 @@
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.2s ease;
-    z-index: 1000;
+    z-index: 10003; /* Highest z-index for account dropdown */
   }
 
   .header__account-dropdown--open {
@@ -526,13 +698,13 @@
 
   .header__account-name {
     font-weight: 600;
-    color: #111;
+    color: var(--color-foreground);
     margin-bottom: 4px;
   }
 
   .header__account-email {
     font-size: 0.875rem;
-    color: #666;
+    color: var(--color-foreground-secondary);
   }
 
   .header__account-nav {
@@ -547,7 +719,7 @@
     gap: 12px;
     padding: 10px 12px;
     border-radius: 8px;
-    color: #111;
+    color: var(--color-foreground);
     text-decoration: none;
     font-size: 0.875rem;
     font-weight: 500;
@@ -572,7 +744,11 @@
     margin: 8px 0;
   }
 
+  /* Sign In Button */
   .header__signin-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     background-color: #e97547;
     color: white;
     text-decoration: none;
@@ -586,7 +762,42 @@
 
   .header__signin-btn:hover {
     background-color: #d4633f;
-    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(233, 117, 71, 0.3);
+  }
+
+  .header__signin-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  @media (max-width: 480px) {
+    .header__actions {
+      gap: 0.25rem;
+    }
+
+    .header__action-btn {
+      padding: 0.25rem;
+    }
+
+    .header__signin-btn {
+      padding: 8px 12px;
+      font-size: 0.75rem;
+    }
+
+    .header__signin-btn .header__action-text {
+      display: none;
+    }
+
+    .header__signin-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .header__account-dropdown {
+      right: -10px;
+      min-width: 260px;
+    }
   }
 {% endstylesheet %}
 
@@ -664,6 +875,14 @@
           accountToggle.setAttribute('aria-expanded', 'false');
         }
       });
+
+      // Close dropdown on escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          accountDropdown.classList.remove('header__account-dropdown--open');
+          accountToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
     }
 
     // Wishlist count functionality
@@ -672,26 +891,36 @@
         const wishlist = JSON.parse(localStorage.getItem('product-wishlist')) || [];
         const countElement = document.querySelector('.header__wishlist-count');
         
+        console.log('🔢 Updating wishlist count:', wishlist.length, 'items');
+        console.log('📍 Count element found:', !!countElement);
+        
         if (countElement) {
           const count = wishlist.length;
           countElement.textContent = count;
           countElement.style.display = count > 0 ? 'flex' : 'none';
+          console.log('✅ Wishlist count updated to:', count);
+        } else {
+          console.warn('❌ Wishlist count element not found');
         }
       } catch (e) {
-        console.error('Error updating wishlist count:', e);
+        console.error('🚨 Error updating wishlist count:', e);
       }
     }
+    
+    // Make function globally available for debugging
+    window.updateWishlistCount = updateWishlistCount;
 
     // Initialize wishlist count
     updateWishlistCount();
 
-    // Listen for wishlist updates
+    // Listen for localStorage changes (for cross-tab updates)
     window.addEventListener('storage', function(e) {
       if (e.key === 'product-wishlist') {
         updateWishlistCount();
       }
     });
 
+    // Custom event listener for wishlist updates within the same tab
     window.addEventListener('wishlistUpdated', updateWishlistCount);
   });
 {% endjavascript %}
