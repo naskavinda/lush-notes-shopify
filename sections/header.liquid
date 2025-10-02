@@ -237,6 +237,33 @@
     overflow: hidden;
   }
 
+  /* Override shopify-section overflow to allow submenus to show */
+  .shopify-section:has(.header) {
+    overflow: visible !important;
+    overflow-x: hidden; /* Still prevent horizontal scrolling */
+    overflow-y: visible; /* Allow vertical overflow for submenus */
+  }
+
+  /* Additional override for header section specifically */
+  section[id*="shopify-section-header"] {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+  }
+
+  /* More specific targeting for the section */
+  #shopify-section-header {
+    overflow: visible !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+  }
+
+  /* Global override for any sections containing header */
+  .shopify-section {
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+  }
+
   .header {
     background-color: #1a1a1a;
     border-bottom: 1px solid #333;
@@ -246,6 +273,7 @@
     width: 100%;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     overflow-x: hidden; /* Prevent horizontal scrollbar */
+    overflow-y: visible; /* Allow submenus to show vertically */
     box-sizing: border-box; /* Include padding and border in width calculation */
   }
 
@@ -357,7 +385,7 @@
     transition: all 0.2s ease;
     list-style: none;
     margin: 0;
-    z-index: 10002; /* Higher than header and cart drawer */
+    z-index: 999999 !important; /* Extremely high z-index with !important */
     border: 1px solid #333; /* Add border for better definition */
   }
 
@@ -370,6 +398,16 @@
   /* Ensure submenu is always on top */
   .header__menu-item:hover {
     z-index: 10002;
+  }
+
+  /* Ensure menu item creates proper stacking context */
+  .header__menu-item {
+    position: relative;
+    z-index: 1;
+  }
+
+  .header__menu-item:hover {
+    z-index: 999998; /* Just below submenu but very high */
   }
 
   .header__submenu-item {
