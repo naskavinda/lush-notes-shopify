@@ -4,7 +4,7 @@
     {% if section.settings.hero_image != blank %}
       {{ section.settings.hero_image | image_url: width: 2000 | image_tag: class: 'hero__background-image', alt: section.settings.hero_title }}
     {% else %}
-      <img src="{{ 'hero2.png' | asset_url }}" class="hero__background-image" alt="{{ section.settings.hero_title }}" />
+      <img src="{{ 'hero1.png' | asset_url }}?v={{ 'now' | date: '%s' }}" class="hero__background-image" alt="{{ section.settings.hero_title }}" />
     {% endif %}
     <div class="hero__background-overlay"></div>
   </div>
