@@ -97,6 +97,17 @@
         </div>
       {% endform %}
 
+      {%- comment -%} Social Login Options {%- endcomment -%}
+      <div class="customer-login__social">
+        <div class="customer-login__divider">
+          <span class="customer-login__divider-text">{{ 'customer.login.or_continue_with' | t }}</span>
+        </div>
+
+        <div class="customer-login__social-buttons">
+          {{ shop | login_button: customer_login: shop.customer_accounts_v2 }}
+        </div>
+      </div>
+
       <div class="customer-login__register">
         <p class="customer-login__register-text">
           {{ 'customer.login.new_customer' | t }}
@@ -337,10 +348,84 @@
     text-decoration: underline;
   }
 
+  .customer-login__social {
+    margin-top: 32px;
+  }
+
+  .customer-login__divider {
+    position: relative;
+    text-align: center;
+    margin: 24px 0;
+  }
+
+  .customer-login__divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #e5e7eb;
+  }
+
+  .customer-login__divider-text {
+    position: relative;
+    display: inline-block;
+    padding: 0 16px;
+    background-color: white;
+    color: var(--color-foreground-secondary);
+    font-size: 0.875rem;
+  }
+
+  .customer-login__social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Style the Shopify generated social login buttons */
+  .customer-login__social-buttons :global(button),
+  .customer-login__social-buttons :global(a) {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: white;
+    color: var(--color-foreground);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .customer-login__social-buttons :global(button:hover),
+  .customer-login__social-buttons :global(a:hover) {
+    border-color: #9ca3af;
+    background-color: #f9fafb;
+  }
+
+  .customer-login__social-buttons :global(button:active),
+  .customer-login__social-buttons :global(a:active) {
+    background-color: #f3f4f6;
+  }
+
+  /* Ensure proper icon sizing */
+  .customer-login__social-buttons :global(svg),
+  .customer-login__social-buttons :global(img) {
+    width: 20px;
+    height: 20px;
+  }
+
   .customer-login__register {
     text-align: center;
     padding-top: 24px;
     border-top: 1px solid #e5e7eb;
+    margin-top: 24px;
   }
 
   .customer-login__register-text {
