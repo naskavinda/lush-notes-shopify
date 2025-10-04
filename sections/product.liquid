@@ -468,183 +468,66 @@
       });
     }
     
-    // Wishlist functionality
+    // Wishlist functionality - Use global WishlistUtils
     const wishlistBtn = document.querySelector('.wishlist-btn');
-    if (wishlistBtn) {
+    if (wishlistBtn && typeof window.WishlistUtils !== 'undefined') {
       const productId = wishlistBtn.dataset.productId;
-      const productHandle = '{{ product.handle }}'; // Get the product handle
+      const productHandle = '{{ product.handle }}';
       
-      // Store both ID and handle for better compatibility
+      // Store rich product data for wishlist
       const productData = {
-        id: productId,
+        id: String(productId),
         handle: productHandle,
         title: '{{ product.title | escape }}',
         image: '{{ product.featured_image | image_url: width: 300 }}',
         price: {{ product.price | json }},
         compare_at_price: {{ product.compare_at_price | default: 0 | json }},
         available: {{ product.available | json }},
-        variants: {{ product.variants | json }}
+        url: '{{ product.url }}',
+        added_at: new Date().toISOString()
       };
       
-      // Check if product is already in wishlist
-      function isInWishlist(productId) {
-        try {
-          const wishlist = JSON.parse(localStorage.getItem('product-wishlist')) || [];
-          return wishlist.some(item => {
-            // Support both old format (just ID) and new format (object with handle)
-            return (typeof item === 'string' && item === String(productId)) ||
-                   (typeof item === 'object' && (item.id === String(productId) || item.handle === productHandle));
-          });
-        } catch (e) {
-          return false;
-        }
-      }
-      
-      // Update wishlist button state
+      // Update button state
       function updateWishlistButton() {
-        const inWishlist = isInWishlist(productId);
-        wishlistBtn.classList.toggle('in-wishlist', inWishlist);
-        wishlistBtn.setAttribute('aria-label', inWishlist ? 'Remove from wishlist' : 'Add to wishlist');
-        
-        // Update SVG fill
-        const svg = wishlistBtn.querySelector('svg');
-        if (svg) {
-          svg.style.fill = inWishlist ? 'currentColor' : 'none';
-        }
+        window.WishlistUtils.updateButton(wishlistBtn);
       }
       
-      // Toggle wishlist
-      wishlistBtn.addEventListener('click', function() {
-        try {
-          let wishlist = JSON.parse(localStorage.getItem('product-wishlist')) || [];
-          
-          // Check if already in wishlist and remove
-          const existingIndex = wishlist.findIndex(item => {
-            return (typeof item === 'string' && item === String(productId)) ||
-                   (typeof item === 'object' && (item.id === String(productId) || item.handle === productHandle));
-          });
-          
-          if (existingIndex !== -1) {
-            wishlist.splice(existingIndex, 1);
-            console.log('💔 Removed from wishlist:', productHandle);
-          } else {
-            // Add to wishlist with complete product data
-            const wishlistItem = {
-              id: String(productId),
-              handle: productHandle,
-              title: productData.title,
-              image: productData.image,
-              price: productData.price,
-              compare_at_price: productData.compare_at_price,
-              available: productData.available,
-              variants: productData.variants,
-              added_at: new Date().toISOString()
-            };
-            wishlist.push(wishlistItem);
-            console.log('💖 Added to wishlist:', productHandle, wishlistItem);
-          }
-          
-          localStorage.setItem('product-wishlist', JSON.stringify(wishlist));
-          updateWishlistButton();
-          
-          // Dispatch custom event for other components
-          window.dispatchEvent(new CustomEvent('wishlistUpdated', {
-            detail: { productId, productHandle, action: existingIndex !== -1 ? 'removed' : 'added' }
-          }));
-          
-        } catch (e) {
-          console.error('Error updating wishlist:', e);
-        }
-      });
-      
-      // Initialize wishlist button state
-      updateWishlistButton();
-      
-      // Listen for wishlist updates from other parts of the site
-      window.addEventListener('wishlistUpdated', updateWishlistButton);
-    }
-
-    // Initialize People Also Bought wishlist functionality
-    const peopleAlsoBoughtWishlistBtns = document.querySelectorAll('.people-also-bought .product-card__wishlist');
-    peopleAlsoBoughtWishlistBtns.forEach(btn => {
-      const productId = btn.dataset.productId;
-      const productHandle = btn.dataset.productHandle;
-      
-      // Check if product is already in wishlist
-      function isInWishlistPAB(productId) {
-        try {
-          const wishlist = JSON.parse(localStorage.getItem('product-wishlist')) || [];
-          return wishlist.some(item => {
-            return (typeof item === 'string' && item === String(productId)) ||
-                   (typeof item === 'object' && (item.id === String(productId) || item.handle === productHandle));
-          });
-        } catch (e) {
-          return false;
-        }
-      }
-      
-      // Update wishlist button state
-      function updateWishlistButtonPAB() {
-        const inWishlist = isInWishlistPAB(productId);
-        btn.classList.toggle('in-wishlist', inWishlist);
-        btn.setAttribute('aria-label', inWishlist ? 'Remove from wishlist' : 'Add to wishlist');
-        
-        // Update SVG fill
-        const svg = btn.querySelector('svg');
-        if (svg) {
-          svg.style.fill = inWishlist ? 'currentColor' : 'none';
-        }
-      }
-      
-      // Toggle wishlist
-      btn.addEventListener('click', function(e) {
+      // Handle click event
+      wishlistBtn.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
         
-        try {
-          let wishlist = JSON.parse(localStorage.getItem('product-wishlist')) || [];
-          
-          // Check if already in wishlist and remove
-          const existingIndex = wishlist.findIndex(item => {
-            return (typeof item === 'string' && item === String(productId)) ||
-                   (typeof item === 'object' && (item.id === String(productId) || item.handle === productHandle));
-          });
-          
-          if (existingIndex !== -1) {
-            wishlist.splice(existingIndex, 1);
-            console.log('💔 Removed from wishlist (PAB):', productHandle);
-          } else {
-            // Add to wishlist with basic product data
-            const wishlistItem = {
-              id: String(productId),
-              handle: productHandle,
-              title: btn.closest('.product-card').querySelector('.product-card__title a').textContent.trim(),
-              image: btn.closest('.product-card').querySelector('.product-card__image img')?.src || '',
-              added_at: new Date().toISOString()
-            };
-            wishlist.push(wishlistItem);
-            console.log('💖 Added to wishlist (PAB):', productHandle, wishlistItem);
-          }
-          
-          localStorage.setItem('product-wishlist', JSON.stringify(wishlist));
-          updateWishlistButtonPAB();
-          
-          // Dispatch custom event for other components
-          window.dispatchEvent(new CustomEvent('wishlistUpdated', {
-            detail: { productId, productHandle, action: existingIndex !== -1 ? 'removed' : 'added' }
-          }));
-          
-        } catch (e) {
-          console.error('Error updating wishlist (PAB):', e);
-        }
+        const wasAdded = window.WishlistUtils.toggleWishlist(productId, productData);
+        
+        // Show feedback message
+        const message = wasAdded ? 'Added to wishlist ❤️' : 'Removed from wishlist';
+        console.log(message);
+        
+        // Update button state
+        updateWishlistButton();
       });
       
-      // Initialize wishlist button state
-      updateWishlistButtonPAB();
+      // Initialize button state
+      updateWishlistButton();
       
-      // Listen for wishlist updates from other parts of the site
-      window.addEventListener('wishlistUpdated', updateWishlistButtonPAB);
-    });
+      // Listen for wishlist updates
+      window.addEventListener('wishlistUpdated', updateWishlistButton);
+      
+      console.log('✅ Product wishlist button initialized');
+    } else if (!window.WishlistUtils) {
+      console.error('❌ WishlistUtils not loaded. Make sure wishlist-utils snippet is included.');
+    }
+
+    // Initialize People Also Bought wishlist functionality - Note: WishlistUtils handles this globally
+    // The wishlist-utils snippet automatically binds click events for .product-card__wishlist buttons
+    // Just initialize the button states
+    if (typeof window.WishlistUtils !== 'undefined') {
+      const peopleAlsoBoughtWishlistBtns = document.querySelectorAll('.people-also-bought .product-card__wishlist');
+      peopleAlsoBoughtWishlistBtns.forEach(btn => {
+        window.WishlistUtils.updateButton(btn);
+      });
+      console.log('✅ People Also Bought wishlist buttons initialized');
+    }
 
     
     console.log('✨ Product page functionality initialized!');
