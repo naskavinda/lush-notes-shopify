@@ -97,38 +97,19 @@
         </div>
       {% endform %}
 
-      {%- comment -%} Social Login Options {%- endcomment -%}
-      <div class="customer-login__social">
-        <div class="customer-login__divider">
-          <span class="customer-login__divider-text">{{ 'customer.login.or_continue_with' | t }}</span>
-        </div>
+      {%- comment -%} Social Login Options - Only show if New Customer Accounts are enabled {%- endcomment -%}
+      {%- capture login_btn -%}{{ shop | login_button }}{%- endcapture -%}
+      {%- if login_btn != blank -%}
+        <div class="customer-login__social">
+          <div class="customer-login__divider">
+            <span class="customer-login__divider-text">{{ 'customer.login.or_continue_with' | t }}</span>
+          </div>
 
-        <div class="customer-login__social-buttons">
-          {%- comment -%} Try rendering the login button {%- endcomment -%}
-          {%- capture login_btn -%}{{ shop | login_button }}{%- endcapture -%}
-          
-          {%- if login_btn != blank -%}
-            {%- comment -%} Shopify generated social login button {%- endcomment -%}
+          <div class="customer-login__social-buttons">
             {{ login_btn }}
-          {%- else -%}
-            {%- comment -%}
-            The login_button filter is not generating output. This means:
-            1. Classic customer accounts are being used (not New customer accounts)
-            2. OR social login is not properly configured in Shopify
-            
-            Unfortunately, Google OAuth login requires New Customer Accounts or Multipass.
-            Please go to: Shopify Admin > Settings > Customer accounts > Switch to "New customer accounts"
-            {%- endcomment -%}
-            
-            <div class="customer-login__social-notice">
-              <p style="text-align: center; color: #6b7280; font-size: 0.875rem; padding: 12px;">
-                <strong>Google Sign-in requires account upgrade</strong><br>
-                Please contact the store owner to enable New Customer Accounts for Google login.
-              </p>
-            </div>
-          {%- endif -%}
+          </div>
         </div>
-      </div>
+      {%- endif -%}
 
       <div class="customer-login__register">
         <p class="customer-login__register-text">
