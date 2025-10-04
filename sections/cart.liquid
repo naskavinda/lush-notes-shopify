@@ -458,26 +458,29 @@
   }
 
   .btn-checkout {
-    background: #ff6b35;
+    background: #333;
     color: white;
     width: 100%;
-    padding: 1rem;
+    padding: 1rem 2rem;
     font-size: 1.1rem;
     font-weight: 600;
+    border-radius: 50px;
   }
 
   .btn-checkout:hover {
-    background: #e55a2b;
-    transform: translateY(-1px);
+    background: #ff6b35;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
   }
 
   .btn-checkout--login {
-    background: #28a745;
+    background: #333;
   }
 
   .btn-checkout--login:hover {
-    background: #218838;
-    transform: translateY(-1px);
+    background: #ff6b35;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
   }
 
   .btn-checkout:disabled {
@@ -487,13 +490,15 @@
   }
 
   .btn-checkout:disabled:hover {
-    background: #ff6b35;
+    background: #333;
     transform: none;
+    box-shadow: none;
   }
 
   .btn-checkout--login:disabled:hover {
-    background: #28a745;
+    background: #333;
     transform: none;
+    box-shadow: none;
   }
 
   .checkout-spinner {
