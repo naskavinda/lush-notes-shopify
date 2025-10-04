@@ -11,7 +11,15 @@
   "sections": {
     "main": {
       "type": "collection",
-      "settings": {}
+      "settings": {
+        "enable_view_toggle": true,
+        "default_view": "grid",
+        "products_per_row_desktop": 5,
+        "products_per_row_tablet": 3,
+        "products_per_row_mobile": 1,
+        "default_sort": "manual",
+        "enable_sort_dropdown": true
+      }
     }
   },
   "order": [
