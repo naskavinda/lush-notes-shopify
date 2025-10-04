@@ -152,11 +152,11 @@
         </button>
 
         <!-- Contact Shop Button (WhatsApp) for Out of Stock -->
-        {% if settings.enable_whatsapp_contact and settings.whatsapp_number != blank %}
+        {% if section.settings.enable_whatsapp_contact and section.settings.whatsapp_number != blank %}
           <button 
             type="button" 
             class="contact-shop-btn"
-            data-whatsapp-number="{{ settings.whatsapp_number }}"
+            data-whatsapp-number="{{ section.settings.whatsapp_number }}"
             data-product-title="{{ product.title | escape }}"
             data-product-url="{{ shop.url }}{{ product.url }}"
             {% if current_variant.available %}style="display: none;"{% endif %}
@@ -1388,6 +1388,24 @@
       "max": 8,
       "step": 1,
       "default": 4
+    },
+    {
+      "type": "header",
+      "content": "t:sections.product.settings.whatsapp_contact.header"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_whatsapp_contact",
+      "label": "t:sections.product.settings.whatsapp_contact.enable",
+      "info": "t:sections.product.settings.whatsapp_contact.enable_info",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_number",
+      "label": "t:sections.product.settings.whatsapp_contact.phone_number",
+      "info": "t:sections.product.settings.whatsapp_contact.phone_info",
+      "placeholder": "+94771234567"
     }
   ],
   "disabled_on": {

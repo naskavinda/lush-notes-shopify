@@ -171,6 +171,13 @@
         },
         "related_products_count": {
           "label": "Number of related products to show"
+        },
+        "whatsapp_contact": {
+          "header": "WhatsApp Contact for Out-of-Stock Products",
+          "enable": "Enable WhatsApp contact button",
+          "enable_info": "Show 'Contact Shop' button via WhatsApp when products are out of stock",
+          "phone_number": "WhatsApp phone number",
+          "phone_info": "Enter phone number with country code (e.g., +94771234567)"
         }
       }
     },
