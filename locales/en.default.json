@@ -7,6 +7,12 @@
   "general": {
     "logo": "Logo",
     "close": "Close",
+    "typography": "Typography",
+    "fonts": "Fonts",
+    "primary": "Primary Font",
+    "layout": "Layout",
+    "colors": "Colors",
+    "contact": "Contact",
     "accessibility": {
       "close": "Close"
     },
@@ -39,7 +45,7 @@
       },
       "start_shopping": "Start Shopping"
     },
-    "contact": {
+    "contact_info": {
       "email": "Email",
       "website": "Website"
     }
@@ -59,7 +65,37 @@
   "labels": {
     "logo": "Logo image",
     "logo_width": "Logo width",
-    "menu": "Menu"
+    "menu": "Menu",
+    "background": "Background color",
+    "foreground": "Foreground color",
+    "input_corner_radius": "Input corner radius",
+    "page_width": "Maximum page width",
+    "page_margin": "Minimum page margin",
+    "text": "Text",
+    "text_style": "Text style",
+    "alignment": "Text alignment",
+    "layout_direction": "Layout direction",
+    "padding": "Padding"
+  },
+  "options": {
+    "page_width": {
+      "narrow": "Narrow (90rem)",
+      "wide": "Wide (110rem)"
+    },
+    "text_style": {
+      "title": "Title",
+      "subtitle": "Subtitle",
+      "normal": "Normal"
+    },
+    "direction": {
+      "horizontal": "Horizontal",
+      "vertical": "Vertical"
+    },
+    "alignment": {
+      "left": "Left",
+      "center": "Center",
+      "right": "Right"
+    }
   },
   "blog": {
     "article_comments": "Comments",
@@ -245,6 +281,15 @@
     "results_for_html": "{{ count }} results found for {{ terms }}"
   },
   "sections": {
+    "contact": {
+      "whatsapp": {
+        "header": "WhatsApp Contact",
+        "phone_number": "WhatsApp phone number",
+        "phone_info": "Enter phone number with country code (e.g., +94771234567)",
+        "enable": "Enable WhatsApp contact for out-of-stock products",
+        "enable_info": "Show 'Contact Shop' button via WhatsApp when products are out of stock"
+      }
+    },
     "collection": {
       "view_toggle": {
         "label": "View",
@@ -834,6 +879,8 @@
       "add_to_cart": "Add to Cart",
       "sold_out": "Sold Out",
       "out_of_stock": "Out of Stock",
+      "contact_shop": "Contact Shop",
+      "contact_shop_whatsapp": "Contact us on WhatsApp to order this product",
       "on_sale": "Sale",
       "quick_view": "Quick View",
       "add_to_wishlist": "Add to Wishlist",

@@ -79,5 +79,28 @@
         "default": 4
       }
     ]
+  },
+  {
+    "name": "t:general.contact",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:sections.contact.whatsapp.header"
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "t:sections.contact.whatsapp.phone_number",
+        "info": "t:sections.contact.whatsapp.phone_info",
+        "placeholder": "+94771234567"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_whatsapp_contact",
+        "label": "t:sections.contact.whatsapp.enable",
+        "info": "t:sections.contact.whatsapp.enable_info",
+        "default": true
+      }
+    ]
   }
 ]
