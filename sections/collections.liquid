@@ -5,51 +5,288 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/collection
 {% endcomment %}
 
-<h1>{{ 'collections.title' | t }}</h1>
+<div class="collections-page">
+  <div class="collections-page__header">
+    <h1 class="collections-page__title">{{ 'collections.title' | t }}</h1>
+  </div>
 
-<div
-  class="collections {{ section.settings.grid_item_width }}"
-  style="--grid-gap: {{ section.settings.grid_gap }}px"
->
-  {% for collection in collections %}
-    <a class="collection-card" href="{{ collection.url }}">
-      {% if collection.featured_image %}
-        {% render 'image',
-          class: 'collection-card__image',
-          image: collection.featured_image,
-          width: 600,
-          height: 600,
-          crop: 'center'
-        %}
-      {% endif %}
+  <div
+    class="collections {{ section.settings.grid_item_width }}"
+    style="--grid-gap: {{ section.settings.grid_gap }}px"
+  >
+    {% for collection in collections %}
+      <a class="collection-card" href="{{ collection.url }}">
+        <div class="collection-card__image-wrapper">
+          {% if collection.featured_image %}
+            {% render 'image',
+              class: 'collection-card__image',
+              image: collection.featured_image,
+              width: 600,
+              height: 600,
+              crop: 'center'
+            %}
+          {% else %}
+            <div class="collection-card__placeholder">
+              {{ 'collection-1' | placeholder_svg_tag: 'collection-card__placeholder-svg' }}
+            </div>
+          {% endif %}
+          <div class="collection-card__overlay"></div>
+        </div>
 
-      <div class="collection-card__content">
-        <p>{{ collection.title }}</p>
+        <div class="collection-card__content">
+          <h3 class="collection-card__title">{{ collection.title }}</h3>
 
-        {% if collection.description %}
-          <p>{{ collection.description | strip_html | truncatewords: 15 }}</p>
-        {% endif %}
-      </div>
-    </a>
-  {% endfor %}
+          {% if collection.description %}
+            <p class="collection-card__description">{{ collection.description | strip_html | truncatewords: 15 }}</p>
+          {% endif %}
+        </div>
+      </a>
+    {% endfor %}
+  </div>
 </div>
 
 {% stylesheet %}
+  .collections-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+
+  .collections-page__header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .collections-page__title {
+    font-size: 42px;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+    text-transform: capitalize;
+    letter-spacing: -0.5px;
+  }
+
   .collections {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(var(--collection-card-size), 100%), 1fr));
     gap: var(--grid-gap);
   }
+
   .collections--compact {
-    --collection-card-size: 160px;
+    --collection-card-size: 200px;
   }
+
   .collections--full {
-    --collection-card-size: 280px;
+    --collection-card-size: 320px;
   }
+
   .collection-card {
     display: flex;
     flex-direction: column;
     width: 100%;
+    text-decoration: none;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .collection-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .collection-card__image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #f8f9fa;
+  }
+
+  .collection-card__image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .collection-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .collection-card:hover .collection-card__image img {
+    transform: scale(1.08);
+  }
+
+  .collection-card__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .collection-card:hover .collection-card__overlay {
+    opacity: 1;
+  }
+
+  .collection-card__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .collection-card__placeholder-svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .collection-card__content {
+    padding: 20px;
+    background: #fff;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .collection-card__title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+    transition: color 0.3s ease;
+    line-height: 1.3;
+  }
+
+  .collection-card:hover .collection-card__title {
+    color: #ff6b35;
+  }
+
+  .collection-card__description {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .collections-page {
+      padding: 32px 16px 48px;
+    }
+
+    .collections-page__header {
+      margin-bottom: 36px;
+    }
+
+    .collections-page__title {
+      font-size: 36px;
+    }
+
+    .collections--compact {
+      --collection-card-size: 180px;
+    }
+
+    .collections--full {
+      --collection-card-size: 280px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .collections-page {
+      padding: 24px 16px 40px;
+    }
+
+    .collections-page__header {
+      margin-bottom: 28px;
+    }
+
+    .collections-page__title {
+      font-size: 32px;
+    }
+
+    .collections--compact {
+      --collection-card-size: 160px;
+    }
+
+    .collections--full {
+      --collection-card-size: 240px;
+    }
+
+    .collection-card__content {
+      padding: 16px;
+    }
+
+    .collection-card__title {
+      font-size: 16px;
+    }
+
+    .collection-card__description {
+      font-size: 13px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .collections-page {
+      padding: 20px 12px 32px;
+    }
+
+    .collections-page__header {
+      margin-bottom: 24px;
+    }
+
+    .collections-page__title {
+      font-size: 28px;
+    }
+
+    .collections {
+      grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
+    }
+
+    .collections--compact {
+      --collection-card-size: 140px;
+    }
+
+    .collections--full {
+      --collection-card-size: 150px;
+    }
+
+    .collection-card__content {
+      padding: 12px;
+    }
+
+    .collection-card__title {
+      font-size: 14px;
+    }
+
+    .collection-card__description {
+      font-size: 12px;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+    }
+
+    .collection-card:hover {
+      transform: translateY(-4px);
+    }
   }
 {% endstylesheet %}
 
