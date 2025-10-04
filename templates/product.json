@@ -17,7 +17,9 @@
         "show_rating": false,
         "show_trust_badges": true,
         "show_related_products": true,
-        "related_products_count": 4
+        "related_products_count": 4,
+        "enable_whatsapp_contact": true,
+        "whatsapp_number": "+94705087501"
       }
     }
   },
