@@ -92,16 +92,16 @@
           <p class="cart-drawer__note">{{ 'cart.taxes_and_shipping_note' | t }}</p>
           
           <div class="cart-drawer__actions">
-            <a href="{{ routes.cart_url }}" class="btn btn--secondary btn--full-width">
+            <a href="{{ routes.cart_url }}" class="cart-drawer__btn cart-drawer__btn--view-cart">
               {{ 'cart.view_cart' | t }}
             </a>
             
             {% if customer %}
-              <button class="btn btn--primary btn--full-width" data-drawer-checkout="proceed">
+              <button class="cart-drawer__btn cart-drawer__btn--checkout" data-drawer-checkout="proceed">
                 {{ 'cart.checkout' | t }}
               </button>
             {% else %}
-              <button class="btn btn--primary btn--full-width" data-drawer-checkout="login">
+              <button class="cart-drawer__btn cart-drawer__btn--checkout" data-drawer-checkout="login">
                 {{ 'cart.login_to_checkout' | t }}
               </button>
             {% endif %}
@@ -381,7 +381,30 @@
   .cart-drawer__actions {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
+  }
+
+  .cart-drawer__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .cart-drawer__btn:hover {
+    background-color: #ff6b35;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
   }
 
   /* Mobile specific styles */
